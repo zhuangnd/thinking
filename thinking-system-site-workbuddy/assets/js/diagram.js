@@ -6,16 +6,9 @@
   'use strict';
 
   var W = 860, H = 1180;
+  // 层渲染顺序与展示字段（label/href/brief）全部从 manifest.layers 读；
+  // 这里只保留渲染顺序（manifest 里没有强制 ordering，故在此固定）。
   var layerOrder = [0, 1, 2, 3, 4, 5, 'app'];
-  var LAYER_LABELS = {
-    0:   { no: '第零层 · 元层',    href: 'metacognition.html',         brief: '双轨思考引擎 · 反优势机制 · 把体系拥有者自身作为分析对象' },
-    1:   { no: '第一层 · 认知原则', href: 'critical-thinking.html',    brief: '回答"我应该如何面对问题"——审辨纪律贯穿全程' },
-    2:   { no: '第二层 · 问题处理', href: 'structured-engineering.html', brief: '结构化 × 工程化 × 模型——看清问题并改变现实' },
-    3:   { no: '第三层 · 讨论机制', href: 'discussion-baseline.html',  brief: '基线 + 框架 + 模型——降低认知噪声' },
-    4:   { no: '第四层 · 执行机制', href: 'notes.html',                  brief: '工程化思维——把临场能力变成可重复流程' },
-    5:   { no: '第五层 · 最终能力', href: 'judgment-system.html',       brief: '个人判断体系——形成世界观的机制' },
-    'app': { no: '应用层 · 对话',   href: 'dialogue.html',               brief: '八步 + 三语境——判断体系在真实世界的测试场' }
-  };
 
   function buildSvg(manifest) {
     var layers = layerOrder.map(function (id) {
@@ -56,30 +49,32 @@
     layers.forEach(function (layer, idx) {
       var isMeta = layer.id === 0;
       var h = layout.layerH;
-      var meta = LAYER_LABELS[layer.id];
+      var layerLabel = layer.label || layer.name || ('层 ' + layer.id);
+      var layerHref = layer.href || ('#' + layer.id);
+      var layerBrief = layer.brief || layer.core || '';
 
       layerYs[layer.id] = y;
       layerBottoms[layer.id] = y + h;
 
-      svg += '<a class="dg-layer-link dg-layer-' + layer.id + '" href="' + meta.href +
+      svg += '<a class="dg-layer-link dg-layer-' + layer.id + '" href="' + layerHref +
              '" data-layer-id="' + layer.id +
-             '" aria-label="' + meta.no + '：' + meta.brief + '">';
+             '" aria-label="' + layerLabel + '：' + layerBrief + '">';
       svg += '<rect class="dg-rect" x="' + layout.rectX + '" y="' + y +
              '" width="' + layout.rectW + '" height="' + h + '" rx="12" />';
 
-      // 第零层（虚线描边）
+      // 第零层（虚线描边）——通过 CSS class dg-meta-dash 控制颜色与样式，
+      // 不在 SVG inline attribute 中写 var() 以规避跨浏览器支持差异。
       if (isMeta) {
-        svg += '<line x1="' + (layout.rectX + 10) + '" y1="' + (y + h + 4) +
-               '" x2="' + (layout.rectX + 30) + '" y2="' + (y + h + 4) +
-               '" stroke="var(--c-meta)" stroke-width="1.5" stroke-dasharray="3 2" />';
+        svg += '<line class="dg-meta-dash" x1="' + (layout.rectX + 10) + '" y1="' + (y + h + 4) +
+               '" x2="' + (layout.rectX + 30) + '" y2="' + (y + h + 4) + '" />';
       }
 
       svg += '<text class="dg-no" x="' + (layout.rectX + 24) + '" y="' + (y + 22) +
-             '" font-family="-apple-system, sans-serif">' + meta.no + '</text>';
+             '" font-family="-apple-system, sans-serif">' + layerLabel + '</text>';
 
       var titleY = y + h / 2 + 5;
       svg += '<text class="dg-name" x="' + (layout.rectX + 24) + '" y="' + titleY +
-             '" font-family="-apple-system, sans-serif">' + escapeXml(meta.brief) + '</text>';
+             '" font-family="-apple-system, sans-serif">' + escapeXml(layerBrief) + '</text>';
 
       svg += '<text class="dg-go" x="' + (layout.rectX + layout.rectW - 24) + '" y="' + (y + 22) +
              '" text-anchor="end" font-family="-apple-system, sans-serif">进入 →</text>';
@@ -87,10 +82,12 @@
       svg += '</a>';
 
       // 箭头：起点 = 当前层 bottom + 4，终点 = 下一层 top - 4，居中放 ▼
+      // 注意：下一层 top = 当前 y + h + rectGap，不能用 layerYs[nextId]，
+      // 因为 layerYs 在每次循环末尾才写入。
       if (idx < layers.length - 1) {
-        var nextId = layers[idx + 1].id;
+        var nextTop = y + h + layout.rectGap;
         var arrowY1 = y + h + 4;
-        var arrowY2 = layerYs[nextId] - 4;
+        var arrowY2 = nextTop - 4;
         var arrowYMid = (arrowY1 + arrowY2) / 2 + 5;
 
         svg += '<line class="dg-arrow" data-from-layer="' + layer.id +
@@ -198,7 +195,7 @@
         var a = document.querySelector('a.dg-layer-' + layerId);
         if (a) window.location.href = a.getAttribute('href');
       });
-      row.setAttribute('title', '点击查看 ' + LAYER_LABELS[layerId === 'app' ? 'app' : layerId].no);
+      row.setAttribute('title', '点击查看 ' + manifest.layers.find(function (l) { return String(l.id) === String(layerId); }).name);
     });
   }
 

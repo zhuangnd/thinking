@@ -168,7 +168,6 @@
           else key = '--layer' + l.id;
           root.style.setProperty(key, l.color[theme]);
         });
-        root.style.setProperty('--layerCurrent', manifest.layers.find(function (l) { return l.id === 0; }).color[theme]); // 占位，会被覆盖
 
         renderTopbar(manifest);
         renderCrumbs(manifest);

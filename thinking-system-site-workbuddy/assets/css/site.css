@@ -520,6 +520,9 @@ table.tbl tr[data-layer] { cursor: pointer; }
 .dg-band-label { font-size: 11px; fill: var(--c-primary); font-family: var(--f-sans); font-weight: 600; letter-spacing: 0.05em; }
 
 .dg-arrow { stroke: var(--c-rule-strong); stroke-width: 1.5; fill: none; }
+.dg-arrow-text { font-size: 14px; fill: var(--c-fg-3); font-family: var(--f-sans); }
+
+.dg-meta-dash { stroke: var(--c-meta); stroke-width: 1.5; stroke-dasharray: 3 2; fill: none; }
 
 .dg-loop-line {
   stroke: var(--c-accent);

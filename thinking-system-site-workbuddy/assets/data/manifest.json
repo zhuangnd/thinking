@@ -95,51 +95,72 @@
     {
       "id": 0,
       "name": "元层 · 自反与制衡",
+      "label": "第零层 · 元层",
       "short": "第零层",
       "core": "把体系拥有者自身作为分析对象——思考能力已经不是瓶颈，思考的自我约束机制才是。",
+      "brief": "双轨思考引擎 · 反优势机制 · 把体系拥有者自身作为分析对象",
+      "href": "metacognition.html",
       "collapsed_default": true,
       "color": { "light": "#A8A29E", "dark": "#A8A29E" }
     },
     {
       "id": 1,
       "name": "第一层 · 认知原则",
+      "label": "第一层 · 认知原则",
       "short": "第一层",
       "core": "我应该如何面对问题——不预设结论、检查前提与概念、检验证据与逻辑、识别偏差、允许被推翻。",
+      "brief": "回答\"我应该如何面对问题\"——审辨纪律贯穿全程",
+      "href": "critical-thinking.html",
       "color": { "light": "#1F3A8A", "dark": "#60A5FA" }
     },
     {
       "id": 2,
       "name": "第二层 · 问题处理",
+      "label": "第二层 · 问题处理",
       "short": "第二层",
       "core": "我应该如何拆解问题——把复杂问题变成可处理的结构，模型衔接结构化与工程化。",
+      "brief": "结构化 × 工程化 × 模型——看清问题并改变现实",
+      "href": "structured-engineering.html",
       "color": { "light": "#0E7490", "dark": "#22D3EE" }
     },
     {
       "id": 3,
       "name": "第三层 · 讨论机制",
+      "label": "第三层 · 讨论机制",
       "short": "第三层",
       "core": "我们按什么标准讨论——基线控制质量、框架组织结构、模型解释现实；目标是认知增量。",
+      "brief": "基线 + 框架 + 模型——降低认知噪声",
+      "href": "discussion-baseline.html",
       "color": { "light": "#15803D", "dark": "#4ADE80" }
     },
     {
       "id": 4,
       "name": "第四层 · 执行机制",
+      "label": "第四层 · 执行机制",
       "short": "第四层",
       "core": "如何让思考稳定运行——把依赖临场能力的思考变成可重复、可检验的流程与工具。",
+      "brief": "工程化思维——把临场能力变成可重复流程",
+      "href": "notes.html",
       "color": { "light": "#A16207", "dark": "#FACC15" }
     },
     {
       "id": 5,
       "name": "第五层 · 最终能力",
+      "label": "第五层 · 最终能力",
       "short": "第五层",
       "core": "最终我要获得什么——不是观点集合，而是\"形成世界观的机制\"。",
+      "brief": "个人判断体系——形成世界观的机制",
+      "href": "judgment-system.html",
       "color": { "light": "#C2410C", "dark": "#FB923C" }
     },
     {
       "id": "app",
       "name": "应用层 · 对话",
+      "label": "应用层 · 对话",
       "short": "应用层",
       "core": "判断体系在人际交流中运行，接受真实世界检验与持续迭代。",
+      "brief": "八步 + 三语境——判断体系在真实世界的测试场",
+      "href": "dialogue.html",
       "color": { "light": "#7C3AED", "dark": "#A78BFA" }
     }
   ],
