@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结构化思维 × 工程化思维 × 模型 · 思考与判断体系</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="struct">
+
+<div class="page-shell">
+<main class="page-main">
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="kicker">第二层 · 问题处理 ＋ 第四层 · 执行机制</span>
+    <h1>结构化思维 × 工程化思维 × 模型</h1>
+    <div class="core">
+      <span class="lab">一句话核心</span>
+      结构化思维解决"看清问题"（认知组织方式），工程化思维解决"改变现实"（系统解决方式）；两者是包含而非并列关系，中间由"模型"衔接——模型是对现实的有目的抽象，是连接问题与系统的核心枢纽。
+    </div>
+  </section>
+
+  <!-- 推进脉络 -->
+  <section class="sec">
+    <h2>推进脉络（六问）</h2>
+    <ol class="steps">
+      <li class="reveal"><div class="st-t"><span class="no">问 1</span>两者的定义、特征、异同与场景</div><div class="st-d">给出基本对照</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">问 2</span>"问题模型"是什么、与信息模型/数学建模的异同</div><div class="st-d">三类模型层级链</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">问 3</span>如何在业务沟通中通俗表达这些概念</div><div class="st-d">概念翻译为行动语言</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">问 4</span>五种业务解释结构模板</div><div class="st-d">沟通的可复用结构</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">问 5</span>结构化思维可否按"事实/功能/逻辑/原理"四层拆解</div><div class="st-d">认知抽象层级模型</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">问 6</span>用四层模型自反分析"结构化思维"本身 + 数据可视化逐层案例</div><div class="st-d">四层框架的通用性验证</div></li>
+    </ol>
+  </section>
+
+  <!-- 本质区分 -->
+  <section class="sec">
+    <h2>两种思维的本质区分</h2>
+    <table class="tbl">
+      <tr><th>维度</th><th>结构化思维</th><th>工程化思维</th></tr>
+      <tr><td>本质</td><td>认知组织方式</td><td>系统解决方式</td></tr>
+      <tr><td>目标</td><td>理解复杂问题</td><td>解决复杂问题</td></tr>
+      <tr><td>方法</td><td>拆解、分类、归纳（MECE、逻辑树、金字塔）</td><td>设计、实现、测试（问题定义→系统设计→验证→迭代）</td></tr>
+      <tr><td>输出</td><td>框架、逻辑树、模型</td><td>系统、流程、产品</td></tr>
+      <tr><td>适用阶段</td><td>问题分析阶段</td><td>方案实施阶段</td></tr>
+    </table>
+    <blockquote class="quote q-cyan">一句话：<b>结构化思维解决"看清问题"，工程化思维解决"改变现实"。</b>工程化思维通常包含结构化思维。</blockquote>
+  </section>
+
+  <!-- 三类模型链：排序验证模块 -->
+  <section class="sec">
+    <h2>三类模型的层级链（核心贡献 · 排序验证）</h2>
+    <p>从"现实问题"到"预测/决策"，模型逐级转换。<b>点击下方打乱的环节，按你理解的正确顺序重建这条链</b>，验证自己是否真正掌握：</p>
+    <div class="chain-quiz" id="chainQuiz">
+      <div class="cq-pool" id="cqPool"></div>
+      <div class="cq-seq" id="cqSeq"><span class="slot">你搭建的链条将出现在这里 ……</span></div>
+      <div class="cq-msg" id="cqMsg" aria-live="polite"></div>
+      <div class="cq-btns" style="display:flex;gap:10px;margin-top:10px">
+        <button type="button" id="cqReset">重新打乱</button>
+      </div>
+    </div>
+    <ul>
+      <li><b>问题模型</b>：解释问题结构，定义分析路径与边界（如 增长 = 市场规模 × 市场份额）</li>
+      <li><b>信息模型</b>：组织数据结构（数据库、数据仓库、API）</li>
+      <li><b>数学模型</b>：预测或计算（回归、分类、机器学习）</li>
+      <li>模型三要素：<b>变量、关系、边界</b>；最重要的模型往往是最简单的结构模型</li>
+      <li>更高阶概念：<b>决策模型</b>（连接模型→行动）</li>
+    </ul>
+  </section>
+
+  <!-- 通俗表达 -->
+  <section class="sec">
+    <h2>概念的通俗表达（业务沟通）</h2>
+    <p>不说术语，说行动语言：</p>
+    <table class="tbl">
+      <tr><th>逻辑阶段</th><th>真实方法</th><th>业务表达</th></tr>
+      <tr><td>理解问题</td><td>结构化思维</td><td>"我们先把问题拆开来看"</td></tr>
+      <tr><td>解释问题</td><td>模型</td><td>"可以用一个简单框架理解"</td></tr>
+      <tr><td>解决问题</td><td>工程化思维</td><td>"分三步落地"</td></tr>
+    </table>
+    <p><b>汇报三句话</b>：先拆问题 → 再给框架 → 再讲落地。更高阶技巧：<b>不要说方法论，要展示结构</b>——不说"我们用结构化思维分析"，而直接说"这个问题主要由三个因素决定"，听众自然会感觉这个人思路很清晰。</p>
+  </section>
+
+  <!-- 五种模板 -->
+  <section class="sec">
+    <h2>业务解释的五种结构模板</h2>
+    <table class="tbl">
+      <tr><th>结构</th><th>回答的问题</th><th>典型句式</th></tr>
+      <tr><td>拆解结构</td><td>问题由哪些部分组成</td><td>"主要受三个因素影响"</td></tr>
+      <tr><td>因果结构</td><td>为什么会发生</td><td>"原因有三个"</td></tr>
+      <tr><td>公式结构</td><td>核心变量关系是什么</td><td>"GMV = 流量 × 转化率 × 客单价"</td></tr>
+      <tr><td>流程结构</td><td>事情如何发生</td><td>"整个过程分三个阶段"</td></tr>
+      <tr><td>方案结构</td><td>我们准备怎么做</td><td>"优化路径主要有三步"</td></tr>
+    </table>
+    <p>五种结构对应人类理解世界的五种基本逻辑：<b>结构、因果、数学、时间、行动</b>。典型组合：拆解 → 公式 → 因果 → 方案。</p>
+  </section>
+
+  <!-- 四层抽象模型：分层穿透模块 -->
+  <section class="sec">
+    <h2>四层抽象层级模型（点击分层穿透）</h2>
+    <p>从表象到本质的四层理解框架。<b>点击任意层，向下穿透</b>查看该层的含义与自反应用：</p>
+    <div class="layer-stack" id="layerStack">
+      <div class="ls-row" data-layer="0" tabindex="0" role="button">
+        <span class="ls-no">L1</span><span class="ls-t">事实层</span><span class="ls-q">发生了什么？（图表 / 表象）</span>
+      </div>
+      <div class="ls-row" data-layer="1" tabindex="0" role="button">
+        <span class="ls-no">L2</span><span class="ls-t">功能层</span><span class="ls-q">系统在做什么？（信息表达）</span>
+      </div>
+      <div class="ls-row" data-layer="2" tabindex="0" role="button">
+        <span class="ls-no">L3</span><span class="ls-t">逻辑层</span><span class="ls-q">如何做到？（视觉编码 / 机制）</span>
+      </div>
+      <div class="ls-row" data-layer="3" tabindex="0" role="button">
+        <span class="ls-no">L4</span><span class="ls-t">原理层</span><span class="ls-q">为什么能？（认知规律）</span>
+      </div>
+    </div>
+    <ul>
+      <li>这是一个"从表象到本质"的四层理解框架，<b>不是结构化思维唯一的拆解维度</b>（还有时间、空间、因果、系统等结构），而是特别适合复杂系统深度分析的模板</li>
+      <li>自反应用：<b>结构化思维本身主要位于逻辑层</b>（信息组织机制），原理层是认知容量有限（7±2）、复杂系统需要抽象、信息传递效率</li>
+      <li><b>判断一个概念是否被真正理解的标准</b>：四层都能解释清楚才算完整理解——常见认知问题是只停留在事实层（表现）或功能层（用途），缺逻辑层（机制）与原理层（为什么成立）</li>
+      <li>层级错位是"各说各话"的常见根源：同一问题，有人在事实层回答、有人在逻辑层回答</li>
+      <li>数据可视化案例揭示的误解：可视化 ≠ 画图，而是"利用视觉系统理解数据的认知工具"；几乎所有信息系统（UI/信息设计/交互）底层都是"界面→表达→编码→认知"同一套机制</li>
+    </ul>
+  </section>
+
+  <!-- 与体系的关系 -->
+  <section class="sec">
+    <h2>与整个思考体系的关系</h2>
+    <p>本主题是"结构化思维 → 模型 → 工程化思维"这条链的展开与深化，为体系<b>第二层（问题处理）</b>和<b>第四层（执行机制）</b>提供了最具体的工具箱：三类模型层级链回答"模型如何衔接认知与现实"，四层抽象模型提供了分析任何思维方法（含其自身）的元框架，五种结构模板和通俗表达法则是工程化思维在沟通场景的直接落地。在星图中，"结构化思维"与"模型"“工程化思维”三星沿主线依次相连。</p>
+  </section>
+
+  <!-- 星座定位 -->
+  <section class="mini-const">
+    <div class="mc-head"><h2>星座定位</h2><span class="mc-sub">当前之星：结构化思维 · 模型 · 工程化思维 · 点击任意星进入对应主题</span></div>
+    <canvas data-const="mini" data-highlight="struct,model,eng"></canvas>
+    <div class="mc-note">本主题覆盖三星：青蓝"结构化思维"、翠青"模型"、紫罗兰"工程化思维"。</div>
+  </section>
+
+  <nav class="prevnext" aria-label="翻页"></nav>
+</main>
+</div>
+
+<script src="assets/js/constellation.js"></script>
+<script src="assets/js/nav.js"></script>
+<script>
+(function () {
+  'use strict';
+  /* ---- 模型链排序验证 ---- */
+  var ORDER = ['现实问题', '问题模型', '信息模型', '数学模型', '预测 / 决策'];
+  var HINTS = {
+    '现实问题': '起点：尚未结构化的复杂处境',
+    '问题模型': '结构化思维 · 逻辑结构（增长 = 市场规模 × 市场份额）',
+    '信息模型': '数据结构（数据库、数据仓库、API）',
+    '数学模型': '预测计算（回归、分类、机器学习）',
+    '预测 / 决策': '终点：更高阶还有"决策模型"连接模型与行动'
+  };
+  var pool = document.getElementById('cqPool');
+  var seq = document.getElementById('cqSeq');
+  var msg = document.getElementById('cqMsg');
+  var picked = [];
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function render() {
+    pool.innerHTML = '';
+    shuffle(ORDER).forEach(function (name) {
+      if (picked.indexOf(name) >= 0) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'cq-chip'; b.textContent = name;
+      b.addEventListener('click', function () { pick(name, b); });
+      pool.appendChild(b);
+    });
+    if (!pool.children.length) {
+      pool.innerHTML = '<span class="slot" style="color:#64748B">环节已全部选完</span>';
+    }
+    seq.innerHTML = picked.length
+      ? picked.map(function (n, i) { return '<span class="fl-node" style="font-size:13px">' + (i + 1) + '. ' + n + '</span>'; }).join('<span class="fl-arr">→</span>')
+      : '<span class="slot">你搭建的链条将出现在这里 ……</span>';
+  }
+  function pick(name, btn) {
+    var expect = ORDER[picked.length];
+    picked.push(name);
+    if (name === expect) {
+      btn.classList.add('done', 'ok');
+      msg.className = 'cq-msg ok';
+      msg.textContent = '✓ 正确 —— ' + HINTS[name];
+      if (picked.length === ORDER.length) {
+        msg.textContent = '✓ 全部正确！链条：现实问题 → 问题模型 → 信息模型 → 数学模型 → 预测/决策。最重要的模型往往是最简单的结构模型。';
+      }
+      render();
+    } else {
+      msg.className = 'cq-msg no';
+      msg.textContent = '✗ 还不是这一环（第 ' + picked.length + ' 环应为「' + expect + '」）——再想想模型链是如何从现实逐步抽象到计算的';
+      btn.classList.add('err');
+      setTimeout(function () { picked.pop(); btn.classList.remove('err'); msg.textContent = ''; }, 900);
+    }
+  }
+  document.getElementById('cqReset').addEventListener('click', function () {
+    picked = []; msg.textContent = ''; msg.className = 'cq-msg'; render();
+  });
+  render();
+
+  /* ---- 四层抽象 · 分层穿透 ---- */
+  var DETAILS = [
+    '<b>事实层 · 发生了什么</b>：直接可观察的表象——图表显示的数字、界面上看到的元素。多数人的理解停在这一层。',
+    '<b>功能层 · 系统在做什么</b>：表象承担的角色——图表在传达什么信息、界面在完成什么任务。停留在"用途"仍不算理解。',
+    '<b>逻辑层 · 如何做到</b>：机制与编码——视觉编码如何映射数据、结构化思维本身也是一层"信息组织机制"。<b>结构化思维主要位于此层。</b>',
+    '<b>原理层 · 为什么能</b>：认知规律——人类工作记忆容量 7±2、复杂系统必须抽象才能被把握、信息传递效率的约束。<b>四层全部解释清楚，才算完整理解。</b>'
+  ];
+  var stack = document.getElementById('layerStack');
+  var detailBox = null;
+  stack.querySelectorAll('.ls-row').forEach(function (row) {
+    function open() {
+      var i = row.getAttribute('data-layer');
+      if (detailBox) detailBox.remove();
+      stack.querySelectorAll('.ls-row').forEach(function (r) { r.classList.remove('open'); });
+      row.classList.add('open');
+      detailBox = document.createElement('div');
+      detailBox.className = 'ls-detail';
+      detailBox.innerHTML = DETAILS[i];
+      row.insertAdjacentElement('afterend', detailBox);
+    }
+    row.addEventListener('click', open);
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

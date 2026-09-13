@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="思考与判断体系 · 认知星座版——把整套思维体系呈现为一个可探索的认知星座">
+<title>思考与判断体系 · 认知星座</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="index">
+
+<!-- ============ Hero：全屏认知星座 ============ -->
+<section class="hero-home" id="hero">
+  <canvas id="constCanvas" aria-label="认知星座图：拖拽平移，滚轮缩放，点击节点查看要点，双击进入主题页"></canvas>
+
+  <div class="hh-overlay">
+    <h1 class="hh-title">思考与判断体系</h1>
+    <p class="hh-sub">COGNITIVE CONSTELLATION · 完备版</p>
+    <p class="hh-core">不是给自己建立一套"正确答案"，而是建立一套<b>能够不断产生、检验和修正答案的系统</b>——<br class="br-wide">独立面对问题、分析问题、检验问题、形成判断，并与他人进行高质量交流的认知操作系统。</p>
+  </div>
+
+  <div class="hh-enter">
+    <a class="hh-docs" href="#docIndex">文档索引</a>
+    <button type="button" id="btnReset" title="复位视图">复位视图</button>
+  </div>
+
+  <!-- 左下角：四个根问题入口 -->
+  <div class="rootq-btns" role="group" aria-label="四个根问题">
+    <div class="rq-label">四 个 根 问 题</div>
+    <button type="button" class="rq-btn" data-group="know" style="color:#F0A830">
+      <span class="rq-dot" style="background:#F0A830;color:#F0A830"></span>我如何知道？<em>认识论</em>
+    </button>
+    <button type="button" class="rq-btn" data-group="think" style="color:#38BDF8">
+      <span class="rq-dot" style="background:#38BDF8;color:#38BDF8"></span>我如何思考？<em>方法论</em>
+    </button>
+    <button type="button" class="rq-btn" data-group="judge" style="color:#FB7185">
+      <span class="rq-dot" style="background:#FB7185;color:#FB7185"></span>我如何判断？<em>实践</em>
+    </button>
+    <button type="button" class="rq-btn" data-group="calib" style="color:#E2E8F0">
+      <span class="rq-dot" style="background:#E2E8F0;color:#E2E8F0"></span>我如何校准自身？<em>元问题</em>
+    </button>
+  </div>
+
+  <!-- 右下角：操作提示 + 图例 -->
+  <div class="hh-hint">
+    <div>拖拽平移 · 滚轮缩放 · 点击看要点 · 双击进入</div>
+    <div class="hh-legend">
+      <span><i></i>主线</span>
+      <span><i class="dash"></i>贯穿关联</span>
+      <span><i class="loop"></i>迭代回路</span>
+    </div>
+  </div>
+
+  <div class="scroll-cue">向 下 探 索 ↓</div>
+
+  <!-- 节点内容卡 / hover 浮层 -->
+  <div class="const-card" id="constCard" aria-live="polite"></div>
+  <div class="const-tip" id="constTip"></div>
+</section>
+
+<!-- ============ 下方内容区 ============ -->
+<main class="home-main">
+
+  <!-- 根问题卡片 -->
+  <section class="sec reveal">
+    <h2>四个根问题</h2>
+    <p>整套体系最终可以压缩为四个根问题——前三个来自主文档，第四个（元问题）由"思考项目特质"补充。点击卡片，在上方星座中点亮对应的概念星群。</p>
+    <div class="rootq-grid">
+      <div class="rq" data-group="know" tabindex="0" role="button">
+        <div class="rq-q t-l1">我如何知道？</div>
+        <div class="rq-k">认识论</div>
+        <div class="rq-d">批判性思维、四基线、证据排序、认知增量——判断信息与前提是否可信。</div>
+        <div class="rq-links">
+          <a href="critical-thinking.html">批判性思维</a>
+          <a href="discussion-baseline.html">讨论基线</a>
+          <a href="judgment-system.html">判断体系</a>
+        </div>
+        <div class="rq-go">✦ 点击在星图中高亮</div>
+      </div>
+      <div class="rq" data-group="think" tabindex="0" role="button">
+        <div class="rq-q t-l2">我如何思考？</div>
+        <div class="rq-k">方法论</div>
+        <div class="rq-d">结构化思维、模型链、四层抽象、工程化流程——复杂问题如何被组织和处理。</div>
+        <div class="rq-links">
+          <a href="structured-engineering.html">结构化 × 工程化</a>
+          <a href="notes.html">结构化笔记</a>
+        </div>
+        <div class="rq-go">✦ 点击在星图中高亮</div>
+      </div>
+      <div class="rq" data-group="judge" tabindex="0" role="button">
+        <div class="rq-q t-l5">我如何判断？</div>
+        <div class="rq-k">实践</div>
+        <div class="rq-d">判断体系四层构造、风险承担与修正、对话与退出决策——最终如何形成自己的判断。</div>
+        <div class="rq-links">
+          <a href="judgment-system.html">判断体系</a>
+          <a href="dialogue.html">批判性对话</a>
+        </div>
+        <div class="rq-go">✦ 点击在星图中高亮</div>
+      </div>
+      <div class="rq" data-group="calib" tabindex="0" role="button">
+        <div class="rq-q t-l0">我如何校准思考者自身？</div>
+        <div class="rq-k">元问题 · 第四问</div>
+        <div class="rq-d">双轨引擎、反优势机制、不可解释槽位、愿望结构与体系的区分——防止体系被自身优势带偏。</div>
+        <div class="rq-links">
+          <a href="metacognition.html">双轨引擎</a>
+        </div>
+        <div class="rq-go">✦ 点击在星图中高亮</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主线流程条 -->
+  <section class="sec reveal">
+    <h2>体系主线（完备版）</h2>
+    <p>从面对现实到循环迭代的完整路径。每一步对应星座中的一颗概念之星：<b>悬停脉冲高亮，点击回到星图聚焦</b>。</p>
+    <div class="mainline" id="mainline">
+      <span class="ml-st">面对现实</span><span class="ml-arr">→</span>
+      <span class="ml-st hot" data-node="crit">审辨性审题（不预置结论）</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="struct">结构化拆解</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="base">四基线校验讨论资格</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="model">建模与模型转换</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="judge">证据检验（按领域区分）</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="judge">形成带证伪条件的判断</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="dialog">对话检验（以认知增量为目标）</span><span class="ml-arr">→</span>
+      <span class="ml-st red" data-node="meta">双轨制衡（防解释过强）</span><span class="ml-arr">→</span>
+      <span class="ml-st" data-node="eng">修正规则 · 沉淀笔记</span><span class="ml-arr">→</span>
+      <span class="ml-st hot" data-node="*">循环迭代 ↺</span>
+    </div>
+    <blockquote class="quote">主线一句话：不是给自己建立一套"正确答案"，而是建立一套能够不断<b>产生、检验和修正答案</b>的系统。</blockquote>
+  </section>
+
+  <!-- 六层链条 -->
+  <section class="sec reveal">
+    <h2>六层链条：每一层解决什么问题</h2>
+    <div class="doc-index-wrap">
+    <table class="tbl">
+      <tr><th>层</th><th>解决的问题</th><th>核心区分</th></tr>
+      <tr><td><span class="t-l0">✦ 元层</span></td><td>体系如何校准自身</td><td>双轨引擎：放大优势的同时用反优势机制制衡（第零层，位于五层之上）</td></tr>
+      <tr><td><span class="t-l1">批判性思维</span></td><td>能不能相信这个问题</td><td>结构化组织分析 vs 批判性持续检验（问题本身可能就是错的）</td></tr>
+      <tr><td><span class="t-l2">结构化思维</span></td><td>这个问题由什么构成</td><td>把复杂问题转换为可处理的结构（边界、概念、要素、因果、主次）</td></tr>
+      <tr><td><span class="t-l3">基线与框架</span></td><td>按什么规则讨论</td><td><b>基线</b>=讨论的最低认知条件（是否站得住）；<b>框架</b>=讨论展开的维度结构（如何展开）</td></tr>
+      <tr><td><span class="t-model">模型</span></td><td>如何把现实压缩成可理解结构</td><td>对现实的有目的抽象：选择变量、建立关系、忽略次要因素</td></tr>
+      <tr><td><span class="t-l4">工程化思维</span></td><td>如何让思考真正运行起来</td><td>把依赖临场能力的思考变成稳定、可重复、可检验、可迭代的流程</td></tr>
+      <tr><td><span class="t-l5">个人判断体系</span></td><td>最终我要获得什么</td><td>不是观点集合（易成意识形态），而是"形成世界观的机制"</td></tr>
+    </table>
+    </div>
+    <p>四者组合的定位：结构化思维<b>组织问题</b>、模型<b>抽象现实</b>、框架<b>规定观察维度</b>、基线<b>控制认知质量</b>。模型 vs 工程化：<b>模型是认知结构，工程化是认知流程</b>。"对话"不作为平行章节，而是横跨五层的<b>应用层</b>，形成闭环——并以回路直达第零层，持续迭代。</p>
+  </section>
+
+  <!-- 文档索引 -->
+  <section class="sec reveal" id="docIndex">
+    <h2>文档索引</h2>
+    <p>本站内容来自 8 份总结文档（原文档均保留不动）；每篇子页即为对应总结的全量入页版本。星座中每颗星对应一个主题页。</p>
+    <div class="doc-index-wrap">
+    <table class="tbl doc-index">
+      <tr><th>页面</th><th>源文档</th><th>体系位置</th><th>一句话核心</th></tr>
+      <tr><td><a href="index.html">认知星座全景（本页）</a></td><td>思考与判断体系-总结</td><td>完备版总图</td><td>建立能不断产生、检验和修正答案的认知系统</td></tr>
+      <tr><td><a href="critical-thinking.html">批判性思维</a></td><td>批判性思维-总结</td><td><span class="t-l1">第一层 · 认知原则</span></td><td>不是"批评"而是"审辨"——相信到证据允许的程度</td></tr>
+      <tr><td><a href="structured-engineering.html">结构化 × 工程化 × 模型</a></td><td>分析结构化思维和工程化思维…-总结</td><td><span class="t-l2">第二层 · 问题处理</span> + <span class="t-l4">第四层 · 执行</span></td><td>结构化"看清问题"，工程化"改变现实"，模型衔接两者</td></tr>
+      <tr><td><a href="discussion-baseline.html">讨论问题的基线</a></td><td>讨论问题的三大基线-总结</td><td><span class="t-l3">第三层 · 讨论机制</span></td><td>基线降低认知噪声；讨论的目标是认知增量而非说服</td></tr>
+      <tr><td><a href="dialogue.html">批判性思维的对话</a></td><td>如何有效开展批判性思维的对话-总结</td><td><span class="t-ld">应用层 · 对话</span></td><td>批判前提而非人格，把对话从证明谁对转向共同思考</td></tr>
+      <tr><td><a href="judgment-system.html">AI 与个人边界变化</a></td><td>AI与个人边界变化-总结</td><td><span class="t-l5">第五层 · 最终能力</span></td><td>从愿望结构到带纠错回路的判断规则体系</td></tr>
+      <tr><td><a href="metacognition.html">思考项目特质</a></td><td>思考项目特质-总结</td><td><span class="t-l0">第零层 · 元层</span></td><td>思考能力不是瓶颈，思考的自我约束机制才是</td></tr>
+      <tr><td><a href="notes.html">结构化笔记</a></td><td>结构化笔记…-总结</td><td><span class="t-l4">第四层 · 沉淀实例</span></td><td>判断体系的第一版显性化快照与跨会话记忆锚点</td></tr>
+    </table>
+    </div>
+    <p class="note">阅读路径建议：沿顶部导航从左至右即按体系逻辑顺序走完一条完整路径——认知原则 → 问题处理 → 讨论机制 → 对话应用 → 最终能力 → 元层 → 沉淀实例。</p>
+  </section>
+
+  <nav class="prevnext" aria-label="翻页"></nav>
+</main>
+
+<script src="assets/js/constellation.js"></script>
+<script src="assets/js/nav.js"></script>
+<script>
+(function () {
+  'use strict';
+  var canvas = document.getElementById('constCanvas');
+  var card = document.getElementById('constCard');
+  var tip = document.getElementById('constTip');
+  var app = window.Constellation.create(canvas, { card: card, tip: tip });
+
+  /* 根问题 → 星群映射 */
+  var GROUPS = {
+    know:  ['crit', 'base', 'judge'],
+    think: ['struct', 'model', 'eng'],
+    judge: ['judge', 'dialog'],
+    calib: ['meta']
+  };
+  var activeGroup = null;
+
+  function activateGroup(key) {
+    if (activeGroup === key) { activeGroup = null; app.setHighlight(null); return; }
+    activeGroup = key;
+    app.setHighlight(GROUPS[key]);
+    GROUPS[key].forEach(function (id, i) {
+      setTimeout(function () { app.pulse(id); }, i * 180);
+    });
+  }
+
+  /* Hero 左下角按钮 + 根问题卡片 */
+  document.querySelectorAll('[data-group]').forEach(function (b) {
+    if (b.classList.contains('rq-btn')) {
+      b.addEventListener('click', function () { activateGroup(b.getAttribute('data-group')); });
+    } else {
+      b.addEventListener('click', function (ev) {
+        if (ev.target.tagName === 'A') return;
+        activateGroup(b.getAttribute('data-group'));
+        document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+      });
+      b.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); b.click(); }
+      });
+    }
+  });
+
+  /* 主线流程条：悬停脉冲，点击回星图聚焦 */
+  document.querySelectorAll('#mainline .ml-st[data-node]').forEach(function (st) {
+    var id = st.getAttribute('data-node');
+    st.addEventListener('mouseenter', function () {
+      if (id === '*') return;
+      st.classList.add('pulse'); app.pulse(id);
+    });
+    st.addEventListener('mouseleave', function () { st.classList.remove('pulse'); });
+    st.addEventListener('click', function () {
+      document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+      if (id === '*') {
+        window.Constellation.nodes.forEach(function (n, i) {
+          setTimeout(function () { app.pulse(n.id); }, i * 140);
+        });
+      } else {
+        app.setHighlight([id]);
+        app.pulse(id);
+      }
+    });
+  });
+
+  /* 复位视图 */
+  document.getElementById('btnReset').addEventListener('click', function () {
+    activeGroup = null;
+    app.setHighlight(null);
+    app.fit();
+  });
+})();
+</script>
+</body>
+</html>

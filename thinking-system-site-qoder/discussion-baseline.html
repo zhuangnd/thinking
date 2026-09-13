@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讨论问题的基线 · 思考与判断体系</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="base">
+
+<div class="page-shell">
+<main class="page-main">
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="kicker">第三层 · 讨论机制</span>
+    <h1>讨论问题的基线</h1>
+    <div class="core">
+      <span class="lab">一句话核心</span>
+      讨论基线（概念定义→标准约束→事实依据→逻辑遵循）不是讨论技巧，而是降低认知噪声的约束条件——它让讨论从"观点碰撞"变成"对象分析"；而衡量讨论的最终标准不是"说服对方"，而是"认知增量"。
+    </div>
+  </section>
+
+  <!-- 推进脉络 -->
+  <section class="sec">
+    <h2>推进脉络（五个阶段）</h2>
+    <ol class="steps">
+      <li class="reveal"><div class="st-t"><span class="no">一</span>评价三基线</div><div class="st-d">概念定义、标准约束、逻辑遵循——确认三者是一条完整链路</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">二</span>补充第四条：事实依据</div><div class="st-d">形成"对象—标准—事实—逻辑"四基线</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">三</span>宽容度问题</div><div class="st-d">日常讨论 vs 严肃/学术讨论——"讨论精度模型"（基线不变，变的是精度要求）</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">四</span>退出讨论问题</div><div class="st-d">日常讨论判不了对错，但能判断讨论是否还有价值——"讨论终止判断"</div></li>
+      <li class="reveal"><div class="st-t"><span class="no">五</span>认知增量</div><div class="st-d">把讨论目标从"说服"转向"增加认知"——完整六步框架；最后延伸出"讨论质量框架（DQF）"交互页面的设计（工程化落地）</div></li>
+    </ol>
+  </section>
+
+  <!-- 四大基线：逐步构建模块 -->
+  <section class="sec">
+    <h2>四大基线及其分工（点击逐步构建）</h2>
+    <p>四条基线按依赖顺序叠起：<b>先确定对象，再确定评价函数，然后锚定事实，最后保证推理有效</b>。点击"构建下一层"逐条点亮：</p>
+    <div class="baseline-build" id="baselineBuild">
+      <div class="bb-stage">
+        <div class="bb-item"><span class="bb-no">①</span><span class="bb-t">概念定义</span><span class="bb-d">确定讨论对象——防止偷换概念、语义混乱</span></div>
+        <div class="bb-item"><span class="bb-no">②</span><span class="bb-t">标准约束</span><span class="bb-d">确定评价函数——防止双方评价体系不同</span></div>
+        <div class="bb-item"><span class="bb-no">③</span><span class="bb-t">事实依据</span><span class="bb-d">确定证据可信度——防止前提本身为假</span></div>
+        <div class="bb-item"><span class="bb-no">④</span><span class="bb-t">逻辑遵循</span><span class="bb-d">保证推理有效——防止跳步、偷换、循环论证、相关当因果</span></div>
+      </div>
+      <div class="bb-btns">
+        <button type="button" id="bbNext">构建下一层 +</button>
+        <button type="button" id="bbAll">一次全部点亮</button>
+        <button type="button" id="bbReset">重置</button>
+      </div>
+    </div>
+    <ul>
+      <li>逻辑只能保证"前提为真则结论成立"，<b>不能保证前提本身真实</b>——所以事实依据必须独立成层</li>
+      <li>很多争论不是观点不同，而是讨论对象不同（"AI 取代程序员"需先定义 AI / 取代 / 程序员）</li>
+      <li>或评价函数不同（NBA GOAT 之争：按 MVP 还是按巅峰高度，双方都可能正确）</li>
+    </ul>
+  </section>
+
+  <!-- 讨论精度模型：滑块模块 -->
+  <section class="sec">
+    <h2>讨论精度模型：基线不变，宽容度变（交互滑块）</h2>
+    <p>不同场景不是采用不同规则，而是<b>不同的精度要求</b>。拖动滑块，从闲聊走到数学证明，观察四条基线的精度要求如何逐级收紧：</p>
+    <div class="precision" id="precision">
+      <div class="pr-scene">
+        <div class="pr-name" id="prName">工作讨论</div>
+        <div class="pr-desc" id="prDesc"></div>
+      </div>
+      <div class="pr-slider">
+        <input type="range" id="prRange" min="0" max="5" step="1" value="1"
+          aria-label="讨论场景精度滑块：从闲聊到数学证明">
+      </div>
+      <div class="pr-rows">
+        <div class="pr-row"><span class="pr-b">概念定义</span><span class="pr-v"><span class="pr-stars" id="prS0"></span><span id="prV0"></span></span></div>
+        <div class="pr-row"><span class="pr-b">标准约束</span><span class="pr-v"><span class="pr-stars" id="prS1"></span><span id="prV1"></span></span></div>
+        <div class="pr-row"><span class="pr-b">事实依据</span><span class="pr-v"><span class="pr-stars" id="prS2"></span><span id="prV2"></span></span></div>
+        <div class="pr-row"><span class="pr-b">逻辑遵循</span><span class="pr-v"><span class="pr-stars" id="prS3"></span><span id="prV3"></span></span></div>
+      </div>
+      <p class="pr-note" id="prNote"></p>
+    </div>
+    <p><b>分配原则</b>：讨论越重要、结论影响越大、可逆性越低，基线要求越高；交流启发型讨论可放宽但不能放弃基线。<b>讨论成本</b>是第二维度——不是所有问题都值得同等严谨。</p>
+  </section>
+
+  <!-- 退出讨论 -->
+  <section class="sec">
+    <h2>退出讨论也是理性结论</h2>
+    <p>日常讨论往往无法判定结论对错，但<b>可以判定讨论是否还有继续的价值</b>——这是两个不同的问题。</p>
+    <h3 class="reveal"><span class="h-no">01</span>四种"讨论无效"的情形</h3>
+    <ol>
+      <li><b>概念没统一</b>：讨论对象已不同</li>
+      <li><b>评价标准不同</b>且都自洽：双方都符合自己的标准，很难证明谁错</li>
+      <li><b>价值观排序不同</b>：已不是事实问题，逻辑不能证明哪种价值绝对正确</li>
+      <li><b>事实依据不足</b>：双方只在"我觉得"，没有数据、调查、证据</li>
+    </ol>
+    <h3 class="reveal"><span class="h-no">02</span>应停止的信号</h3>
+    <ul>
+      <li>价值观分歧且双方不接受调整</li>
+      <li>没有新事实</li>
+      <li>不再回应对方论证，只重复观点</li>
+      <li>已经进入情绪表达——继续讨论的边际收益接近零</li>
+    </ul>
+    <blockquote class="quote q-rose">退出讨论 ≠ 认输 ＝ 当前讨论已无认知增量。</blockquote>
+  </section>
+
+  <!-- 认知增量 -->
+  <section class="sec">
+    <h2>认知增量：讨论的目标重定义</h2>
+    <div class="duo">
+      <div>
+        <h4>说服（Persuasion）</h4>
+        <ul>
+          <li>判断标准：对方是否改变观点</li>
+          <li>易变成输赢和辩论技巧比拼</li>
+          <li>对方越坚持，讨论越容易情绪化</li>
+        </ul>
+      </div>
+      <div>
+        <h4>认知增量（Cognitive Gain）</h4>
+        <ul>
+          <li>判断标准：是否获得新认知</li>
+          <li>新事实、更准确的概念定义、另一种评价标准、推理漏洞、"目前无法下结论"、找到真正分歧点</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote class="quote q-cyan">讨论最大的价值，不一定是得到答案，而是<b>缩小问题</b>。（"AI 好不好" → "我们真正分歧的是效率优先还是就业优先"）</blockquote>
+    <p><b>高质量讨论的定义</b>（即使谁也没改变观点）——讨论结束后，双方都能准确表述：① 我的观点 ② 对方的观点 ③ 真正分歧在哪里 ④ 为什么目前无法统一。</p>
+  </section>
+
+  <!-- 六步框架 -->
+  <section class="sec">
+    <h2>完整六步框架</h2>
+    <div class="flowline">
+      <span class="fl-node"><b>①</b> 概念定义<br>同一对象吗</span><span class="fl-arr">→</span>
+      <span class="fl-node"><b>②</b> 标准约束<br>同一标准吗</span><span class="fl-arr">→</span>
+      <span class="fl-node"><b>③</b> 事实依据<br>认可哪些事实</span><span class="fl-arr">→</span>
+      <span class="fl-node"><b>④</b> 逻辑遵循<br>推理成立吗</span><span class="fl-arr">→</span>
+      <span class="fl-node hot"><b>⑤</b> 认知增量<br>有新认知吗</span><span class="fl-arr">→</span>
+      <span class="fl-node hot"><b>⑥</b> 值得继续吗<br>退出判断</span>
+    </div>
+    <p>第⑤步是整个流程的"收益评估"，第⑥步是"退出判断"。</p>
+  </section>
+
+  <!-- 工程化延伸 -->
+  <section class="sec">
+    <h2>工程化延伸：讨论质量框架（DQF）</h2>
+    <p>基于该框架设计了交互式页面"讨论质量框架（Discussion Quality Framework, DQF）"：Hero → 框架总览 → 五大基线卡片 → 讨论流程图 → 讨论宽容度滑块（闲聊↔数学证明，五星实时变化）→ 认知增量 → 退出讨论决策树 → Checklist 实时评分 → Summary；并设想"思维框架系列"（决策 / 判断 / 证据 / 批判性思维等框架库）。本站即该"思维框架系列"设想的延续。</p>
+  </section>
+
+  <!-- 与体系的关系 -->
+  <section class="sec">
+    <h2>与整个思考体系的关系</h2>
+    <p>本主题是体系<b>第三层（讨论机制）</b>的完整展开，并有两个超出主总结文档的独特贡献：<b>讨论精度/宽容度模型</b>（基线的场景化分配）与<b>认知增量标准</b>（讨论目标从说服转向学习，及配套的退出判断）——这两点同时也是"个人判断体系"在对话场景的收益核算方式。文档后半的 DQF 页面设计则是"工程化思维"的直接实践。</p>
+  </section>
+
+  <!-- 星座定位 -->
+  <section class="mini-const">
+    <div class="mc-head"><h2>星座定位</h2><span class="mc-sub">当前之星：基线 + 框架 · 点击任意星进入对应主题</span></div>
+    <canvas data-const="mini" data-highlight="base"></canvas>
+    <div class="mc-note">翠绿之星为本主题；与琥珀"批判性思维"、暖橙"对话实践"的虚线关联表示基线同时服务审辨与对话。</div>
+  </section>
+
+  <nav class="prevnext" aria-label="翻页"></nav>
+</main>
+</div>
+
+<script src="assets/js/constellation.js"></script>
+<script src="assets/js/nav.js"></script>
+<script>
+(function () {
+  'use strict';
+  /* ---- 四基线逐步构建 ---- */
+  var items = document.querySelectorAll('#baselineBuild .bb-item');
+  var level = 0;
+  function paint() {
+    items.forEach(function (it, i) { it.classList.toggle('on', i < level); });
+  }
+  document.getElementById('bbNext').addEventListener('click', function () {
+    level = Math.min(items.length, level + 1); paint();
+  });
+  document.getElementById('bbAll').addEventListener('click', function () { level = items.length; paint(); });
+  document.getElementById('bbReset').addEventListener('click', function () { level = 0; paint(); });
+
+  /* ---- 精度滑块 ---- */
+  /* 六档场景（0-5）；基线描述在"日常"与"学术"两极之间按档位内插（示意） */
+  var SCENES = [
+    { name: '闲聊', desc: '交流启发型，基线最宽——但仍不可为零' },
+    { name: '工作讨论', desc: '可模糊概念、默认共识，追求效率与启发' },
+    { name: '技术评审', desc: '关键结论需要可追溯的证据与完整推理' },
+    { name: '科研', desc: '操作性定义、可复现证据、完整严谨推理' },
+    { name: '法律裁判', desc: '高影响、低可逆性——基线要求接近顶格' },
+    { name: '数学证明', desc: '几乎零容忍：每一步都必须无懈可击' }
+  ];
+  /* 每条基线的两端描述 [日常, 学术]，档位间线性内插措辞 */
+  var BASE = [
+    ['可模糊，大致理解一致', '必须精确定义（操作性定义）'],
+    ['可默认社会共识', '必须显式标准 + 适用范围'],
+    ['接受经验、常识、新闻', '必须可验证、可复现'],
+    ['允许跳步和直觉推理', '必须完整严谨']
+  ];
+  var range = document.getElementById('prRange');
+  function lerpText(a, b, k) {
+    if (k <= 0.34) return a;
+    if (k >= 0.67) return b;
+    return a + ' → 逐步收紧 → ' + b;
+  }
+  function stars(n) {
+    var s = '';
+    for (var i = 0; i < 5; i++) s += i < n ? '★' : '☆';
+    return s;
+  }
+  function paintSlider() {
+    var v = +range.value;
+    var sc = SCENES[v];
+    document.getElementById('prName').textContent = sc.name;
+    document.getElementById('prDesc').textContent = sc.desc;
+    var k = v / 5;
+    for (var i = 0; i < 4; i++) {
+      document.getElementById('prS' + i).textContent = stars(1 + Math.round(k * 4));
+      document.getElementById('prV' + i).textContent = ' ' + lerpText(BASE[i][0], BASE[i][1], k);
+    }
+    var note = document.getElementById('prNote');
+    if (v <= 1) note.textContent = '※ 启发型讨论可放宽，但不能放弃基线——基线是"降低认知噪声的约束条件"，不是负担。';
+    else if (v <= 3) note.textContent = '※ 分配原则：讨论越重要、影响越大、可逆性越低，基线要求越高；"讨论成本"是第二维度。';
+    else note.textContent = '※ 高精度场景的代价是成本：不是所有问题都值得同等严谨——先问"这场讨论值得多少精度"。';
+  }
+  range.addEventListener('input', paintSlider);
+  paintSlider();
+})();
+</script>
+</body>
+</html>
