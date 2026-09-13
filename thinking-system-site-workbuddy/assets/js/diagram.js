@@ -47,12 +47,14 @@
     // 层块
     var y = layout.firstY;
     var layerYs = {};
+    var layerBottoms = {};
     layers.forEach(function (layer, idx) {
       var isMeta = layer.id === 0;
       var h = isMeta ? layout.metaH : layout.normalH;
       var meta = LAYER_LABELS[layer.id];
 
       layerYs[layer.id] = y;
+      layerBottoms[layer.id] = y + h;
 
       svg += '<a class="dg-layer-link dg-layer-' + layer.id + '" href="' + meta.href +
              '" data-layer-id="' + layer.id +
@@ -79,18 +81,22 @@
 
       svg += '</a>';
 
-      y += h + layout.rectGap;
-
-      // 箭头（第零层下、五层之下、对话层之上都加）
+      // 箭头：起点 = 当前层 bottom + 4，终点 = 下一层 top - 4，居中放 ▼
       if (idx < layers.length - 1) {
-        var nextIsMeta = layers[idx + 1].id === 0; // 永远 false（0 是第一个）
-        // 元层之后到第一层之间的连接线
-        svg += '<line class="dg-arrow" x1="' + (W / 2) + '" y1="' + (y - 4) +
-               '" x2="' + (W / 2) + '" y2="' + (y + layout.rectGap - 12) +
-               '" />';
-        svg += '<text x="' + (W / 2) + '" y="' + (y + layout.rectGap - 16) +
-               '" text-anchor="middle" font-size="14" fill="var(--c-fg-3)">▼</text>';
+        var nextId = layers[idx + 1].id;
+        var arrowY1 = y + h + 4;
+        var arrowY2 = layerYs[nextId] - 4;
+        var arrowYMid = (arrowY1 + arrowY2) / 2 + 5;
+
+        svg += '<line class="dg-arrow" data-from-layer="' + layer.id +
+               '" x1="' + (W / 2) + '" y1="' + arrowY1 +
+               '" x2="' + (W / 2) + '" y2="' + arrowY2 + '" />';
+        svg += '<text class="dg-arrow-text" data-from-layer="' + layer.id +
+               '" x="' + (W / 2) + '" y="' + arrowYMid +
+               '" text-anchor="middle" font-family="-apple-system, sans-serif">▼</text>';
       }
+
+      y += h + layout.rectGap;
     });
 
     // 回路（从对话层右 → 绕下方 → 回到元层左）
@@ -122,22 +128,25 @@
     var out = buildSvg(manifest);
     host.insertAdjacentHTML('beforeend', out.svg);
 
-    // 折叠/展开元层
+    // 折叠/展开元层（元层 + 它对应的箭头同步切换）
     var btn = document.getElementById('dgToggleMeta');
-    if (btn) {
-      // 默认折叠元层
+    function setMetaVisible(visible) {
       var metaLink = host.querySelector('.dg-layer-0');
-      if (metaLink && metaLink.dataset.collapsed !== '0') {
-        metaLink.style.display = 'none';
-        // 折叠时隐藏指向下一层的箭头
-        // 简化处理：直接隐藏
-      }
+      if (!metaLink) return;
+      metaLink.style.display = visible ? '' : 'none';
+      // idx=0 那条箭头与 idx=0 层绑定，data-from-layer="0"
+      var arrows = host.querySelectorAll('[data-from-layer="0"]');
+      arrows.forEach(function (a) { a.style.display = visible ? '' : 'none'; });
+      btn.textContent = visible ? '折叠元层' : '展开元层';
+    }
+    if (btn) {
+      // 默认折叠元层（metaLink.dataset.collapsed === '1' 也表示折叠）
+      setMetaVisible(false);
       btn.addEventListener('click', function () {
-        var meta = host.querySelector('.dg-layer-0');
-        if (!meta) return;
-        var isHidden = meta.style.display === 'none';
-        meta.style.display = isHidden ? '' : 'none';
-        btn.textContent = isHidden ? '折叠元层' : '展开元层';
+        var metaLink = host.querySelector('.dg-layer-0');
+        if (!metaLink) return;
+        var isCurrentlyVisible = metaLink.style.display !== 'none';
+        setMetaVisible(!isCurrentlyVisible);
       });
     }
 
