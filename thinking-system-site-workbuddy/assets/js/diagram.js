@@ -22,12 +22,16 @@
       return manifest.layers.find(function (l) { return l.id === id; });
     });
 
+    // 几何常量：所有层等高（metaH = normalH）；元层"视觉降阶"靠虚线 + 暖灰描边，
+    // 不靠缩短层高，避免层与层之间出现参差。
     var layout = {
       titleY: 30,
-      bandX: 14, bandTop: 60, bandBottom: 940,
-      rectX: 50, rectW: 740, rectH: 64, rectGap: 28,
+      bandX: 14,
+      bandMargin: 10,                  // 色带距层块上下各留 10px
+      rectX: 50, rectW: 740,
+      rectGap: 28,
       firstY: 80,
-      metaH: 56, normalH: 64
+      layerH: 64
     };
 
     var svg = '';
@@ -37,11 +41,12 @@
     svg += '<text class="dg-title" x="' + (W / 2) + '" y="' + layout.titleY +
            '" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" fill="currentColor" opacity="0.5">体系总图（点击进入主题）</text>';
 
-    // 批判性思维贯穿色带
-    svg += '<rect class="dg-band-line" x="' + layout.bandX + '" y="' + layout.bandTop +
-           '" width="12" height="' + (layout.bandBottom - layout.bandTop) + '" rx="6" />';
+    // 批判性思维贯穿色带（高度后续按实际层块范围动态计算）
+    var bandTop = layout.firstY - layout.bandMargin;
+    svg += '<rect class="dg-band-line" x="' + layout.bandX + '" y="' + bandTop +
+           '" width="12" height="100" rx="6" />';
     svg += '<text class="dg-band-label" x="' + (layout.bandX + 22) +
-           '" y="' + (layout.bandTop - 8) +
+           '" y="' + (bandTop - 8) +
            '" font-family="-apple-system, sans-serif">批判性思维 · 贯穿全程</text>';
 
     // 层块
@@ -50,7 +55,7 @@
     var layerBottoms = {};
     layers.forEach(function (layer, idx) {
       var isMeta = layer.id === 0;
-      var h = isMeta ? layout.metaH : layout.normalH;
+      var h = layout.layerH;
       var meta = LAYER_LABELS[layer.id];
 
       layerYs[layer.id] = y;
@@ -99,10 +104,24 @@
       y += h + layout.rectGap;
     });
 
-    // 回路（从对话层右 → 绕下方 → 回到元层左）
-    var lastY = layerYs['app'] + layout.normalH;
+    // 回路（从应用层右侧外 → 绕下方 → 回到元层左侧）
+    var lastY = layerYs['app'] + layout.layerH;
     var metaY = layerYs[0];
-    svg += '<path class="dg-loop-line" d="M ' + (W - 80) + ' ' + (lastY + 6) +
+    var bandBottom = lastY + layout.bandMargin;
+
+    // 把色带高度更新为实际范围（前面先用占位 100，现在覆盖）
+    var bandIdx = svg.indexOf('class="dg-band-line"');
+    if (bandIdx !== -1) {
+      var bandMarker = '<rect class="dg-band-line" x="' + layout.bandX + '" y="' + bandTop +
+        '" width="12" height="' + (bandBottom - bandTop) + '" rx="6" />';
+      svg = svg.replace(
+        new RegExp('<rect class="dg-band-line" x="' + layout.bandX + '" y="' + bandTop + '" width="12" height="\\d+" rx="6" />'),
+        bandMarker
+      );
+    }
+
+    // 回路起点 = 应用层矩形右侧外 10px（不再用 W-80=780，避免侵入矩形内部）
+    svg += '<path class="dg-loop-line" d="M ' + (layout.rectX + layout.rectW + 10) + ' ' + (lastY + 6) +
            ' C ' + (W - 30) + ' ' + (lastY + 80) + ', ' + (W - 30) + ' ' + (H - 120) +
            ', ' + (W / 2 + 80) + ' ' + (H - 80) +
            ' L 80 ' + (H - 80) +
