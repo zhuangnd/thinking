@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考与判断体系 · 认知操作系统</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+:root{
+  --bg:#0A0E17; --panel:#101624; --panel2:#151C2E; --panel3:#1A2338; --line:#24304A; --line2:#33435F;
+  --text:#E5E9F0; --dim:#9AA7BD; --faint:#5C6B85; --accent:#FBBF24;
+  --l0:#A78BFA; --l1:#6366F1; --l2:#3B82F6; --l3:#22D3EE; --l4:#34D399; --l5:#FBBF24; --io:#F8FAFC;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.75; font-size:15px; -webkit-font-smoothing:antialiased;}
+body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(1200px 500px at 70% -10%, rgba(99,102,241,.10), transparent 60%),
+             radial-gradient(900px 420px at 10% 20%, rgba(34,211,238,.06), transparent 55%),
+             radial-gradient(700px 500px at 90% 90%, rgba(251,191,36,.05), transparent 60%);}
+.wrap{position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 22px 70px;}
+
+/* ===== 页头 ===== */
+header.site{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:22px 0 8px;}
+.brand{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+.brand .t{font-family:var(--serif); font-size:23px; font-weight:900; letter-spacing:1px;}
+.brand .t em{font-style:normal; color:var(--accent);}
+.brand .s{color:var(--dim); font-size:13px;}
+.hd-tools{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+.modebtn{border:1px solid var(--line); background:var(--panel2); color:var(--text); border-radius:999px; padding:7px 16px; font-size:13px; cursor:pointer; font-family:var(--sans); transition:border-color .15s, background .15s;}
+.modebtn:hover{border-color:var(--line2);}
+.modebtn.on{background:rgba(167,139,250,.16); border-color:var(--l0); color:#D8CCFF;}
+.modebtn small{display:block; font-size:11px; color:var(--dim); line-height:1.2;}
+.modebtn.on small{color:#B7A6F5;}
+#footprint{width:100%; margin-top:6px; font-size:12px; color:var(--faint); min-height:18px;}
+#footprint b{color:var(--dim); font-weight:500;}
+#footprint .fp-clear{background:none; border:none; color:var(--faint); text-decoration:underline; cursor:pointer; font-size:12px; margin-left:8px;}
+
+/* ===== 导航 ===== */
+nav.global{display:flex; flex-wrap:wrap; gap:6px; padding:10px 0 20px; border-bottom:1px solid var(--line); margin-bottom:26px;}
+nav.global a{color:var(--dim); text-decoration:none; font-size:13.5px; border:1px solid var(--line); border-radius:999px; padding:6px 14px; transition:all .15s;}
+nav.global a:hover{color:var(--text); border-color:var(--line2);}
+nav.global a.cur{color:#0B1020; background:var(--accent); border-color:transparent; font-weight:600;}
+
+/* ===== 通用卡片 ===== */
+.card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin-bottom:20px;}
+.card h2{font-family:var(--serif); font-size:18px; margin-bottom:4px; display:flex; align-items:center; gap:9px;}
+.card h2 .num{color:var(--accent); font-size:13px; letter-spacing:1px; font-family:var(--sans);}
+.card .note{color:var(--dim); font-size:13px; margin-bottom:14px;}
+.sechead{font-family:var(--serif); font-size:21px; font-weight:900; margin:34px 0 6px;}
+.sechead small{display:block; font-family:var(--sans); font-size:13px; color:var(--dim); font-weight:400; margin-top:2px;}
+
+/* ===== 主循环 ===== */
+.loop-chips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+.chip{min-height:44px; display:flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--panel2); color:var(--dim); border-radius:10px; padding:6px 12px; font-size:13px; cursor:pointer; user-select:none; transition:all .18s; font-family:var(--sans);}
+.chip .num{font-size:11px; opacity:.6; font-variant-numeric:tabular-nums;}
+.chip.active{color:#0B1020; border-color:transparent; box-shadow:0 0 0 2px rgba(255,255,255,.14);}
+.chip[data-lyr="l0"].active{background:var(--l0);} .chip[data-lyr="l1"].active{background:var(--l1);}
+.chip[data-lyr="l2"].active{background:var(--l2);} .chip[data-lyr="l3"].active{background:var(--l3);}
+.chip[data-lyr="l4"].active{background:var(--l4);} .chip[data-lyr="l5"].active{background:var(--l5);}
+.chip[data-lyr="io"].active{background:var(--io);}
+.chip.done{border-color:#3A4B6E; color:var(--text);}
+.controls{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;}
+.btn{min-height:44px; min-width:66px; border:1px solid var(--line); background:var(--panel2); color:var(--text); border-radius:10px; padding:8px 18px; font-size:14px; cursor:pointer; transition:all .15s; font-family:var(--sans);}
+.btn:hover{border-color:var(--line2);}
+.btn.primary{background:var(--accent); color:#141000; border-color:transparent; font-weight:600;}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+.status{min-height:56px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:10px 14px; font-size:14px;}
+.status b{font-variant-numeric:tabular-nums;}
+.status .lyr{color:var(--accent); font-weight:600;}
+
+/* ===== 主页：层堆栈 + 详情 ===== */
+.main{display:grid; grid-template-columns:minmax(320px,430px) 1fr; gap:20px; margin-bottom:20px; align-items:start;}
+.stack{display:flex; flex-direction:column; gap:8px;}
+.layer{min-height:54px; display:flex; align-items:center; gap:12px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:8px 14px; cursor:pointer; user-select:none; transition:transform .15s, box-shadow .15s, border-color .15s, opacity .2s; font-family:var(--sans); color:var(--text); text-align:left; width:100%;}
+.layer:hover{transform:translateX(4px);}
+.layer.sel{border-color:currentColor; box-shadow:0 0 0 2px currentColor;}
+.layer.dim{opacity:.3;}
+.layer .dot{width:12px; height:12px; border-radius:50%; flex:none;}
+.layer .tt{font-weight:700; font-size:14px;}
+.layer .q{color:var(--dim); font-size:12.5px; margin-left:auto; text-align:right;}
+.layer.l0{color:var(--l0);} .layer.l1{color:var(--l1);} .layer.l2{color:var(--l2);}
+.layer.l3{color:var(--l3);} .layer.l4{color:var(--l4);} .layer.l5{color:var(--l5);}
+.layer.l0 .dot{background:var(--l0);} .layer.l1 .dot{background:var(--l1);} .layer.l2 .dot{background:var(--l2);}
+.layer.l3 .dot{background:var(--l3);} .layer.l4 .dot{background:var(--l4);} .layer.l5 .dot{background:var(--l5);}
+.layer.io{color:var(--io); border-style:dashed;}
+.layer.io .dot{background:var(--io);}
+.stackfoot{margin-top:8px; color:var(--faint); font-size:12px; text-align:center;}
+#detail{min-height:430px;}
+.d-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.d-dot{width:14px; height:14px; border-radius:50%; flex:none;}
+.d-title{font-size:20px; font-weight:900; font-family:var(--serif);}
+.d-q{color:var(--dim); font-size:14.5px; margin-bottom:14px; border-left:3px solid currentColor; padding-left:11px;}
+.d-sec{margin-bottom:14px;}
+.d-sec h4{font-size:12px; letter-spacing:1px; color:var(--dim); margin-bottom:6px; font-family:var(--sans);}
+.d-sec ul{list-style:none; display:flex; flex-wrap:wrap; gap:7px;}
+.d-sec li{background:var(--panel3); border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:13px;}
+.d-sec .big{font-size:14px; line-height:1.7;}
+.d-pages{display:flex; flex-wrap:wrap; gap:9px;}
+.d-page{border:1px solid var(--line); border-radius:10px; padding:8px 13px; font-size:13px; background:var(--panel2);}
+.d-page small{display:block; color:var(--faint); font-size:11px;}
+
+/* ===== 根问题 ===== */
+.rq-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px;}
+.rq{min-height:100px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:13px 15px; cursor:pointer; user-select:none; transition:border-color .15s, box-shadow .15s; text-align:left; font-family:var(--sans); color:var(--text);}
+.rq:hover{border-color:var(--line2);}
+.rq.sel{border-color:var(--accent); box-shadow:0 0 0 2px rgba(251,191,36,.25);}
+.rq .t{font-size:16px; font-weight:800; margin-bottom:2px; font-family:var(--serif);}
+.rq .d{color:var(--dim); font-size:12.5px;}
+#rq-result{min-height:60px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:11px 15px; font-size:13.5px; color:var(--dim);}
+#rq-result b{color:var(--text);}
+
+/* ===== 子页入口 ===== */
+.topic-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+.topic{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:13px 15px; text-decoration:none; color:var(--text); display:block; transition:border-color .15s, transform .15s;}
+.topic:hover{border-color:var(--line2); transform:translateY(-2px);}
+.topic .badge{display:inline-block; font-size:11px; border-radius:6px; padding:1px 8px; margin-bottom:7px; color:#0B1020; font-weight:700;}
+.topic .nm{font-size:15px; font-weight:800; margin-bottom:3px;}
+.topic .ess{color:var(--dim); font-size:12.5px;}
+.topic .src{color:var(--faint); font-size:11px; margin-top:7px;}
+
+/* ===== 关联图谱 ===== */
+.graphbox{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:10px; overflow:hidden;}
+.graphbox svg{display:block; width:100%; height:auto;}
+.graphbox .g-legend{color:var(--faint); font-size:11.5px; padding:4px 8px 2px;}
+
+/* ===== 子页模板 ===== */
+.bc{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12.5px; color:var(--faint); margin-bottom:14px;}
+.bc a{color:var(--dim); text-decoration:none;}
+.bc a:hover{color:var(--text);}
+.bc .sep{opacity:.5;}
+.phead{display:flex; align-items:center; gap:12px; margin-bottom:8px; flex-wrap:wrap;}
+.phead h1{font-family:var(--serif); font-size:28px; font-weight:900;}
+.badge{display:inline-block; font-size:12px; border-radius:7px; padding:2px 11px; color:#0B1020; font-weight:700;}
+.oneliner{font-family:var(--serif); font-size:17px; line-height:1.85; color:#DCE3EF; border-left:3px solid var(--accent); padding:10px 18px; margin:14px 0 8px; background:linear-gradient(90deg, rgba(251,191,36,.07), transparent 70%); border-radius:0 10px 10px 0;}
+.coord{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px;}
+.coord span{font-size:12px; color:var(--dim); border:1px solid var(--line); border-radius:999px; padding:3px 12px; background:var(--panel2);}
+.src-line{font-size:12px; color:var(--faint); margin:8px 0 22px;}
+.collapse{border:1px solid var(--line); border-radius:12px; background:var(--panel2); margin-bottom:10px; overflow:hidden;}
+.collapse > button{width:100%; display:flex; align-items:center; gap:10px; background:none; border:none; color:var(--text); font-size:15px; font-weight:700; padding:13px 16px; cursor:pointer; text-align:left; font-family:var(--sans);}
+.collapse > button .idx{color:var(--accent); font-family:var(--sans); font-size:12px; font-weight:600;}
+.collapse > button .arr{margin-left:auto; color:var(--dim); transition:transform .2s; font-size:12px;}
+.collapse.open > button .arr{transform:rotate(180deg);}
+.collapse .bd{padding:2px 18px 16px; font-size:14px; color:#C9D2E2;}
+.collapse .bd p{margin-bottom:10px;}
+.collapse .bd ul{margin:2px 0 10px 4px; list-style:none;}
+.collapse .bd ul li{padding:4px 0 4px 16px; position:relative;}
+.collapse .bd ul li::before{content:""; position:absolute; left:0; top:13px; width:7px; height:7px; border-radius:2px; background:var(--line2);}
+.collapse .bd table{width:100%; border-collapse:collapse; margin:6px 0 10px; font-size:13px;}
+.collapse .bd th,.collapse .bd td{border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top;}
+.collapse .bd th{background:var(--panel3); color:var(--dim); font-weight:600; font-size:12.5px;}
+.collapse .bd td b{color:var(--text);}
+.collapse .bd .ql{color:#B7A6F5; border-left:2px solid var(--l0); padding:8px 12px; margin:8px 0; background:rgba(167,139,250,.06); border-radius:0 8px 8px 0;}
+.interact{border:1px dashed var(--line2); border-radius:14px; background:linear-gradient(180deg, rgba(53,66,98,.18), rgba(16,22,36,.2)); padding:18px 20px; margin:18px 0;}
+.interact h3{font-size:15px; margin-bottom:2px;}
+.interact h3 span{color:var(--accent); font-size:12px; font-weight:600; margin-right:8px;}
+.interact .note{color:var(--dim); font-size:12.5px; margin-bottom:12px;}
+.takeaway{background:linear-gradient(120deg, rgba(251,191,36,.10), rgba(251,191,36,.03)); border:1px solid rgba(251,191,36,.28); border-radius:14px; padding:18px 20px; margin:18px 0;}
+.takeaway h4{color:var(--accent); font-size:12.5px; letter-spacing:1px; margin-bottom:8px;}
+.takeaway p{font-family:var(--serif); font-size:16px; line-height:1.9; color:#F3E7C8;}
+.introspect{background:linear-gradient(120deg, rgba(167,139,250,.10), rgba(167,139,250,.03)); border:1px solid rgba(167,139,250,.3); border-radius:14px; padding:18px 20px; margin:18px 0;}
+.introspect h4{color:var(--l0); font-size:12.5px; letter-spacing:1px; margin-bottom:10px;}
+.introspect ul{list-style:none;}
+.introspect li{color:#C9C2E8; font-size:13.5px; padding:6px 0 6px 16px; position:relative;}
+.introspect li::before{content:""; position:absolute; left:0; top:14px; width:7px; height:7px; border-radius:50%; background:var(--l0);}
+.prevnext{display:flex; justify-content:space-between; gap:12px; margin-top:26px; flex-wrap:wrap;}
+.prevnext a{flex:1; min-width:220px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color .15s;}
+.prevnext a:hover{border-color:var(--line2);}
+.prevnext a small{display:block; color:var(--faint); font-size:11.5px;}
+.prevnext a b{font-size:14px;}
+
+/* ===== 交互组件 ===== */
+.ix-flex{display:flex; gap:14px; flex-wrap:wrap; align-items:stretch;}
+.ix-flex > *{flex:1 1 240px;}
+.ix-panel{background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:14px 16px; min-height:120px; font-size:13.5px; color:#C9D2E2;}
+.ix-panel b{color:var(--text);}
+.ix-panel h5{font-size:12px; color:var(--dim); letter-spacing:1px; margin-bottom:8px;}
+.wheel-svg{width:100%; max-width:340px; height:auto; display:block; margin:0 auto; cursor:pointer;}
+.wheel-svg .sector{cursor:pointer;}
+.wheel-svg .sector:hover{opacity:.85;}
+.wheel-svg .sector.sel{stroke:#fff; stroke-width:2;}
+input[type=range]{width:100%; accent-color:var(--accent); min-height:30px;}
+.slider-wrap{margin:6px 0 2px;}
+.slider-labels{display:flex; justify-content:space-between; color:var(--faint); font-size:11.5px;}
+.calib-out{background:var(--panel3); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:13.5px; margin-top:10px; min-height:64px;}
+.checklist-item{display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px dashed var(--line);}
+.checklist-item:last-child{border-bottom:none;}
+.checklist-item input{width:20px; height:20px; accent-color:var(--accent); margin-top:3px; flex:none;}
+.checklist-item .ct{font-size:13.5px;}
+.checklist-item .ct small{display:block; color:var(--faint); font-size:12px;}
+.verdict{margin-top:10px; border-radius:10px; padding:11px 14px; font-size:13.5px; background:var(--panel3); border:1px solid var(--line);}
+.tabs{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px;}
+.tab{border:1px solid var(--line); background:var(--panel2); color:var(--dim); border-radius:999px; padding:7px 15px; font-size:13px; cursor:pointer; transition:all .15s; font-family:var(--sans);}
+.tab.sel{background:var(--accent); color:#141000; border-color:transparent; font-weight:600;}
+.steps-line{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+.stepnode{min-height:44px; border:1px solid var(--line); background:var(--panel2); color:var(--dim); border-radius:10px; padding:6px 12px; font-size:13px; cursor:pointer; transition:all .18s; font-family:var(--sans);}
+.stepnode.active{background:var(--accent); color:#141000; border-color:transparent; font-weight:600;}
+.stepnode.done{border-color:#3A4B6E; color:var(--text);}
+.engine{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media (max-width:760px){ .engine{grid-template-columns:1fr;} }
+.engine .track{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--panel2);}
+.engine .track h5{padding:10px 14px; font-size:13px; letter-spacing:1px;}
+.engine .track.a h5{background:rgba(59,130,246,.16); color:#9CC3FA;}
+.engine .track.b h5{background:rgba(167,139,250,.16); color:#CDBFFC;}
+.eng-item{padding:10px 14px; border-top:1px solid var(--line); cursor:pointer; transition:background .15s;}
+.eng-item:hover{background:var(--panel3);}
+.eng-item.sel{background:var(--panel3);}
+.eng-item b{font-size:13.5px;}
+.eng-item p{font-size:12.5px; color:var(--dim); margin-top:2px;}
+.warn-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media (max-width:900px){ .warn-cards{grid-template-columns:1fr;} }
+.warn{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:14px 16px;}
+.warn h5{font-size:14px; margin-bottom:6px;}
+.warn .wt{font-size:12px; color:var(--dim); margin-bottom:6px;}
+.warn .ck{font-size:12.5px; color:#9FD8B4; border-top:1px dashed var(--line); padding-top:8px;}
+.builder-field{margin-bottom:12px;}
+.builder-field label{display:block; font-size:13px; color:var(--dim); margin-bottom:5px;}
+.builder-field input,.builder-field textarea{width:100%; background:var(--panel3); border:1px solid var(--line); border-radius:9px; color:var(--text); padding:9px 12px; font-size:13.5px; font-family:var(--sans);}
+.builder-field textarea{min-height:52px; resize:vertical;}
+.builder-field input::placeholder,.builder-field textarea::placeholder{color:var(--faint);}
+.roles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media (max-width:900px){ .roles{grid-template-columns:1fr;} }
+.role{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:14px 16px; cursor:pointer; transition:border-color .15s; text-align:left; font-family:var(--sans); color:var(--text);}
+.role.sel{border-color:var(--accent); box-shadow:0 0 0 2px rgba(251,191,36,.2);}
+.role b{font-size:15px;}
+.role .rd{color:var(--dim); font-size:12.5px; margin-top:3px;}
+.sort-wrap{display:flex; flex-direction:column; gap:8px; max-width:460px;}
+.sort-item{display:flex; align-items:center; gap:10px; border:1px solid var(--line); background:var(--panel3); border-radius:10px; padding:9px 12px; user-select:none;}
+.sort-item .grip{color:var(--faint); cursor:grab; font-size:15px;}
+.sort-item .nm{font-weight:700; font-size:14px; flex:1;}
+.sort-item button{border:1px solid var(--line); background:var(--panel2); color:var(--dim); border-radius:7px; width:32px; height:32px; cursor:pointer; font-size:14px;}
+.sort-item button:hover{color:var(--text); border-color:var(--line2);}
+.sort-item.dragover{border-color:var(--accent);}
+.timeline{display:grid; grid-template-columns:70px 26px 1fr; gap:0; margin:6px 0;}
+.tl-row{display:contents;}
+.tl-time{font-size:12px; color:var(--faint); padding:14px 0; text-align:right;}
+.tl-axis{display:flex; justify-content:center; position:relative;}
+.tl-axis::before{content:""; width:2px; background:var(--line2); position:absolute; top:0; bottom:0;}
+.tl-dot{width:12px; height:12px; border-radius:50%; background:var(--accent); align-self:center; position:relative; z-index:1;}
+.tl-dot.d1{background:var(--l2);} .tl-dot.d2{background:var(--l3);} .tl-dot.d3{background:var(--l5);}
+.tl-body{padding:12px 0 12px 14px;}
+.tl-body b{font-size:13.5px;}
+.tl-body p{font-size:12.5px; color:var(--dim); margin-top:2px;}
+.footnote{color:var(--faint); font-size:12px; margin-top:14px; border-top:1px solid var(--line); padding-top:14px;}
+.footnote ul{margin:6px 0 0 18px;}
+
+/* ===== 响应式 ===== */
+@media (max-width:1080px){ .topic-grid{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:900px){
+  .main{grid-template-columns:1fr;}
+  .rq-grid{grid-template-columns:repeat(2,1fr);}
+  .topic-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:640px){
+  body{font-size:16px;}
+  input, textarea{font-size:16px !important;}
+  .note{font-size:14px;}
+  .src-line{font-size:13px;}
+  .coord span{font-size:13px;}
+  .card{padding:16px 16px;}
+}
+@media (max-width:600px){
+  .rq-grid{grid-template-columns:1fr;}
+  .topic-grid{grid-template-columns:1fr;}
+  .wrap{padding:0 14px 50px;}
+  .brand .t{font-size:20px;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <div class="brand"><span class="t">思考与判断体系<em> · 认知操作系统</em></span><span class="s">可交互知识站点 · doubao 独立版</span></div>
+  <div class="hd-tools">
+    <button class="modebtn" id="introBtn" aria-pressed="false"><span>自省模式</span><small>第零层 · B 轨道校准</small></button>
+  </div>
+  <div id="footprint"></div>
+</header>
+<nav class="global" id="nav"></nav>
+<main id="app">
+<noscript>
+<div class="card">
+<h2>思考与判断体系 · 认知操作系统（无脚本静态版）</h2>
+<p class="note">本站点是交互式知识站点，启用 JavaScript 后可获得完整的可点击、可运行体验。以下为核心内容摘要：</p>
+<p><b>核心命题：</b>一个人如何建立一套能够独立面对问题、分析问题、检验问题、形成判断，并能与他人进行高质量交流的认知系统。</p>
+<p><b>六层结构：</b>第零层·元层（自反与制衡）→ 第一层·认知原则（批判性思维）→ 第二层·问题处理（结构化思维）→ 第三层·讨论机制（基线 + 框架 + 模型）→ 第四层·执行机制（工程化思维）→ 第五层·最终能力（个人判断体系）；对话是横跨五层的真实世界接口。</p>
+<p><b>主循环：</b>面对现实 → 审辨性审题 → 结构化拆解 → 四基线校验 → 建模与模型转换 → 证据检验 → 形成带证伪条件的判断 → 对话接受检验 → 双轨制衡 → 修正规则、沉淀笔记 → 循环迭代。</p>
+<p><b>四个根问题：</b>我如何知道？（认识论）/ 我如何思考？（方法论）/ 我如何判断？（实践）/ 我如何校准思考者自身？（元问题）。</p>
+<p style="color:var(--dim);">内容来源：thinking_docs/ 下 8 份总结文档（详见页面底部）。</p>
+</div>
+</noscript>
+</main>
+<footer class="footnote" id="siteFooter"></footer>
+</div>
+<!-- ===== PART-END: shell ===== -->
+<script>
+var SITE = {
+meta:{
+  title:'思考与判断体系 · 认知操作系统',
+  subtitle:'一套能够独立、持续、可修正地形成判断的认知操作系统',
+  sources:['思考与判断体系-总结.md','批判性思维-总结.md','如何有效开展批判性思维的对话-总结.md','讨论问题的三大基线-总结.md','分析结构化思维和工程化思维的定义、异同和具体场景-总结.md','思考项目特质-总结.md','结构化笔记AI 辅助下的个人判断体系探索-总结.md','AI与个人边界变化-总结.md']
+},
+/* ---------- 六层系统 ---------- */
+layers:[
+  {id:'l0',name:'第零层 · 元层',q:'我如何校准思考者自身？',color:'#A78BFA',
+   core:['自反与制衡：把体系拥有者自身作为分析对象','双轨思考引擎：A 轨道放大优势，B 轨道反优势制衡','总检验：承认不确定性之后，是否还愿意暂时持有这个判断'],
+   kw:['自省','双轨引擎','不可解释槽位','体验还原','低解释密度'],
+   pages:[{t:'思考者特质',s:'思考项目特质-总结.md'}]},
+  {id:'l1',name:'第一层 · 认知原则',q:'我应该如何面对问题？',color:'#6366F1',
+   core:['批判性思维 = 审辨，不是批评','不预设结论；检查前提、概念、证据、逻辑','识别偏差；接受不确定性；允许自己被推翻'],
+   kw:['审辨','检查前提','检查证据','识别偏差','允许被推翻'],
+   pages:[{t:'批判性思维',s:'批判性思维-总结.md'}]},
+  {id:'l2',name:'第二层 · 问题处理',q:'我应该如何拆解问题？',color:'#3B82F6',
+   core:['结构化思维：把复杂问题转换为可理解、可处理的结构','接受"问题作为分析对象"，不等于接受问题的真实性','结构化解决复杂性；批判性控制错误'],
+   toolbox:'工具箱：三类模型层级链 / 四层抽象模型 / 五种解释结构',
+   kw:['定义','边界','要素','层次','因果','系统'],
+   pages:[{t:'结构化 × 工程化',s:'分析结构化思维和工程化思维的定义、异同和具体场景-总结.md'}]},
+  {id:'l3',name:'第三层 · 讨论机制',q:'我们按照什么标准讨论？',color:'#22D3EE',
+   core:['基线：概念→标准→事实→逻辑，控制讨论质量','框架：规定观察维度，组织讨论结构','模型：对现实的有目的抽象，解释现实'],
+   kw:['四基线','框架','模型','认知增量','退出判断'],
+   pages:[{t:'讨论基线',s:'讨论问题的三大基线-总结.md'}]},
+  {id:'l4',name:'第四层 · 执行机制',q:'如何让这种思考稳定运行？',color:'#34D399',
+   core:['工程化思维：把依赖临场能力的思考转成稳定、可重复、可检验、可迭代的流程','经验→规则→流程→模板→模型→工具→自动执行→反馈→修正','含人机协同：认知系统组织者 / 结构连续性 / 笔记沉淀'],
+   kw:['流程','SOP','checklist','模板','工具','自动化','反馈','迭代'],
+   pages:[{t:'结构化 × 工程化',s:'分析结构化思维和工程化思维的定义、异同和具体场景-总结.md'}]},
+  {id:'l5',name:'第五层 · 最终能力',q:'最终我要获得什么？',color:'#FBBF24',
+   core:['个人判断体系：不是观点集合，而是"形成世界观的机制"','四层构造：价值优先级 / 证据标准 / 风险态度 / 修正机制','带纠错回路的体系：可独立、持续、可修正地形成判断'],
+   kw:['判断体系','证据标准','风险态度','修正机制','主动证伪'],
+   pages:[{t:'判断体系构建',s:'结构化笔记AI 辅助下的个人判断体系探索-总结.md'},{t:'AI 与个人边界',s:'AI与个人边界变化-总结.md'}]}
+],
+io:{id:'io',name:'对话 = 真实世界接口',q:'如何让体系接受真实世界的检验？',color:'#F8FAFC',
+  core:['横跨五层的应用层，不是平行章节','八步：理解→审题→结构化→证据→模型→反证→判断→对话','以认知增量为目标，必要时理性退出；退出讨论 ≠ 认输'],
+  kw:['共同思考','认知增量','三语境','批判前提不批判人'],
+  pages:[{t:'对话实践',s:'如何有效开展批判性思维的对话-总结.md'}]},
+/* ---------- 主循环 11 步 ---------- */
+loop:[
+  {n:1,t:'面对现实',lyr:null,d:'体系从一个真实问题开始运行。'},
+  {n:2,t:'审辨性审题',lyr:'l1',d:'不预置结论；检查问题本身是否成立、前提是否可靠。'},
+  {n:3,t:'结构化拆解',lyr:'l2',d:'接受问题作为分析对象，不等于接受其前提；拆解为可处理的结构。'},
+  {n:4,t:'四基线校验',lyr:'l3',d:'概念 → 标准 → 事实 → 逻辑：按场景精度分配，判定讨论资格。'},
+  {n:5,t:'建模与模型转换',lyr:'l2',d:'选择变量、建立关系、忽略次要因素，形成对现实的有目的抽象。'},
+  {n:6,t:'证据检验',lyr:'l3',d:'逻辑 > 数据 > 经验 = 权威，按领域区分；先查数据真实性与样本偏差。'},
+  {n:7,t:'形成带证伪条件的判断',lyr:'l5',d:'预设放弃阈值：如果出现 A/B/C，我将放弃这个判断。'},
+  {n:8,t:'对话接受检验',lyr:'io',d:'以认知增量为目标，把判断交回真实世界；允许对方修正你的模型。'},
+  {n:9,t:'双轨制衡',lyr:'l0',d:'B 轨道反优势制衡：承认这些不确定性之后，我是否还愿意暂时持有这个判断？'},
+  {n:10,t:'修正规则、沉淀笔记',lyr:'l4',d:'把修正后的规则与思考产出沉淀为可复用、可迭代的资产。'},
+  {n:11,t:'循环迭代',lyr:null,d:'回到起点重新自检——体系不是一次"建立完成"，而是持续运行。'}
+],
+/* ---------- 四个根问题 ---------- */
+roots:[
+  {id:'rq1',t:'我如何知道？',d:'认识论 · 证据、基线、偏差',layers:['l1','l3'],pages:['批判性思维','讨论基线']},
+  {id:'rq2',t:'我如何思考？',d:'方法论 · 结构、模型、工程化',layers:['l2','l4'],pages:['结构化 × 工程化']},
+  {id:'rq3',t:'我如何判断？',d:'实践 · 体系、决策、对话',layers:['l5','io'],pages:['判断体系构建','AI 与个人边界','对话实践']},
+  {id:'rq4',t:'我如何校准思考者自身？',d:'元问题 · 双轨引擎、反优势',layers:['l0'],pages:['思考者特质']}
+],
+/* ---------- 七个子页 ---------- */
+topics:{
+'critical-thinking':{
+  id:'critical-thinking',nav:'批判性思维',badge:'第一层',badgeBg:'#6366F1',
+  coord:['第一层 · 认知原则','审题 · 检验','我如何知道？'],src:'批判性思维-总结.md',
+  core:'批判性思维的本质不是"批评"，而是"审辨"——在接受、形成或改变一个判断之前，有意识地检查证据、逻辑、前提和不确定性，并据此形成尽可能可靠、可修正的结论。',
+  intro:'本页对应体系第一层。批判性思维解决"能不能相信这个问题"：在开始认真分析一个问题之前，我是否有必要接受它的前提？它贯穿整个体系——从第一秒就存在，不是结构化完成之后的步骤。',
+  sections:[
+    {h:'批判的对象是四个，不是"别人"',table:{head:['对象','核心问题'],rows:[['事实','这是真的吗？证据可靠吗？'],['逻辑','结论能从前提推出来吗？'],['前提','有没有隐藏假设？前提成立吗？'],['结论','证据支持到什么程度？有没有过度推论？']]}},
+    {h:'批判性思维 ≠ 怀疑一切',items:['怀疑主义："我不相信。"','审辨思维："相信到证据允许的程度。"','"目前证据不足，我暂时无法判断"本身是高质量判断。']},
+    {h:'核心结构：主张 → 证据 → 推理 → 结论',p:'不断检查：主张是什么（事实还是观点）→ 证据是什么、可靠吗 → 证据真的支持主张吗 → 有没有逻辑跳跃、隐藏前提、反例或替代解释 → 结论应该有多大确定性。'},
+    {h:'五项关键能力',items:['区分事实、观点、推论——真正需要检查的往往是第三层','检查证据质量：数据本身也需要被批判（来源、样本、偏差、截取、利益相关）','检查逻辑关系：相关 ≠ 因果（冰淇淋销量与溺水的共同原因案例）','主动寻找反证："什么证据能证明我是错的？"——不可证伪的观点已失去可检验性','识别认知偏差：确认偏误、幸存者偏差、锚定、权威偏误等；也要批判自己的思维，否则变成"确认偏误的高级形式"']},
+    {h:'成熟特征：允许改变观点',p:'建立的不是"永远正确的观点"，而是根据证据不断修正观点的机制。新证据足够强却拒绝改变，说明系统出了问题。'},
+    {h:'三个层次（逐层加深）',table:{head:['层次','问题','性质'],rows:[['信息批判','这是真的吗？','真实性'],['逻辑批判','即使是真的，能推出这个结论吗？','有效性'],['自我批判','我为什么相信这个结论？我的判断过程可靠吗？','认知可靠性（最难）']]}},
+    {h:'"critical"的本义：审辨',items:['critical ≠ criticize（批评），而是 evaluate / examine / discriminate / assess','中文"批判"带对抗性和否定性预设；更准确的概念是"审辨"：审（考察核验）+ 辨（区分判断）','它不是反权威，而是拒绝无条件接受权威；不是怀疑一切，而是拒绝未经检验的相信']},
+    {h:'比例性：校准相信程度',p:'不是对/错二元判断，而是"证据支持到什么程度"：强证据+多重验证 → 高度可信；证据不足 → 暂不判断；充分反证 → 拒绝。本质是"校准自己的相信程度"的能力。'},
+    {h:'最小模型（六个问题，日常判断基线）',items:['是真的吗？','证据可靠吗？','为什么能推出这个结论？','隐藏前提是什么？','有没有其他解释或反例？','什么证据会让我改变判断？']}
+  ],
+  takeawayTitle:'沉淀出的元规则（对个人判断体系的贡献）',
+  takeaway:'在分析开始之前，不预置结论；在分析过程中，不把问题中的前提自动当作事实；在分析结束之后，让结论由结构、证据和推理共同产生。',
+  prev:'thinker-traits',next:'dialogue'
+},
+'dialogue':{
+  id:'dialogue',nav:'对话实践',badge:'对话接口',badgeBg:'#F8FAFC',
+  coord:['对话 = 真实世界接口','全流程 · 应用','我如何判断？'],src:'如何有效开展批判性思维的对话-总结.md',
+  core:'把批判性思维迁移到人际对话中的关键，是把"回应"变成一套可操作的对话结构：先理解议题再准备立场、批判前提而非人格、用补充变量代替反驳、把对话从"证明谁对"转向"共同思考"。',
+  intro:'本页对应体系的对话应用层。对话不是另一个独立主题，而是整套认知系统面对真实世界时的应用场景与测试场——个人判断体系若只在内心运行，无法接受真实世界检验。',
+  sections:[
+    {h:'三个 AI 共同收敛的原则',items:['先理解，不先站队：回应前拆解三层——事实层（对方陈述了什么）、价值层（隐含什么价值预设）、动机层（对方此刻为什么提出）','批判前提，不批判人："这个看法在某个前提下是成立的，但换一个视角……"','用"补充变量"替代"你错了"：❌"你忽略了现实复杂性" → ✅"如果把现实约束加入模型，结论可能会变"','升维而非对错：用层级视角（个体/结构、短期/长期）代替是非判断','情绪降噪：在逻辑之后补一段"人类语言"——承认复杂性对人的消耗，不是讨好','以开放问题收尾：把对话从"你赢我输"变成"我们在推理"']},
+    {h:'七步交流模型（ChatGPT 版）',p:'先拆解议题 → 承认合理性 → 批判前提而非人格 → 引入新变量 → 升维视角 → 安抚情绪 → 邀请共同思考。'},
+    {h:'三语境速记（场景不同，先做的不同）',table:{head:['场景','先做什么','避开什么'],rows:[['职场','确认条件与目标','否定方案 / 指责任人'],['亲密关系','稳住情绪与关系','逻辑压人 / 讲道理'],['公共议题','承认合理性','站队羞辱']]},p:'核心一句：职场先谈条件，亲密关系先谈感受，公共议题先谈适用范围。'},
+    {h:'Gemini 版：工程化隐喻',items:['输入解析：无情绪标记地接收信息；识别对方的"系统指令"——寻求认同、发泄情绪还是寻求方案（用"逻辑代码"回应"情绪输入"是错位）','内部推理：剥离人与事，三视角验证——支持方（共情）/反对方（批判）/第三方（元认知）','参数调优：温度高时建立连接（确认"收到"），温度低时输出逻辑（陈述句代替反问）','三段式输出：锚定共识（Hook）→ 引入变量（Pivot，用"我们可能低估了"代替"你忽略了"）→ 建设性延展（Completion，给 Next Step）']},
+    {h:'Claude 版：分离、温度与深度',items:['分离三个层面：发生了什么（事实）→ 这意味着什么（解读）→ 我们该怎么做（价值选择）；先在事实层达成共识','温度的来源：承认对方的情绪体验、引用对方的具体表达（证明在听）、暴露自己的不确定','深度的来源：追问假设、探索后果、连接更大框架','AI 没有自我防御的需要——人际对话最难的是不把对自己观点的质疑当作对个人的否定']},
+    {h:'可直接复用的产出',items:['七步交流模型（ChatGPT）','5 句模板：理解定位 / 批判前提 / 补充变量 / 降温 / 共同思考（3 句即可成质感）','三段式回应结构（Gemini）：锚定共识 → 引入变量 → 建设性延展','三语境差异表','两份完整示范可作对照学习（AI 失业议题、教育焦虑议题）']}
+  ],
+  takeawayTitle:'底层心态（金句）',
+  takeaway:'我们在一起探索真相，而不是在证明谁对谁错。',
+  prev:'critical-thinking',next:'baselines'
+},
+'baselines':{
+  id:'baselines',nav:'讨论基线',badge:'第三层',badgeBg:'#22D3EE',
+  coord:['第三层 · 讨论机制','校验 · 收益评估','我如何知道？'],src:'讨论问题的三大基线-总结.md',
+  core:'讨论基线（概念定义→标准约束→事实依据→逻辑遵循）不是讨论技巧，而是降低认知噪声的约束条件——它让讨论从"观点碰撞"变成"对象分析"；衡量讨论的最终标准不是"说服对方"，而是"认知增量"。',
+  intro:'本页对应体系第三层讨论机制。两个人都可以进行结构化分析，却可能得到完全不同的结果——因为他们使用不同的定义、接受不同的事实、默认不同的前提。基线解决的就是"我们到底按照什么规则讨论"。',
+  sections:[
+    {h:'四大基线及其分工',table:{head:['基线','本质','防止的问题'],rows:[['① 概念定义','确定讨论对象','偷换概念、语义混乱'],['② 标准约束','确定评价函数','双方评价体系不同'],['③ 事实依据','确定证据可信度','前提本身为假'],['④ 逻辑遵循','保证推理有效','跳步、偷换、循环论证、相关当因果']]},p:'很多争论不是观点不同，而是讨论对象不同（"AI 取代程序员"需先定义 AI/取代/程序员）；或评价函数不同（NBA GOAT 之争：按 MVP 还是按巅峰高度，双方都可能正确）。'},
+    {h:'逻辑的边界：事实依据必须独立成层',p:'逻辑只能保证"前提为真则结论成立"，不能保证前提本身真实——所以事实依据必须独立成层。'},
+    {h:'讨论精度模型：基线不变，宽容度变',p:'不同场景不是采用不同规则，而是不同的精度要求。分配原则：讨论越重要、结论影响越大、可逆性越低，基线要求越高；交流启发型讨论可放宽但不能放弃基线。讨论成本是第二维度——不是所有问题都值得同等严谨。'},
+    {h:'退出讨论也是理性结论',items:['四种"讨论无效"情形：① 概念没统一（讨论对象已不同）② 评价标准不同且都自洽 ③ 价值观排序不同（逻辑无法证明哪种价值绝对正确）④ 事实依据不足（双方只在"我觉得"）','应停止的信号：价值观分歧且双方不接受调整、无新事实、不再回应论证只重复观点、进入情绪表达','退出讨论 ≠ 认输 = 当前讨论已无认知增量']},
+    {h:'认知增量：讨论的目标重定义',table:{head:['目标','以什么为准','倾向'],rows:[['说服（Persuasion）','对方是否改变观点','输赢和辩论技巧比拼'],['认知增量（Cognitive Gain）','是否获得新认知','新事实、更准的定义、另一种标准、推理漏洞、明确的不可判断、找到真正分歧点']]},p:'讨论最大的价值，不一定是得到答案，而是缩小问题。高质量讨论的定义（即使谁也没改变观点）：讨论结束后，双方都能准确表述——① 我的观点 ② 对方的观点 ③ 真正分歧在哪里 ④ 为什么目前无法统一。'},
+    {h:'完整六步框架',p:'① 概念定义（同一对象吗）→ ② 标准约束（同一标准吗）→ ③ 事实依据（认可哪些事实）→ ④ 逻辑遵循（推理成立吗）→ ⑤ 认知增量（有新认知吗）→ ⑥ 是否值得继续（还有增加认知的可能吗）。第⑤步是"收益评估"，第⑥步是"退出判断"。'}
+  ],
+  takeawayTitle:'一句话沉淀',
+  takeaway:'讨论最大的价值，不一定是得到答案，而是缩小问题。',
+  prev:'dialogue',next:'structure-engineering'
+},
+'structure-engineering':{
+  id:'structure-engineering',nav:'结构化 × 工程化',badge:'第二 + 四层',badgeBg:'#3B82F6',
+  coord:['第二层 · 问题处理 + 第四层 · 执行机制','拆解 → 执行','我如何思考？'],src:'分析结构化思维和工程化思维的定义、异同和具体场景-总结.md',
+  core:'结构化思维解决"看清问题"（认知组织方式），工程化思维解决"改变现实"（系统解决方式）；两者是包含而非并列关系，中间由"模型"衔接——模型是对现实的有目的抽象，是连接问题与系统的核心枢纽。',
+  intro:'本页跨体系第二层（问题处理）与第四层（执行机制），是这两层最具体的工具箱：三类模型层级链回答"模型如何衔接认知与现实"，四层抽象模型是分析任何思维方法（含其自身）的元框架，五种结构模板是工程化思维在沟通场景的直接落地。',
+  sections:[
+    {h:'两种思维的本质区分',table:{head:['维度','结构化思维','工程化思维'],rows:[['本质','认知组织方式','系统解决方式'],['目标','理解复杂问题','解决复杂问题'],['方法','拆解、分类、归纳（MECE、逻辑树、金字塔）','设计、实现、测试（问题定义→系统设计→验证→迭代）'],['输出','框架、逻辑树、模型','系统、流程、产品'],['适用阶段','问题分析阶段','方案实施阶段']]},p:'一句话：结构化思维解决"看清问题"，工程化思维解决"改变现实"。工程化思维通常包含结构化思维。'},
+    {h:'三类模型的层级链',p:'现实问题 → 问题模型（结构化思维，逻辑结构）→ 信息模型（数据结构）→ 数学模型（预测计算）→ 预测/决策。模型三要素：变量、关系、边界；最重要的模型往往是最简单的结构模型。'},
+    {h:'概念的通俗表达（业务沟通）',table:{head:['逻辑阶段','真实方法','业务表达'],rows:[['理解问题','结构化思维','"我们先把问题拆开来看"'],['解释问题','模型','"可以用一个简单框架理解"'],['解决问题','工程化思维','"分三步落地"']]},p:'汇报三句话：先拆问题 → 再给框架 → 再讲落地。更高阶技巧：不要说方法论，要展示结构。'},
+    {h:'五种业务解释结构模板',table:{head:['结构','回答的问题','典型句式'],rows:[['拆解结构','问题由哪些部分组成','"主要受三个因素影响"'],['因果结构','为什么会发生','"原因有三个"'],['公式结构','核心变量关系是什么','"GMV = 流量 × 转化率 × 客单价"'],['流程结构','事情如何发生','"整个过程分三个阶段"'],['方案结构','我们准备怎么做','"优化路径主要有三步"']]},p:'五种结构对应人类理解世界的五种基本逻辑：结构、因果、数学、时间、行动。典型组合：拆解 → 公式 → 因果 → 方案。'},
+    {h:'认知抽象层级模型：事实 → 功能 → 逻辑 → 原理',table:{head:['层级','回答的问题','数据可视化对应'],rows:[['事实层（表象）','发生了什么','图表（柱状图、折线图）'],['功能层','系统在做什么','信息表达 / 沟通'],['逻辑层（机制）','它是如何做到的','视觉编码（数据 → 视觉映射）'],['原理层（本质）','为什么能够做到','人类视觉认知优势']]},p:'这是"从表象到本质"的四层理解框架。自反应用：结构化思维本身主要位于逻辑层；原理层是认知容量有限（7±2）、复杂系统需要抽象、信息传递效率。判断一个概念是否被真正理解的标准：四层都能解释清楚才算完整理解。层级错位是"各说各话"的常见根源：同一问题，有人在事实层回答、有人在逻辑层回答。'},
+    {h:'可视化 ≠ 画图',p:'可视化是"利用视觉系统理解数据的认知工具"；几乎所有信息系统（UI/信息设计/交互）底层都是"界面 → 表达 → 编码 → 认知"同一套机制。'}
+  ],
+  takeawayTitle:'一句话沉淀',
+  takeaway:'模型是认知结构；工程化是认知流程。模型让你理解，工程化让你重复使用这种理解方式。',
+  prev:'baselines',next:'judgment-system'
+},
+'thinker-traits':{
+  id:'thinker-traits',nav:'思考者特质',badge:'元层',badgeBg:'#A78BFA',
+  coord:['第零层 · 元层','校准 · 自检','我如何校准思考者自身？'],src:'思考项目特质-总结.md',
+  core:'从提问方式看，提问者不是在"要答案"，而是在测试解释力的上限——而思考能力已经不是瓶颈，思考的自我约束机制才是。',
+  intro:'本页是体系的第零层（元层）：其他文档在建设体系的内容，本页把"提问者自身"作为分析对象，提供一套针对体系拥有者的校准机制——双轨引擎中的 B 轨道，正是对"逻辑优先 + 结构化优势"这一判断风格的定向制衡。',
+  sections:[
+    {h:'从提问方式中提炼的四个核心特质',items:['测试解释力上限，而非要答案：问题自带结构（对立面、路径、层级、时间尺度）；对结论兴趣有限，对论证能否自洽、能否承压兴趣更大；常要求"反过来摧毁""换立场攻击""暴露隐含前提"','习惯把个人问题提升到制度/结构/历史尺度：个体现象 → 制度选择 → 长期结构后果；天然使用结构主义 + 历史主义混合视角','对思维偏误高度自觉，且不满足于提醒层面（二阶思维）：不仅思考问题，还思考"我正在用什么工具思考问题"','技术问题上的"工程化哲学"倾向：把抽象问题 → 转译为结构 → 再转译为可运行系统；把思想当作系统来实现']},
+    {h:'结构性副作用（不是缺点，是需要制衡的倾向）',items:['解释过强，可能压扁真实世界的不确定性：太自洽、太结构化、太能预测的解释容易提前终结探索','高层抽象稀释情绪与经验密度：结构化语言进入非理性场景时降低共感效率——这是尺度切换成本','对抗性思考成为默认模式：反驳、拆解、换立场攻击在思想实验里是优势，在协作环境中可能被感知为"持续施压"']},
+    {h:'双轨思考引擎 · 运行流程',p:'先跑 A 轨道：把问题拆到足够清楚、锋利；再切 B 轨道：专门破坏刚建立的"漂亮解释"；最后做总检验。'},
+    {h:'配套原则与提醒',items:['三种提问模式要有意识切换：拆解型（论证哪里最脆弱）/ 生成型（不推翻前提下还能生出什么结论）/ 共感型（如果我是其中一个具体的人会感受什么）','思考工具化的自检问题："这个工具是帮我思考，还是在强化我已经习惯的思考路径？"——好的思考工具应该偶尔让你不舒服','成年人"都要"的代价：不再追求完美解释、接受部分混乱长期存在、允许某些问题上只做到"暂时合理"']}
+  ],
+  takeawayTitle:'总结性判断（原文金句）',
+  takeaway:'你不是在寻找世界的答案，而是在测试：人类是否有足够好的工具去理解它。',
+  prev:'ai-boundary',next:'critical-thinking'
+},
+'judgment-system':{
+  id:'judgment-system',nav:'判断体系构建',badge:'第五层',badgeBg:'#FBBF24',
+  coord:['第五层 · 最终能力','判断 · 显性化','我如何判断？'],src:'结构化笔记AI 辅助下的个人判断体系探索-总结.md',
+  core:'判断体系不是写出来的，是从重复决策中抽象出来的——具体判断场景 → 拆解决策逻辑 → 提炼规则 → 跨场景验证 → 发现冲突 → 再压缩，重复几十次结构自然浮现。',
+  intro:'本页对应体系第五层。它对应的笔记是《AI与个人边界变化》长对话的结构化沉淀，是判断体系的"第一版显性化快照"，也是"思考的工程化"的第一个实例——面对 AI 没有长期记忆的约束，用结构化模板把对话产出固化为可反复使用的资产。',
+  sections:[
+    {h:'笔记的四部分结构',items:['核心主题：个人边界与 AI 融合；个人认知角色转变（工具使用者 → 认知系统组织者）；结构连续性 vs 愿望结构','思路梳理与洞察：边界外移 + 核心稳定；AI 提供结构而非情感；判断体系四层；逻辑与数据的关系','规则与原则提炼（六条）','待消化与下一步思考点']},
+    {h:'六条规则（显性化快照的核心）',items:['逻辑优先但依赖前提','数据作为验证工具，先检查真实性与样本偏差','经验和权威等价，非天然信任','愿望结构与判断体系分离','结构连续性为核心，允许坍塌但可重建','判断体系应包含显式修正机制（何时放弃或调整逻辑模型）']},
+    {h:'待消化与下一步思考点',items:['可重建性 vs 核心方向','显性化规则：隐性规则外显、在现实决策中验证稳定性','主动证伪机制：建模阶段设计失败出口、防逻辑模型被自我认同绑架','实践场景选择：从小真实判断开始拆解、提炼规则模板、跨场景验证稳健性']},
+    {h:'与整个体系的关系',items:['判断体系的第一版显性化快照——把对话中生成的四层结构、证据排序、六条规则首次写成可保存、可复盘的文本','"思考的工程化"的第一个实例——把依赖临场能力的思考转换成稳定、可迭代流程；后续各次"定期思考"对话和总结文档都在延续这一模式']}
+  ],
+  takeawayTitle:'判断力定义（关键纠偏）',
+  takeaway:'判断力 = 风险承担 × 修正能力。真正强的判断体系允许不完备信息下决策、承担概率性错误、接受局部不自洽；体系的终点不是确定性，而是对不确定性的从容。',
+  prev:'structure-engineering',next:'ai-boundary'
+},
+'ai-boundary':{
+  id:'ai-boundary',nav:'AI 与个人边界',badge:'第五层 + 人机',badgeBg:'#FBBF24',
+  coord:['第五层 · 最终能力 + 人机协同','判断 → 迭代','我如何判断？'],src:'AI与个人边界变化-总结.md',
+  core:'当 AI 承担记忆、计算等外部能力后，个人的边界从"能力边界"转向"价值与选择边界"；人从工具的使用者变成认知系统的组织者——而真正要建立的不是"想成为有强判断力的人"这个愿望，而是一套带纠错回路的、可显性化的判断规则体系。',
+  intro:'本页是体系第五层"个人判断体系"真正开始成形的地方：首次给出四层结构框架、证据排序及其批判性检视、愿望/体系之分、主动证伪机制；同时确立"人与 AI"在这套体系中的位置。',
+  sections:[
+    {h:'边界的三种变化',items:['功能边界扩张，认知边界模糊："我会"和"我能调用"不再清晰区分——只更快调用答案而不更深消化，会产生"知识幻觉"','能力收缩 vs 判断力浓缩：年龄让原始算力（记忆、反应、带宽）下降，但判断力、模式识别、价值取向更稳定；AI 弥补算力，无法替代"你认为什么重要"','个体边界外移，自我核心收缩：外部能做的越来越多，真正属于"你"的只剩判断、欲望、伦理与方向']},
+    {h:'人的三种认知角色',table:{head:['角色','行为','定位'],rows:[['被投喂者','接收结果','被动'],['操作者','调用工具','主动'],['组织者','设计认知流程','稀缺']]},p:'"掌控 AI"的重新定义：不是掌控整个系统，而是掌控"你 + AI"的组合形态——如何提问、如何拆解、如何判断输出、如何把工具嵌入自己的决策结构。'},
+    {h:'隐忧与依赖性',p:'把 AI 当拐杖会削弱你，当放大镜会增强你。差别在于是否保留"原始思考的肌肉"：提问能力、独立推演、对不确定性的耐受。'},
+    {h:'愿望结构 vs 判断体系（最关键区分）',p:'"我想成为一个有极强自我判断体系和能力的人"——这是目标性身份/愿望结构，不是判断体系本身。真正危险的是把愿望误认为结论。分层建议：目标层（我想要什么）/ 规则层（我如何判断）/ 修正层（我如何纠错）。'},
+    {h:'判断体系四层结构 + 证据排序',items:['价值优先级：什么比什么重要？冲突时如何排序？有无不可妥协项？','证据标准：什么算"足够证据"？对经验、数据、权威、逻辑的权重分配','风险态度：保守还是进取？对不确定性的容忍区间','修正机制：什么情况下推翻原判断？延迟复盘？如何防止自洽幻觉？','自报排序：逻辑 > 真实数据 > 经验 = 权威；冲突时先查数据真实性与样本偏差，再查逻辑是否普适','AI 检视：逻辑置顶是"形式优先而非事实优先"；成熟体系需按领域区分（自然科学数据优先、伦理逻辑优先、个人关系经验优先）','升级方向：从"防御性校验"到"主动可证伪结构"——写明"如果出现 A/B/C，我将放弃这个判断"']},
+    {h:'结构连续性（对 AI 关系的定义）',p:'其核心不是记忆，而是：逻辑自洽、内部标准一致、对同样问题应用同样规则。人类关系的温度来自情感记忆；人与 AI 的价值来自"结构连续性"——不建立情感历史，而建立思维路径。'}
+  ],
+  takeawayTitle:'最终形态（金句）',
+  takeaway:'边界会重组而非无限扩张——记忆在外、计算在外、资料在外、但意义在内；半径变大，中心更重要。AI 像外骨骼：不让你成为别人，但让你保留自己更久。',
+  prev:'judgment-system',next:'thinker-traits'
+}
+},
+/* ---------- 关联关系（反链与图谱同源） ---------- */
+relations:[
+  {from:'critical-thinking',to:'dialogue',label:'对话是批判性思维的人际应用'},
+  {from:'critical-thinking',to:'baselines',label:'基线是审辨在讨论中的显式化'},
+  {from:'critical-thinking',to:'judgment-system',label:'审辨是判断体系的元规则'},
+  {from:'baselines',to:'dialogue',label:'提供认知增量标准与退出判断'},
+  {from:'structure-engineering',to:'judgment-system',label:'工程化是体系沉淀的方式'},
+  {from:'structure-engineering',to:'thinker-traits',label:'工程化哲学是提问者特质之一'},
+  {from:'judgment-system',to:'ai-boundary',label:'判断体系第一版显性化快照'},
+  {from:'ai-boundary',to:'thinker-traits',label:'结构连续性 vs 愿望结构；双轨制衡'},
+  {from:'dialogue',to:'judgment-system',label:'对话是判断体系的测试场'}
+],
+/* ---------- 特色交互数据 ---------- */
+inter:{
+'critical-thinking':{
+  wheel:{title:'四对象检查轮盘',note:'点击扇区，聚焦该对象并显示对应的检查问题。',
+    items:[{k:'事实',q:'这是真的吗？证据可靠吗？',d:'数据本身也需要被批判：来源、样本、偏差、截取、利益相关。'},{k:'逻辑',q:'结论能从前提推出来吗？',d:'相关 ≠ 因果；有没有跳步、偷换、循环论证？'},{k:'前提',q:'有没有隐藏假设？前提成立吗？',d:'很多判断的裂缝不在论证，而在起步时默认的前提。'},{k:'结论',q:'证据支持到什么程度？有没有过度推论？',d:'结论应该有多大确定性？是否超出证据允许的范围？'}]},
+  calib:{title:'相信程度校准器',note:'拖动"证据强度"滑块，观察结论置信度如何变化——这是"比例性：校准相信程度"的手感练习。',
+    labels:['证据不足','初步相信','高度可信'],
+    levels:[{max:29,txt:'证据不足，我暂时无法判断——"暂不判断"本身是高质量判断。'},{max:69,txt:'初步相信（可修正）：证据支持到这个程度，但保留被推翻的空间。'},{max:100,txt:'高度可信：强证据 + 多重验证；但仍写下"什么证据会让我改变判断"。'}]}
+},
+'dialogue':{
+  steps:{title:'八步对话流程步进器',note:'这是"个人判断体系运行在人际交流中"的可操作版本。点击任一步或使用按钮步进。',
+    items:[{t:'① 理解',q:'"你说的\u2018懒\u2019具体指什么？"'},{t:'② 审题',q:'"你认为这个判断的依据是什么？"'},{t:'③ 结构化',q:'"是工作意愿、消费行为、婚育意愿，还是职业选择发生变化？"'},{t:'④ 证据',q:'"有什么数据支持？来源和样本如何？"'},{t:'⑤ 模型',q:'"有没有其他解释？"'},{t:'⑥ 反证',q:'"如果收入、工作制度、住房成本等变量变化，结论是否仍然成立？"'},{t:'⑦ 判断',q:'"哪一种解释目前证据最充分？"'},{t:'⑧ 对话',q:'"这是我的判断——你怎么看？哪里可以修正？"'}]},
+  ctx:{title:'三语境切换器',note:'同一套审辨内核，进入不同场景时先做的动作不同。',
+    items:[
+      {k:'职场',do:'先谈条件与目标',avoid:'否定方案、指名责任人',tpl:'"我们先确认目标与约束，再讨论方案。"'},
+      {k:'亲密关系',do:'先稳住情绪与关系',avoid:'逻辑压人、讲道理',tpl:'"我听到你很难受——我们先不说谁对，说说你现在的感受。"'},
+      {k:'公共议题',do:'先承认合理性',avoid:'站队、羞辱',tpl:'"这个看法在某种前提下是成立的；我们来看它适用的范围。"'}]}
+},
+'baselines':{
+  precision:{title:'讨论精度滑块',note:'基线不变，变的是精度要求。拖到不同位置，看四基线在各场景下的要求如何变化。',
+    stops:['闲聊','工作讨论','技术评审','科研','法律裁判','数学证明'],
+    rows:[
+      {name:'概念定义',cols:['可模糊，大致理解一致','需要基本明确','要求明确界定','操作性定义','严格法定定义','公理化定义']},
+      {name:'标准约束',cols:['默认社会共识','默认团队共识','显式标准','显式标准+适用范围','法定标准','唯一标准']},
+      {name:'事实依据',cols:['经验、常识、新闻','经验+数据','可核查数据','可验证、可复现','法定证据','公理与证明']},
+      {name:'逻辑遵循',cols:['允许跳步和直觉','允许简化推理','要求推理完整','要求严谨','严格法律推理','完全严谨']}]},
+  checklist:{title:'四基线检查清单',note:'用示例议题"AI 取代程序员"演练：逐项勾选，实时得到讨论资格判定。',
+    topic:'示例议题：AI 取代程序员',
+    items:[
+      {k:'概念统一了吗？',d:'"AI""取代""程序员"三词是否同一指涉？'},
+      {k:'标准显式了吗？',d:'用什么评价"取代"——岗位数、薪资、产出还是工作内容？'},
+      {k:'事实可验证吗？',d:'论据来自可核查数据还是"我觉得"？'},
+      {k:'推理完整吗？',d:'有没有从"相关"跳到"因果"？'}],
+    ok:'四项通过：该讨论具备继续的资格，可进入框架分析。',
+    mid:'部分通过：先补齐未确认的基线再继续，否则讨论对象可能已经不同。',
+    bad:'基线未立：当前讨论更像观点碰撞，先回到基线层面确认对象与规则。'},
+  exit:{title:'退出讨论判定',note:'退出讨论 ≠ 认输。以下四个信号命中任意一个，就该评估是否停止。',
+    items:[
+      {k:'价值观分歧且不接受调整',d:'逻辑无法证明哪种价值绝对正确'},
+      {k:'无新事实出现',d:'双方只在重复已有论据'},
+      {k:'只重复观点，不回应论证',d:'不再对对方的论证结构作出反应'},
+      {k:'进入情绪表达',d:'讨论已转为情绪释放而非认知交流'}],
+    any:'已命中信号：当前讨论大概率已无认知增量，理性退出是结论，不是认输。',
+    none:'当前未见明显退出信号；继续前先问一句：这场讨论还有没有认知增量？'}
+},
+'structure-engineering':{
+  chain:{title:'三类模型层级链',note:'点击节点查看定义与要点。模型三要素：变量、关系、边界。',
+    items:[
+      {t:'现实问题',d:'起点：未被结构化的原始问题。',tag:'起点'},
+      {t:'问题模型',d:'结构化思维产出，逻辑结构。解释问题结构，定义分析路径与边界。示例：增长 = 市场规模 × 市场份额。',tag:'结构化'},
+      {t:'信息模型',d:'数据结构。组织数据：数据库、数据仓库、API。',tag:'数据结构'},
+      {t:'数学模型',d:'预测计算。回归、分类、机器学习。',tag:'预测计算'},
+      {t:'决策',d:'连接模型 → 行动。模型服务于判断与行动。',tag:'终点'}]},
+  abstract:{title:'四层抽象钻取器',note:'从表象到本质逐层下钻。判断一个概念是否被真正理解：四层都能解释清楚才算完整。',
+    items:[
+      {t:'事实层',q:'发生了什么',d:'表象与现象。可视化对应：柱状图、折线图。',lv:0},
+      {t:'功能层',q:'系统在做什么',d:'用途与行为。可视化对应：信息表达与沟通。',lv:1},
+      {t:'逻辑层',q:'它是如何做到的',d:'机制。可视化对应：视觉编码（数据 → 视觉映射）。',lv:2},
+      {t:'原理层',q:'为什么能够做到',d:'本质。可视化对应：人类视觉认知优势。',lv:3}]},
+  structures:{title:'五种解释结构切换器',note:'五种结构对应人类理解世界的五种基本逻辑：结构、因果、数学、时间、行动。',
+    items:[
+      {k:'拆解结构',q:'问题由哪些部分组成',tpl:'"主要受三个因素影响"'},
+      {k:'因果结构',q:'为什么会发生',tpl:'"原因有三个"'},
+      {k:'公式结构',q:'核心变量关系是什么',tpl:'"GMV = 流量 × 转化率 × 客单价"'},
+      {k:'流程结构',q:'事情如何发生',tpl:'"整个过程分三个阶段"'},
+      {k:'方案结构',q:'我们准备怎么做',tpl:'"优化路径主要有三步"'}]}
+},
+'thinker-traits':{
+  engine:{title:'双轨思考引擎',note:'先跑 A 轨道把问题拆到锋利，再切 B 轨道破坏刚建立的"漂亮解释"，最后做总检验。点击条目查看提问句式。',
+    a:{name:'轨道 A · 放大优势',items:[
+      {k:'A1 结构拆解层',q:'默认了哪些前提？哪些变量被视为常量？结论依赖因果、相关还是叙事？'},
+      {k:'A2 对抗压力层',q:'站在最强反方，结论还成立吗？哪一步失败整体就坍塌？有没有"看似反例、实则无关"的干扰项？'},
+      {k:'A3 尺度迁移层',q:'换时间尺度（10 年/100 年）会怎样？换制度/技术条件会怎样？个体视角与系统视角是否给出相反判断？'}]},
+    b:{name:'轨道 B · 反优势制衡',items:[
+      {k:'B1 不可解释槽位',q:'假设这里存在一个我目前无法建模的变量（情绪、偶然、权力博弈）——不要求解释，只要求承认它的位置。'},
+      {k:'B2 体验还原问题',q:'如果我是系统中的普通参与者，我每天在承受什么？哪个感受在我的结构里被压扁或消失了？这个结论若对我不利，我会怎么反抗它？'},
+      {k:'B3 低解释密度版本',q:'不用结构、不用体系，只用三句话描述正在发生什么——做不到，说明解释已脱离现实经验。'}]}},
+  warnings:{title:'三个结构性副作用',note:'不是缺点，而是需要被制衡的倾向——每个副作用配一个制衡动作。',
+    items:[
+      {t:'解释过强',w:'太自洽、太结构化、太能预测的解释容易提前终结探索，压扁真实世界的不确定性。',ck:'制衡：主动写下"这个解释里我无法建模的变量是什么"。'},
+      {t:'抽象稀释经验',w:'结构化语言进入非理性场景时降低共感效率，可能被误解为"上帝视角"。',ck:'制衡：用三句话不靠结构描述正在发生什么（B3）。'},
+      {t:'对抗成为默认',w:'反驳、拆解在思想实验里是优势，在协作环境中可能被感知为"持续施压"。',ck:'制衡：有意识切换到生成型与共感型提问模式。'}]},
+  check:{title:'总检验问题',note:'第零层的收尾动作——在承认这些不确定性之后，我是否还愿意暂时持有这个判断？',
+    yes:'结论值得保留——不是因为它完美，而是因为你在知道它不完美之后仍然持有它。',
+    no:'不是失败，而是成功避免了一次认知固化。'}
+},
+'judgment-system':{
+  builder:{title:'判断体系四层构造构建器',note:'参考示例，逐层写下你自己的答案，生成"我的判断体系 v0.1"。判断体系不是写出来的，但第一版必须是显性化的。',
+    fields:[
+      {k:'价值优先级',ph:'示例：诚实 > 效率 > 舒适；冲突时先问"哪个不可妥协"。'},
+      {k:'证据标准',ph:'示例：逻辑 > 真实数据 > 经验 = 权威；先查数据真实性与样本偏差。'},
+      {k:'风险态度',ph:'示例：重大决策偏保守；可逆决策偏进取；容忍区间……'},
+      {k:'修正机制',ph:'示例：出现 A/B/C 即放弃该判断；每月延迟复盘一次。'}]},
+  rules:{title:'六条规则清单',note:'来自判断体系第一版显性化快照。逐条确认——确认不是背下，而是"这条规则在我身上成立"。',
+    items:['逻辑优先但依赖前提','数据作为验证工具，先检查真实性与样本偏差','经验和权威等价，非天然信任','愿望结构与判断体系分离','结构连续性为核心，允许坍塌但可重建','判断体系应包含显式修正机制']}
+},
+'ai-boundary':{
+  roles:{title:'三种认知角色',note:'点击角色查看特征与风险。三者是选择，不是宿命——人随时可以往"组织者"移动。',
+    items:[
+      {k:'被投喂者',d:'接收结果，不检验过程。风险：知识幻觉——"我会"与"我能调用"混淆。'},
+      {k:'操作者',d:'调用工具，主动提问。风险：把 AI 当拐杖，削弱原始思考的肌肉。'},
+      {k:'组织者',d:'设计认知流程，把工具嵌入自己的决策结构。稀缺；"掌控 AI"= 掌控"你 + AI"的组合形态。'}]},
+  evidence:{title:'证据排序拖拽器',note:'把四张卡片按你的真实偏好排序（拖拽，或点击上下按钮）。系统按你的排序给出结构分析。',
+    items:['逻辑','真实数据','经验','权威'],
+    analysis:['逻辑','数据','经验','权威']},
+  timeline:{title:'边界变化时间轴',note:'从"能力边界"到"价值与选择边界"：半径变大，中心更重要。',
+    items:[
+      {t:'功能边界扩张',d:'记忆、计算、资料开始外置——"我会"与"我能调用"不再清晰区分。',cls:'d1'},
+      {t:'能力收缩 vs 判断力浓缩',d:'原始算力下降，但判断力、模式识别、价值取向更稳定；AI 弥补算力，无法替代"你认为什么重要"。',cls:'d2'},
+      {t:'边界外移，核心收缩',d:'真正属于"你"的只剩判断、欲望、伦理与方向——人从"执行者"被推向"定义者"。',cls:'d3'},
+      {t:'意义在内',d:'边界重组而非无限扩张：记忆在外、计算在外、资料在外、但意义在内。',cls:'d3'}]}
+}
+}
+};
+
+</script><script>
+/* ===== 组件库 ===== */
+var C = {
+  esc:function(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); },
+  lyrName:function(id){ if(!id) return '起点 / 闭环'; var all=SITE.layers.concat([SITE.io]); for(var i=0;i<all.length;i++){ if(all[i].id===id) return all[i].name; } return '起点 / 闭环'; },
+  layerById:function(id){ var all=SITE.layers.concat([SITE.io]); for(var i=0;i<all.length;i++){ if(all[i].id===id) return all[i]; } return null; }
+};
+/* 折叠卡 */
+function collapsibleCard(idx, sec){
+  var h = '<div class="collapse'+(idx===0?' open':'')+'"><button type="button" aria-expanded="'+(idx===0)+'"><span class="idx">'+(idx+1)+'</span><span>'+C.esc(sec.h)+'</span><span class="arr">▼</span></button><div class="bd">';
+  if(sec.p) h += '<p>'+C.esc(sec.p)+'</p>';
+  if(sec.items) h += '<ul>'+sec.items.map(function(x){return '<li>'+C.esc(x)+'</li>';}).join('')+'</ul>';
+  if(sec.table){ h += '<table><thead><tr>'+sec.table.head.map(function(x){return '<th>'+C.esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
+    h += sec.table.rows.map(function(r){ return '<tr>'+r.map(function(x){return '<td>'+C.esc(x)+'</td>';}).join('')+'</tr>'; }).join('');
+    h += '</tbody></table>'; }
+  h += '</div></div>';
+  return h;
+}
+function bindCollapse(root){
+  var cols = root.querySelectorAll('.collapse > button');
+  for(var i=0;i<cols.length;i++){
+    cols[i].addEventListener('click', function(){
+      var card = this.parentNode;
+      var open = card.classList.toggle('open');
+      this.setAttribute('aria-expanded', open?'true':'false');
+      var bd = card.querySelector('.bd');
+      if(bd) bd.style.display = open?'':'none';
+    });
+  }
+}
+
+/* ===== 顶部导航 / 页脚 / 足迹 / 自省模式 ===== */
+var INTRO = { on:false };
+function renderNav(cur){
+  var nav = document.getElementById('nav'); if(!nav) return;
+  var items = [{id:'',nav:'主页' }];
+  for(var k in SITE.topics){ items.push(SITE.topics[k]); }
+  nav.innerHTML = items.map(function(t){
+    var href = t.id==='' ? '#/' : '#/t/'+t.id;
+    return '<a href="'+href+'"'+(cur===t.id?' class="cur"':'')+'>'+C.esc(t.nav)+'</a>';
+  }).join('');
+}
+function renderFooter(){
+  var f = document.getElementById('siteFooter'); if(!f) return;
+  f.innerHTML = '<b>内容来源（thinking_docs/ 总结文档，共 '+SITE.meta.sources.length+' 份）：</b><ul>'+SITE.meta.sources.map(function(s){return '<li>'+C.esc(s)+'</li>';}).join('')+'</ul>';
+}
+function fpRecord(id){
+  if(!id) return;
+  try{
+    var arr = JSON.parse(sessionStorage.getItem('sitedoubao_fp')||'[]');
+    if(arr.indexOf(id)<0){ arr.push(id); sessionStorage.setItem('sitedoubao_fp', JSON.stringify(arr)); }
+  }catch(e){}
+  renderFootprint();
+}
+function renderFootprint(){
+  var fp = document.getElementById('footprint'); if(!fp) return;
+  var arr=[];
+  try{ arr = JSON.parse(sessionStorage.getItem('sitedoubao_fp')||'[]'); }catch(e){}
+  if(!arr.length){ fp.innerHTML=''; return; }
+  var names = arr.map(function(id){ return SITE.topics[id]?SITE.topics[id].nav:id; });
+  fp.innerHTML = '<b>本次探索足迹：</b>'+names.join(' → ')+'<button class="fp-clear" type="button">清除</button>';
+  var btn = fp.querySelector('.fp-clear');
+  if(btn) btn.addEventListener('click', function(){ try{sessionStorage.removeItem('sitedoubao_fp');}catch(e){} renderFootprint(); });
+}
+function initIntrospection(){
+  var btn = document.getElementById('introBtn'); if(!btn) return;
+  try{ INTRO.on = localStorage.getItem('sitedoubao_intro')==='1'; }catch(e){}
+  btn.classList.toggle('on', INTRO.on);
+  btn.setAttribute('aria-pressed', INTRO.on?'true':'false');
+  btn.addEventListener('click', function(){
+    INTRO.on = !INTRO.on;
+    btn.classList.toggle('on', INTRO.on);
+    btn.setAttribute('aria-pressed', INTRO.on?'true':'false');
+    try{ localStorage.setItem('sitedoubao_intro', INTRO.on?'1':'0'); }catch(e){}
+    render();
+  });
+}
+/* 自省模式：反优势清单 + 总检验 */
+function introspectBlock(){
+  var b = SITE.inter['thinker-traits'].engine.b.items;
+  var html = '<div class="introspect"><h4>自省模式 · 第零层反优势清单</h4><ul>'+
+    b.map(function(x){ return '<li><b>'+C.esc(x.k)+'</b>：'+C.esc(x.q)+'</li>'; }).join('')+
+    '</ul><div class="ix-panel" style="margin-top:12px;"><h5>总检验问题</h5><div id="introCheck" style="margin-bottom:10px;">在承认这些不确定性之后，我是否还愿意暂时持有这个判断？</div>'+
+    '<button class="btn" data-v="y" type="button">是</button> <button class="btn" data-v="n" type="button">否</button> <span id="introCheckOut" style="font-size:13px;color:var(--dim);margin-left:8px;"></span></div></div>';
+  return html;
+}
+function bindIntroCheck(root){
+  var btns = root.querySelectorAll('[data-v]');
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click', function(){
+      var out = root.querySelector('#introCheckOut');
+      if(!out) return;
+      var ck = SITE.inter['thinker-traits'].check;
+      out.textContent = this.getAttribute('data-v')==='y' ? ck.yes : ck.no;
+    });
+  }
+}
+
+/* ===== 交互区注册表（各视图填充） ===== */
+var TOPIC_IX = {};
+
+/* ===== 子页通用模板 ===== */
+function renderTopicPage(topic){
+  var app = document.getElementById('app'); if(!app) return;
+  var coord = (topic.coord||[]).map(function(x){ return '<span>'+C.esc(x)+'</span>'; }).join('');
+  var html = '<div class="bc"><a href="#/">体系全景</a><span class="sep">/</span><span>'+C.esc(topic.nav)+'</span></div>';
+  html += '<div class="phead"><h1>'+C.esc(topic.nav)+'</h1><span class="badge" style="background:'+topic.badgeBg+'">'+C.esc(topic.badge)+'</span></div>';
+  html += '<div class="coord">'+coord+'</div>';
+  html += '<p class="src-line">来源：'+C.esc(topic.src)+'</p>';
+  html += '<div class="oneliner">'+C.esc(topic.core)+'</div>';
+  html += '<p style="color:var(--dim);font-size:14px;margin:10px 0 18px;">'+C.esc(topic.intro)+'</p>';
+  html += '<div class="sechead">核心论点<small>卡面是结论，展开是论据；全部内容源自对应总结文档</small></div>';
+  topic.sections.forEach(function(sec,i){ html += collapsibleCard(i, sec); });
+  if(TOPIC_IX[topic.id]){ html += '<div class="interact" id="ixZone"></div>'; }
+  html += '<div class="takeaway"><h4>'+C.esc(topic.takeawayTitle)+'</h4><p>'+C.esc(topic.takeaway)+'</p></div>';
+  if(INTRO.on){ html += introspectBlock(); }
+  var prev = topic.prev ? SITE.topics[topic.prev] : null;
+  var next = topic.next ? SITE.topics[topic.next] : null;
+  html += '<div class="prevnext">'+
+    (prev?'<a href="#/t/'+prev.id+'"><small>← 上一相关页</small><b>'+C.esc(prev.nav)+'</b></a>':'<a href="#/" style="opacity:.5;"><small>← 返回</small><b>体系全景</b></a>')+
+    (next?'<a href="#/t/'+next.id+'"><small>下一相关页 →</small><b>'+C.esc(next.nav)+'</b></a>':'<a href="#/" style="opacity:.5;"><small>→ 返回</small><b>体系全景</b></a>')+
+    '</div>';
+  app.innerHTML = html;
+  bindCollapse(app);
+  if(TOPIC_IX[topic.id]) TOPIC_IX[topic.id](document.getElementById('ixZone'), topic);
+  if(INTRO.on) bindIntroCheck(app);
+}
+
+/* ===== 主循环运行器 ===== */
+function loopRunner(containerId, autoPlay){
+  var el = document.getElementById(containerId); if(!el) return;
+  var steps = SITE.loop;
+  var idx = 0, timer = null, playing = false;
+  function chipHTML(s){
+    return '<button type="button" class="chip" data-i="'+(s.n-1)+'" data-lyr="'+(s.lyr||'none')+'" data-done="0">'+
+      '<span class="num">'+s.n+'</span><span>'+C.esc(s.t)+'</span></button>';
+  }
+  var html = '<div class="loop-chips">'+steps.map(chipHTML).join('')+'</div>'+
+    '<div class="controls">'+
+    '<button class="btn primary" id="lpPlay" type="button">播放</button>'+
+    '<button class="btn" id="lpPrev" type="button">上一步</button>'+
+    '<button class="btn" id="lpNext" type="button">下一步</button>'+
+    '<button class="btn" id="lpReset" type="button">重置</button></div>'+
+    '<div class="status" id="lpStatus"></div>';
+  el.innerHTML = html;
+  var chips = el.querySelectorAll('.chip');
+  var st = document.getElementById('lpStatus');
+  var playBtn = document.getElementById('lpPlay');
+  function paint(){
+    for(var i=0;i<chips.length;i++){
+      chips[i].classList.toggle('active', i===idx);
+      chips[i].classList.toggle('done', i<idx);
+    }
+    var s = steps[idx];
+    st.innerHTML = '第 <b>'+(idx+1)+'</b> / '+steps.length+' 步 · 位于 <span class="lyr">'+C.lyrName(s.lyr)+'</span> — '+C.esc(s.d);
+    var t = document.getElementById('homeLoopFocus'); if(t) t.textContent = C.lyrName(s.lyr);
+    if(document.getElementById('stack')){
+      var rows = document.getElementById('stack').querySelectorAll('.layer');
+      for(var j=0;j<rows.length;j++){
+        rows[j].classList.remove('hl','dim');
+        if(s.lyr && rows[j].dataset.id!==s.lyr) rows[j].classList.add('dim');
+        if(s.lyr && rows[j].dataset.id===s.lyr) rows[j].classList.add('hl');
+      }
+    }
+  }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } playing=false; playBtn.textContent='播放'; }
+  function stepTo(i){ idx=Math.max(0,Math.min(steps.length-1,i)); paint(); }
+  playBtn.addEventListener('click', function(){
+    if(playing){ stop(); return; }
+    playing=true; playBtn.textContent='暂停';
+    if(idx>=steps.length-1) idx=-1;
+    timer=setInterval(function(){
+      if(idx+1>=steps.length){ stop(); stepTo(steps.length-1); return; }
+      stepTo(idx+1);
+    },1600);
+  });
+  document.getElementById('lpPrev').addEventListener('click', function(){ stop(); stepTo(idx-1); });
+  document.getElementById('lpNext').addEventListener('click', function(){ stop(); stepTo(idx+1); });
+  document.getElementById('lpReset').addEventListener('click', function(){ stop(); stepTo(0); if(document.getElementById('stack')){ var rows=document.getElementById('stack').querySelectorAll('.layer'); for(var j=0;j<rows.length;j++){rows[j].classList.remove('hl','dim');} } });
+  for(var i=0;i<chips.length;i++){
+    chips[i].addEventListener('click', function(){ stop(); stepTo(parseInt(this.getAttribute('data-i'),10)); });
+  }
+  stepTo(autoPlay?0:0);
+}
+
+/* ===== 主页 ===== */
+function renderHome(){
+  var app = document.getElementById('app'); if(!app) return;
+  var all = SITE.layers.concat([SITE.io]);
+  var html = '';
+  html += '<div class="sechead" style="margin-top:6px;">认知操作系统 · 体系全景<small>核心命题：一个人如何建立一套能够独立面对问题、分析问题、检验问题、形成判断，并能与他人进行高质量交流的认知系统。</small></div>';
+  /* ① 主循环 */
+  html += '<section class="card"><h2><span class="num">01</span>主循环运行演示</h2><p class="note">体系最重要的特征是循环性：判断体系不是一次"建立完成"，而是不断分析问题、与人对话、接受反证、修正模型，持续迭代。播放可跟随完整主线。</p><div id="homeLoop"></div></section>';
+  /* ② 层堆栈 + 详情 */
+  html += '<div class="main">';
+  html += '<section class="card" style="margin-bottom:0;"><h2><span class="num">02</span>六层系统总装图</h2><p class="note">点击任一层查看该层要解决的问题、核心概念与相关子页；运行主循环时对应层自动高亮。对话是横跨五层的应用层（虚线接口）。</p><div class="stack" id="stack">';
+  all.forEach(function(L){
+    html += '<button type="button" class="layer '+L.id+'" data-id="'+L.id+'"><span class="dot"></span><span class="tt">'+C.esc(L.name)+'</span><span class="q">'+C.esc(L.q)+'</span></button>';
+  });
+  html += '</div><p class="stackfoot">↑ 自上而下：判断落地 → 流程稳定 → 协议透明 → 结构清晰 → 审辨纪律 → 校准光（元层）；对话接口横跨五层</p></section>';
+  html += '<section class="card" id="detail" style="margin-bottom:0;"></section>';
+  html += '</div>';
+  /* ③ 根问题 */
+  html += '<section class="card"><h2><span class="num">03</span>四个根问题聚合视图</h2><p class="note">点击任一问题，聚合它对应的层与子页，并高亮层堆栈——这是按"问题"而非按"结构"进入体系的第三条路。</p><div class="rq-grid" id="rqGrid">';
+  SITE.roots.forEach(function(r){
+    html += '<button type="button" class="rq" data-id="'+r.id+'"><div class="t">'+C.esc(r.t)+'</div><div class="d">'+C.esc(r.d)+'</div></button>';
+  });
+  html += '</div><div id="rq-result">选择一个根问题，查看它聚合了哪些层与子页。</div></section>';
+  /* ④ 子页入口 */
+  html += '<section class="card"><h2><span class="num">04</span>七个子主题页入口</h2><p class="note">对应 7 份总结文档，按体系层序排列。每个入口通向独立子页：统一模板 + 每页特色交互组件。</p><div class="topic-grid" id="topicGrid"></div></section>';
+  /* ⑤ 关联图谱 */
+  html += '<section class="card"><h2><span class="num">05</span>主题关联图谱</h2><p class="note">七个子主题之间的双向关系边（与各页底部反链同源）。点击节点进入对应子页，右侧列出关系明细。</p><div class="graphbox"><svg id="relGraph" viewBox="0 0 560 420" role="img" aria-label="主题关联图谱"></svg></div><div id="relList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:12px;"></div></section>';
+  app.innerHTML = html;
+  loopRunner('homeLoop', false);
+  bindStack();
+  bindRoots();
+  renderTopicGrid();
+  renderRelGraph();
+}
+function bindStack(){
+  var stack = document.getElementById('stack'); if(!stack) return;
+  var rows = stack.querySelectorAll('.layer');
+  function show(L){
+    for(var i=0;i<rows.length;i++){ rows[i].classList.toggle('sel', rows[i].dataset.id===L.id); }
+    var d = document.getElementById('detail'); if(!d) return;
+    var h = '<div class="d-head"><span class="d-dot" style="background:'+L.color+'"></span><span class="d-title" style="color:'+L.color+'">'+C.esc(L.name)+'</span></div>';
+    h += '<div class="d-q" style="border-color:'+L.color+'">回答：'+C.esc(L.q)+'</div>';
+    h += '<div class="d-sec"><h4>核心概念</h4><ul>'+L.core.map(function(x){return '<li>'+C.esc(x)+'</li>';}).join('')+'</ul></div>';
+    if(L.toolbox) h += '<div class="d-sec"><h4>工具箱</h4><div class="big">'+C.esc(L.toolbox)+'</div></div>';
+    h += '<div class="d-sec"><h4>关键词</h4><ul>'+L.kw.map(function(x){return '<li>'+C.esc(x)+'</li>';}).join('')+'</ul></div>';
+    h += '<div class="d-sec"><h4>相关子页</h4><div class="d-pages">'+L.pages.map(function(p){ return '<a class="d-page" href="#/t/'+topicIdByNav(p.t)+'">'+C.esc(p.t)+'<small>来源：'+C.esc(p.s)+'</small></a>'; }).join('')+'</div></div>';
+    d.innerHTML = h;
+  }
+  for(var i=0;i<rows.length;i++){
+    (function(row){
+      row.addEventListener('click', function(){
+        var L = C.layerById(row.dataset.id); if(L) show(L);
+      });
+    })(rows[i]);
+  }
+  show(SITE.layers[1]); /* 默认展示第一层 */
+}
+function topicIdByNav(nav){
+  for(var k in SITE.topics){ if(SITE.topics[k].nav===nav) return k; }
+  return '';
+}
+function bindRoots(){
+  var grid = document.getElementById('rqGrid'); if(!grid) return;
+  var cards = grid.querySelectorAll('.rq');
+  var out = document.getElementById('rq-result');
+  function clearSel(){ for(var i=0;i<cards.length;i++){ cards[i].classList.remove('sel'); } }
+  for(var i=0;i<cards.length;i++){
+    (function(card){
+      card.addEventListener('click', function(){
+        clearSel(); card.classList.add('sel');
+        var id = card.getAttribute('data-id');
+        var r = null; for(var j=0;j<SITE.roots.length;j++){ if(SITE.roots[j].id===id) r=SITE.roots[j]; }
+        if(!r) return;
+        var rows = document.getElementById('stack').querySelectorAll('.layer');
+        for(var k=0;k<rows.length;k++){
+          rows[k].classList.remove('sel');
+          if(r.layers.indexOf(rows[k].dataset.id)>=0){ rows[k].classList.add('sel'); rows[k].classList.remove('dim'); }
+          else rows[k].classList.add('dim');
+        }
+        out.innerHTML = '<b>'+C.esc(r.t)+'</b> 聚合的层：'+r.layers.map(C.lyrName).join(' · ')+'；聚合的子页：'+r.pages.map(C.esc).join('、')+'。';
+      });
+    })(cards[i]);
+  }
+}
+function renderTopicGrid(){
+  var g = document.getElementById('topicGrid'); if(!g) return;
+  var order = ['thinker-traits','critical-thinking','dialogue','baselines','structure-engineering','judgment-system','ai-boundary'];
+  g.innerHTML = order.map(function(id){
+    var t = SITE.topics[id];
+    return '<a class="topic" href="#/t/'+id+'"><span class="badge" style="background:'+t.badgeBg+'">'+C.esc(t.badge)+'</span><div class="nm">'+C.esc(t.nav)+'</div><div class="ess">'+C.esc(t.core.length>42?t.core.slice(0,42)+'…':t.core)+'</div><div class="src">来源：'+C.esc(t.src)+'</div></a>';
+  }).join('');
+}
+/* 关联图谱：SVG 圆形布局 + 关系明细 */
+function renderRelGraph(){
+  var svg = document.getElementById('relGraph'); if(!svg) return;
+  var ns = 'http://www.w3.org/2000/svg';
+  var order = ['thinker-traits','critical-thinking','dialogue','baselines','structure-engineering','judgment-system','ai-boundary'];
+  var n = order.length, cx=280, cy=205, R=150;
+  var pos = {};
+  order.forEach(function(id,i){
+    var ang = -Math.PI/2 + i*(2*Math.PI/n);
+    pos[id] = [cx+R*Math.cos(ang), cy+R*Math.sin(ang)];
+  });
+  var edges = SITE.relations;
+  var edgeLines = '';
+  for(var i=0;i<edges.length;i++){
+    var e = edges[i];
+    var p1 = pos[e.from], p2 = pos[e.to];
+    var mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
+    edgeLines += '<line x1="'+p1[0]+'" y1="'+p1[1]+'" x2="'+p2[0]+'" y2="'+p2[1]+'" stroke="#33435F" stroke-width="1.2" opacity="0.75"><title>'+C.esc(SITE.topics[e.from].nav+' ↔ '+SITE.topics[e.to].nav+'：'+e.label)+'</title></line>';
+  }
+  var nodes = '';
+  order.forEach(function(id){
+    var t = SITE.topics[id];
+    var x = pos[id][0], y = pos[id][1];
+    nodes += '<a href="#/t/'+id+'" style="cursor:pointer;"><circle cx="'+x+'" cy="'+y+'" r="34" fill="'+t.badgeBg+'" opacity="0.92"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#0B1020">'+C.esc(shortName(t.nav))+'</text></a>';
+  });
+  svg.innerHTML = edgeLines + nodes;
+  var list = document.getElementById('relList');
+  if(list){
+    list.innerHTML = edges.map(function(e){
+      return '<div class="ix-panel" style="min-height:auto;padding:9px 12px;"><a href="#/t/'+e.from+'" style="color:var(--text);text-decoration:none;">'+C.esc(SITE.topics[e.from].nav)+'</a> ↔ <a href="#/t/'+e.to+'" style="color:var(--text);text-decoration:none;">'+C.esc(SITE.topics[e.to].nav)+'</a><div style="font-size:12px;color:var(--faint);">'+C.esc(e.label)+'</div></div>';
+    }).join('');
+  }
+}
+function shortName(nav){
+  var m = nav.match(/^([^\s×]+)/);
+  return m ? m[1] : nav.slice(0,4);
+}
+
+/* ===== 路由 ===== */
+function currentRoute(){
+  var h = location.hash || '#/';
+  var m = h.match(/^#\/t\/([a-z\-]+)/);
+  if(m && SITE.topics[m[1]]) return {type:'topic', id:m[1]};
+  return {type:'home', id:''};
+}
+function render(){
+  var r = currentRoute();
+  renderNav(r.id);
+  if(r.type==='topic'){
+    var t = SITE.topics[r.id];
+    renderTopicPage(t);
+    fpRecord(r.id);
+  } else {
+    renderHome();
+  }
+  renderFootprint();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', render);
+
+</script><script>
+/* ===== 视图：批判性思维 ===== */
+TOPIC_IX['critical-thinking'] = function(zone){
+  var d = SITE.inter['critical-thinking'];
+  var colors = ['#6366F1','#22D3EE','#A78BFA','#FBBF24'];
+  /* ① 四对象检查轮盘 */
+  var w = d.wheel;
+  var R=130, cx=150, cy=150;
+  function pt(ang){ var a=ang*Math.PI/180; return [cx+R*Math.cos(a), cy+R*Math.sin(a)]; }
+  var paths='';
+  w.items.forEach(function(it,i){
+    var a1=-90+i*90, a2=a1+90;
+    var p1=pt(a1), p2=pt(a2);
+    var mid=(-90+i*90+45), pm=pt(mid);
+    var lx=150+88*Math.cos(mid*Math.PI/180), ly=150+88*Math.sin(mid*Math.PI/180);
+    paths += '<path class="sector" data-i="'+i+'" d="M'+cx+','+cy+' L'+p1[0].toFixed(1)+','+p1[1].toFixed(1)+' A'+R+','+R+' 0 0 1 '+p2[0].toFixed(1)+','+p2[1].toFixed(1)+' Z" fill="'+colors[i]+'" opacity="0.9"><title>'+C.esc(it.k)+'</title></path>';
+    paths += '<text x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" text-anchor="middle" font-size="15" font-weight="800" fill="#0B1020" pointer-events="none">'+C.esc(it.k)+'</text>';
+  });
+  var wheelHTML = '<div class="interact"><h3><span>交互 1</span>'+C.esc(w.title)+'</h3><p class="note">'+C.esc(w.note)+'</p>'+
+    '<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;"><svg class="wheel-svg" viewBox="0 0 300 300" role="img" aria-label="四对象检查轮盘">'+paths+'</svg>'+
+    '<div class="ix-panel" id="wheelOut" style="flex:1 1 260px;"><h5>检查问题</h5><b id="wheelK">事实</b><div id="wheelQ" style="margin:6px 0;">'+C.esc(w.items[0].q)+'</div><div id="wheelD" style="color:var(--faint);font-size:12.5px;">'+C.esc(w.items[0].d)+'</div></div></div></div>';
+  /* ② 相信程度校准器 */
+  var cb = d.calib;
+  var calibHTML = '<div class="interact"><h3><span>交互 2</span>'+C.esc(cb.title)+'</h3><p class="note">'+C.esc(cb.note)+'</p>'+
+    '<div class="slider-wrap"><input type="range" id="calibRange" min="0" max="100" value="40" aria-label="证据强度"></div>'+
+    '<div class="slider-labels"><span>证据弱</span><span>证据强</span></div>'+
+    '<div class="calib-out" id="calibOut"></div>'+
+    '<div class="builder-field" style="margin-top:10px;"><label for="calibRevoke">什么证据会让我改变这个判断？（写下它，判断就带上了证伪条件）</label><input id="calibRevoke" type="text" placeholder="例如：出现与结论相悖的可靠样本……"></div></div>';
+  zone.innerHTML = wheelHTML + calibHTML;
+  /* 绑定轮盘 */
+  var sectors = zone.querySelectorAll('.sector');
+  function wheelShow(i){
+    for(var k=0;k<sectors.length;k++){ sectors[k].classList.toggle('sel', k===i); }
+    var it = w.items[i];
+    zone.querySelector('#wheelK').textContent = it.k;
+    zone.querySelector('#wheelQ').textContent = it.q;
+    zone.querySelector('#wheelD').textContent = it.d;
+  }
+  for(var i=0;i<sectors.length;i++){
+    (function(k){ sectors[k].addEventListener('click', function(){ wheelShow(k); }); })(i);
+  }
+  /* 绑定校准器 */
+  var range = zone.querySelector('#calibRange');
+  var out = zone.querySelector('#calibOut');
+  function calibPaint(){
+    var v = parseInt(range.value,10), lv = 0;
+    if(v>=30) lv=1; if(v>=70) lv=2;
+    var txt = cb.levels[lv].txt;
+    out.innerHTML = '<b>结论置信度：'+cb.labels[lv]+'</b><div style="color:var(--dim);margin-top:4px;">证据强度 '+(v<30?'不足（'+v+'）':(v+' / 100'))+' — '+C.esc(txt)+'</div>';
+  }
+  range.addEventListener('input', calibPaint);
+  calibPaint();
+};
+
+/* ===== 视图：对话实践 ===== */
+TOPIC_IX['dialogue'] = function(zone){
+  var d = SITE.inter['dialogue'];
+  /* ① 八步流程步进器 */
+  var st = d.steps;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(st.title)+'</h3><p class="note">'+C.esc(st.note)+'</p>'+
+    '<div class="steps-line" id="dlSteps">'+st.items.map(function(x,i){ return '<button type="button" class="stepnode" data-i="'+i+'">'+C.esc(x.t)+'</button>'; }).join('')+'</div>'+
+    '<div class="controls"><button class="btn" id="dlPrev" type="button">上一步</button><button class="btn" id="dlNext" type="button">下一步</button><button class="btn" id="dlReset" type="button">重置</button></div>'+
+    '<div class="ix-panel"><h5>可套用的回应句式</h5><div id="dlQ"></div></div></div>';
+  /* ② 三语境切换器 */
+  var cx2 = d.ctx;
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(cx2.title)+'</h3><p class="note">'+C.esc(cx2.note)+'</p>'+
+    '<div class="tabs" id="ctxTabs">'+cx2.items.map(function(x,i){ return '<button type="button" class="tab'+(i===0?' sel':'')+'" data-i="'+i+'">'+C.esc(x.k)+'</button>'; }).join('')+'</div>'+
+    '<div class="ix-panel" id="ctxOut"></div></div>';
+  zone.innerHTML = s1 + s2;
+  /* 绑定步进器 */
+  var nodes = zone.querySelectorAll('#dlSteps .stepnode');
+  var di = 0;
+  function dlPaint(){
+    for(var i=0;i<nodes.length;i++){
+      nodes[i].classList.toggle('active', i===di);
+      nodes[i].classList.toggle('done', i<di);
+    }
+    zone.querySelector('#dlQ').innerHTML = '<b>'+C.esc(st.items[di].t)+'</b> — '+C.esc(st.items[di].q);
+  }
+  for(var i=0;i<nodes.length;i++){
+    (function(k){ nodes[k].addEventListener('click', function(){ di=k; dlPaint(); }); })(i);
+  }
+  zone.querySelector('#dlPrev').addEventListener('click', function(){ di=Math.max(0,di-1); dlPaint(); });
+  zone.querySelector('#dlNext').addEventListener('click', function(){ di=Math.min(nodes.length-1,di+1); dlPaint(); });
+  zone.querySelector('#dlReset').addEventListener('click', function(){ di=0; dlPaint(); });
+  dlPaint();
+  /* 绑定语境切换 */
+  var tabs = zone.querySelectorAll('#ctxTabs .tab');
+  var ctxOut = zone.querySelector('#ctxOut');
+  function ctxShow(i){
+    for(var k=0;k<tabs.length;k++){ tabs[k].classList.toggle('sel', k===i); }
+    var it = cx2.items[i];
+    ctxOut.innerHTML = '<b>'+C.esc(it.k)+'：'+C.esc(it.do)+'</b><div style="margin-top:6px;">避开：'+C.esc(it.avoid)+'</div><div class="ql" style="margin-top:8px;">'+C.esc(it.tpl)+'</div>';
+  }
+  for(var i=0;i<tabs.length;i++){
+    (function(k){ tabs[k].addEventListener('click', function(){ ctxShow(k); }); })(i);
+  }
+  ctxShow(0);
+};
+
+/* ===== 视图：讨论基线 ===== */
+TOPIC_IX['baselines'] = function(zone){
+  var d = SITE.inter['baselines'];
+  /* ① 讨论精度滑块 */
+  var pr = d.precision;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(pr.title)+'</h3><p class="note">'+C.esc(pr.note)+'</p>'+
+    '<div class="slider-wrap"><input type="range" id="prRange" min="0" max="5" step="1" value="1" aria-label="讨论场景精度"></div>'+
+    '<div class="slider-labels">'+pr.stops.map(function(x,i){ return '<span data-i="'+i+'" id="prLabel'+i+'">'+C.esc(x)+'</span>'; }).join('')+'</div>'+
+    '<div style="margin-top:14px;">'+pr.rows.map(function(r,i){
+      return '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);align-items:baseline;"><div style="flex:none;width:84px;font-size:13px;color:var(--dim);">'+C.esc(r.name)+'</div><div style="font-size:13.5px;" id="prRow'+i+'"></div></div>';
+    }).join('')+'</div></div>';
+  /* ② 四基线检查清单 */
+  var cl = d.checklist;
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(cl.title)+'</h3><p class="note">'+C.esc(cl.note)+'</p>'+
+    '<div style="font-size:13px;color:var(--dim);margin-bottom:8px;">'+C.esc(cl.topic)+'</div>'+
+    '<div id="clList">'+cl.items.map(function(x,i){
+      return '<label class="checklist-item" style="cursor:pointer;"><input type="checkbox" data-i="'+i+'"><span class="ct">'+C.esc(x.k)+'<small>'+C.esc(x.d)+'</small></span></label>';
+    }).join('')+'</div><div class="verdict" id="clVerdict">未勾选任何基线。</div></div>';
+  /* ③ 退出讨论判定 */
+  var ex = d.exit;
+  var s3 = '<div class="interact"><h3><span>交互 3</span>'+C.esc(ex.title)+'</h3><p class="note">'+C.esc(ex.note)+'</p>'+
+    '<div id="exList">'+ex.items.map(function(x,i){
+      return '<label class="checklist-item" style="cursor:pointer;"><input type="checkbox" data-i="'+i+'"><span class="ct">'+C.esc(x.k)+'<small>'+C.esc(x.d)+'</small></span></label>';
+    }).join('')+'</div><div class="verdict" id="exVerdict">未命中退出信号。</div></div>';
+  zone.innerHTML = s1 + s2 + s3;
+  /* 精度滑块 */
+  var prRange = zone.querySelector('#prRange');
+  function prPaint(){
+    var v = parseInt(prRange.value,10);
+    for(var i=0;i<pr.stops.length;i++){
+      var l = zone.querySelector('#prLabel'+i);
+      l.style.color = (i===v) ? 'var(--accent)' : '';
+      l.style.fontWeight = (i===v) ? '700' : '';
+    }
+    for(var r=0;r<pr.rows.length;r++){
+      var row = zone.querySelector('#prRow'+r);
+      if(row) row.textContent = pr.rows[r].cols[v];
+    }
+  }
+  prRange.addEventListener('input', prPaint);
+  prPaint();
+  /* 基线清单 */
+  var clBoxes = zone.querySelectorAll('#clList input');
+  var clOut = zone.querySelector('#clVerdict');
+  function clPaint(){
+    var n=0; for(var i=0;i<clBoxes.length;i++){ if(clBoxes[i].checked) n++; }
+    clOut.textContent = n===4 ? cl.ok : (n>=2 ? cl.mid : cl.bad);
+    clOut.style.borderColor = n===4 ? 'rgba(52,211,153,.5)' : (n>=2 ? 'rgba(251,191,36,.4)' : 'var(--line)');
+  }
+  for(var i=0;i<clBoxes.length;i++){ clBoxes[i].addEventListener('change', clPaint); }
+  /* 退出判定 */
+  var exBoxes = zone.querySelectorAll('#exList input');
+  var exOut = zone.querySelector('#exVerdict');
+  function exPaint(){
+    var any=false; for(var i=0;i<exBoxes.length;i++){ if(exBoxes[i].checked) any=true; }
+    exOut.textContent = any ? ex.any : ex.none;
+    exOut.style.borderColor = any ? 'rgba(248,113,113,.5)' : 'var(--line)';
+  }
+  for(var i=0;i<exBoxes.length;i++){ exBoxes[i].addEventListener('change', exPaint); }
+};
+
+/* ===== 视图：结构化 × 工程化 ===== */
+TOPIC_IX['structure-engineering'] = function(zone){
+  var d = SITE.inter['structure-engineering'];
+  /* ① 三类模型层级链 */
+  var ch = d.chain;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(ch.title)+'</h3><p class="note">'+C.esc(ch.note)+'</p>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px;">'+
+    ch.items.map(function(x,i){
+      return '<span style="display:flex;align-items:center;gap:6px;"><button type="button" class="stepnode" data-i="'+i+'">'+C.esc(x.t)+'</button>'+(i<ch.items.length-1?'<span style="color:var(--faint);">→</span>':'')+'</span>';
+    }).join('')+'</div>'+
+    '<div class="ix-panel" id="chainOut"></div></div>';
+  /* ② 四层抽象钻取器 */
+  var ab = d.abstract;
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(ab.title)+'</h3><p class="note">'+C.esc(ab.note)+'</p>'+
+    '<div class="engine" style="grid-template-columns:1fr 1.4fr;">'+
+    '<div style="display:flex;flex-direction:column;gap:0;">'+ab.items.map(function(x,i){
+      return '<button type="button" class="stepnode" style="border-radius:0;border-top:none;" data-i="'+i+'">'+C.esc(x.t)+'</button>';
+    }).join('')+'</div>'+
+    '<div class="ix-panel" id="abOut" style="min-height:190px;"></div></div></div>';
+  /* ③ 五种解释结构切换器 */
+  var sf = d.structures;
+  var s3 = '<div class="interact"><h3><span>交互 3</span>'+C.esc(sf.title)+'</h3><p class="note">'+C.esc(sf.note)+'</p>'+
+    '<div class="tabs" id="sfTabs">'+sf.items.map(function(x,i){ return '<button type="button" class="tab'+(i===0?' sel':'')+'" data-i="'+i+'">'+C.esc(x.k)+'</button>'; }).join('')+'</div>'+
+    '<div class="ix-panel" id="sfOut"></div></div>';
+  zone.innerHTML = s1 + s2 + s3;
+  /* 模型链 */
+  var chainBtns = zone.querySelectorAll('.stepnode[data-i]');
+  var chainNodes = zone.querySelectorAll('#chainOut') ? null : null;
+  var chainOut = zone.querySelector('#chainOut');
+  function chainShow(i){
+    var btns = zone.querySelectorAll('button[data-i]');
+    /* 只高亮第一组的五个（按外层容器区分） */
+    var grp = zone.querySelectorAll('.interact')[0].querySelectorAll('.stepnode');
+    for(var k=0;k<grp.length;k++){ grp[k].classList.toggle('active', k===i); }
+    var it = ch.items[i];
+    chainOut.innerHTML = '<b>'+C.esc(it.t)+'</b> <span style="color:var(--dim);font-size:12px;">（'+C.esc(it.tag)+'）</span><div style="margin-top:6px;">'+C.esc(it.d)+'</div>';
+  }
+  var grp0 = zone.querySelectorAll('.interact')[0].querySelectorAll('.stepnode');
+  for(var i=0;i<grp0.length;i++){
+    (function(k){ grp0[k].addEventListener('click', function(){ chainShow(k); }); })(i);
+  }
+  chainShow(1);
+  /* 四层钻取 */
+  var abBtns = zone.querySelectorAll('.interact')[1].querySelectorAll('.stepnode');
+  var abOut = zone.querySelector('#abOut');
+  var lastAb = 3;
+  function abShow(i){
+    var dir = i>lastAb ? '向下钻取' : (i<lastAb ? '回到上层' : '查看');
+    lastAb = i;
+    for(var k=0;k<abBtns.length;k++){ abBtns[k].classList.toggle('active', k===i); abBtns[k].style.borderLeft = (k===i)?'3px solid var(--accent)':''; }
+    var it = ab.items[i];
+    abOut.innerHTML = '<h5>'+C.esc(it.t)+' · '+dir+'</h5><div style="font-size:15px;font-weight:700;margin:4px 0;">回答：'+C.esc(it.q)+'</div><div>'+C.esc(it.d)+'</div><div style="color:var(--faint);font-size:12.5px;margin-top:8px;">当前深度：'+(['表象','行为','机制','本质'][i]||'')+'（'+(i+1)+' / 4 层）</div>';
+  }
+  for(var i=0;i<abBtns.length;i++){
+    (function(k){ abBtns[k].addEventListener('click', function(){ abShow(k); }); })(i);
+  }
+  abShow(0);
+  /* 五种结构 */
+  var sfTabs = zone.querySelectorAll('#sfTabs .tab');
+  var sfOut = zone.querySelector('#sfOut');
+  function sfShow(i){
+    for(var k=0;k<sfTabs.length;k++){ sfTabs[k].classList.toggle('sel', k===i); }
+    var it = sf.items[i];
+    sfOut.innerHTML = '<b>'+C.esc(it.k)+'</b> — 回答：'+C.esc(it.q)+'<div class="ql" style="margin-top:8px;">'+C.esc(it.tpl)+'</div>';
+  }
+  for(var i=0;i<sfTabs.length;i++){
+    (function(k){ sfTabs[k].addEventListener('click', function(){ sfShow(k); }); })(i);
+  }
+  sfShow(0);
+};
+
+</script><script>
+/* ===== 视图：思考者特质 ===== */
+TOPIC_IX['thinker-traits'] = function(zone){
+  var d = SITE.inter['thinker-traits'];
+  /* ① 双轨引擎 A/B */
+  var en = d.engine;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(en.title)+'</h3><p class="note">'+C.esc(en.note)+'</p>'+
+    '<div class="engine">'+
+    '<div class="track a"><h5>'+C.esc(en.a.name)+'</h5>'+en.a.items.map(function(x,i){
+      return '<div class="eng-item" data-track="a" data-i="'+i+'" tabindex="0" role="button"><b>'+C.esc(x.k)+'</b><p>'+C.esc(x.q.slice(0,34))+(x.q.length>34?'…':'')+'</p></div>';
+    }).join('')+'</div>'+
+    '<div class="track b"><h5>'+C.esc(en.b.name)+'</h5>'+en.b.items.map(function(x,i){
+      return '<div class="eng-item" data-track="b" data-i="'+i+'" tabindex="0" role="button"><b>'+C.esc(x.k)+'</b><p>'+C.esc(x.q.slice(0,34))+(x.q.length>34?'…':'')+'</p></div>';
+    }).join('')+'</div></div>'+
+    '<div class="ix-panel" id="engOut" style="margin-top:12px;"></div></div>';
+  /* ② 三个结构性副作用 */
+  var wn = d.warnings;
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(wn.title)+'</h3><p class="note">'+C.esc(wn.note)+'</p><div class="warn-cards">'+
+    wn.items.map(function(x){
+      return '<div class="warn"><h5>'+C.esc(x.t)+'</h5><div class="wt">'+C.esc(x.w)+'</div><div class="ck">'+C.esc(x.ck)+'</div></div>';
+    }).join('')+'</div></div>';
+  /* ③ 总检验问题 */
+  var ck = d.check;
+  var s3 = '<div class="interact"><h3><span>交互 3</span>'+C.esc(ck.title)+'</h3><p class="note">'+C.esc(ck.note)+'</p>'+
+    '<div class="ix-panel"><h5>总检验</h5><div style="font-family:var(--serif);font-size:15px;margin-bottom:12px;">在承认这些不确定性之后，我是否还愿意暂时持有这个判断？</div>'+
+    '<button class="btn" id="tkY" type="button">是</button> <button class="btn" id="tkN" type="button">否</button> <span id="tkOut" style="font-size:13.5px;color:var(--dim);margin-left:10px;"></span></div></div>';
+  zone.innerHTML = s1 + s2 + s3;
+  /* 绑定引擎 */
+  var items = zone.querySelectorAll('.eng-item');
+  var engOut = zone.querySelector('#engOut');
+  function engShow(track, i){
+    for(var k=0;k<items.length;k++){ items[k].classList.toggle('sel', items[k].getAttribute('data-track')===track && parseInt(items[k].getAttribute('data-i'),10)===i); }
+    var it = track==='a' ? en.a.items[i] : en.b.items[i];
+    engOut.innerHTML = '<b style="color:'+(track==='a'?'#9CC3FA':'#CDBFFC')+';">'+C.esc(it.k)+'</b><div style="margin-top:6px;">'+C.esc(it.q)+'</div>';
+  }
+  for(var i=0;i<items.length;i++){
+    (function(el){
+      var act = function(){ engShow(el.getAttribute('data-track'), parseInt(el.getAttribute('data-i'),10)); };
+      el.addEventListener('click', act);
+      el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+    })(items[i]);
+  }
+  engShow('a',0);
+  /* 绑定总检验 */
+  var tkOut = zone.querySelector('#tkOut');
+  zone.querySelector('#tkY').addEventListener('click', function(){ tkOut.textContent = ck.yes; });
+  zone.querySelector('#tkN').addEventListener('click', function(){ tkOut.textContent = ck.no; });
+};
+
+/* ===== 视图：判断体系构建 ===== */
+TOPIC_IX['judgment-system'] = function(zone){
+  var d = SITE.inter['judgment-system'];
+  /* ① 四层构造构建器 */
+  var bd = d.builder;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(bd.title)+'</h3><p class="note">'+C.esc(bd.note)+'</p>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="builder-grid">'+
+    bd.fields.map(function(f,i){
+      return '<div class="builder-field"><label for="bf'+i+'">'+C.esc(f.k)+'</label><textarea id="bf'+i+'" placeholder="'+C.esc(f.ph)+'" rows="2"></textarea></div>';
+    }).join('')+'</div>'+
+    '<div class="controls"><button class="btn primary" id="bfGen" type="button">生成我的判断体系 v0.1</button><button class="btn" id="bfReset" type="button">清空</button></div>'+
+    '<div class="ix-panel" id="bfOut"><h5>预览</h5><div style="color:var(--faint);">填写四层后点击生成。判断体系的第一版必须是显性化的——写下来，它才可被检验、被修正。</div></div></div>';
+  /* ② 六条规则清单 */
+  var rl = d.rules;
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(rl.title)+'</h3><p class="note">'+C.esc(rl.note)+'</p>'+
+    '<div id="rlList">'+rl.items.map(function(x,i){
+      return '<label class="checklist-item" style="cursor:pointer;"><input type="checkbox" data-i="'+i+'"><span class="ct">'+C.esc(x)+'</span></label>';
+    }).join('')+'</div><div class="verdict" id="rlOut">已确认 0 / 6。</div></div>';
+  zone.innerHTML = s1 + s2;
+  /* 构建器 */
+  var gen = zone.querySelector('#bfGen');
+  var reset = zone.querySelector('#bfReset');
+  var out = zone.querySelector('#bfOut');
+  function builderPreview(){
+    var filled = bd.fields.map(function(f,i){
+      var el = zone.querySelector('#bf'+i);
+      return {k:f.k, v:el.value.trim()};
+    });
+    var any = false;
+    filled.forEach(function(f){ if(f.v) any=true; });
+    if(!any){ out.innerHTML = '<h5>预览</h5><div style="color:var(--faint);">至少填写一层，才能生成预览。</div>'; return; }
+    var rows = filled.map(function(f){
+      return '<div style="padding:7px 0;border-bottom:1px dashed var(--line);"><b>'+C.esc(f.k)+'</b><div style="font-size:13px;color:var(--dim);">'+(f.v?C.esc(f.v):'<i style="color:var(--faint);">（未填写）</i>')+'</div></div>';
+    }).join('');
+    out.innerHTML = '<h5>我的判断体系 v0.1</h5>'+rows+'<div style="font-size:12px;color:var(--faint);margin-top:8px;">这只是第一版显性化快照——从重复决策中抽象、跨场景验证、发现冲突后再压缩。</div>';
+  }
+  gen.addEventListener('click', builderPreview);
+  reset.addEventListener('click', function(){
+    bd.fields.forEach(function(f,i){ zone.querySelector('#bf'+i).value=''; });
+    builderPreview();
+  });
+  /* 规则清单 */
+  var rlBoxes = zone.querySelectorAll('#rlList input');
+  var rlOut = zone.querySelector('#rlOut');
+  function rlPaint(){
+    var n=0; for(var i=0;i<rlBoxes.length;i++){ if(rlBoxes[i].checked) n++; }
+    rlOut.textContent = '已确认 '+n+' / '+rlBoxes.length+(n===rlBoxes.length?' —— 六条规则全部显性确认。':'。');
+    rlOut.style.borderColor = n===rlBoxes.length ? 'rgba(52,211,153,.5)' : 'var(--line)';
+  }
+  for(var i=0;i<rlBoxes.length;i++){ rlBoxes[i].addEventListener('change', rlPaint); }
+};
+
+/* ===== 视图：AI 与个人边界 ===== */
+TOPIC_IX['ai-boundary'] = function(zone){
+  var d = SITE.inter['ai-boundary'];
+  /* ① 三种认知角色 */
+  var ro = d.roles;
+  var s1 = '<div class="interact"><h3><span>交互 1</span>'+C.esc(ro.title)+'</h3><p class="note">'+C.esc(ro.note)+'</p>'+
+    '<div class="roles" id="roleCards">'+ro.items.map(function(x,i){
+      return '<button type="button" class="role" data-i="'+i+'"><b>'+C.esc(x.k)+'</b><div class="rd">'+C.esc(x.d.slice(0,26))+'…</div></button>';
+    }).join('')+'</div>'+
+    '<div class="ix-panel" id="roleOut" style="margin-top:12px;"></div></div>';
+  /* ② 证据排序拖拽器 */
+  var ev = d.evidence;
+  var ana = {
+    '逻辑':'逻辑置顶是"形式优先而非事实优先"：逻辑只保证前提对则结论成立，前提多来自数据与经验——冲突时应先查数据真实性与样本偏差，再查逻辑是否普适。',
+    '真实数据':'数据优先：以可核查事实为第一依据；注意样本代表性与截取偏差，并让逻辑承担普适性检验。',
+    '经验':'经验优先：个人经验密度高但噪音也高；与权威冲突时按领域区分——个人关系场景经验优先于数据。',
+    '权威':'权威优先：适合无经验领域快速起步；建议标记"可推翻"，补数据或建模型后再校验。'
+  };
+  var s2 = '<div class="interact"><h3><span>交互 2</span>'+C.esc(ev.title)+'</h3><p class="note">'+C.esc(ev.note)+'</p>'+
+    '<div style="display:flex;gap:16px;flex-wrap:wrap;">'+
+    '<div class="sort-wrap" id="sortList">'+ev.items.map(function(x,i){
+      return '<div class="sort-item" draggable="true" data-k="'+C.esc(x)+'" data-i="'+i+'"><span class="grip" aria-hidden="true">⠿</span><span class="nm">'+C.esc(x)+'</span>'+
+        '<button type="button" class="up" aria-label="上移">↑</button><button type="button" class="dn" aria-label="下移">↓</button></div>';
+    }).join('')+'</div>'+
+    '<div class="ix-panel" id="evOut" style="flex:1 1 300px;"></div></div></div>';
+  /* ③ 边界变化时间轴 */
+  var tl = d.timeline;
+  var s3 = '<div class="interact"><h3><span>交互 3</span>'+C.esc(tl.title)+'</h3><p class="note">'+C.esc(tl.note)+'</p><div class="timeline">'+
+    tl.items.map(function(x,i){
+      return '<div class="tl-row"><div class="tl-time">'+(i===0?'过去':i===tl.items.length-1?'现在':'阶段 '+(i+1))+'</div><div class="tl-axis"><span class="tl-dot '+x.cls+'"></span></div><div class="tl-body"><b>'+C.esc(x.t)+'</b><p>'+C.esc(x.d)+'</p></div></div>';
+    }).join('')+'</div></div>';
+  zone.innerHTML = s1 + s2 + s3;
+  /* 角色 */
+  var roleBtns = zone.querySelectorAll('#roleCards .role');
+  var roleOut = zone.querySelector('#roleOut');
+  function roleShow(i){
+    for(var k=0;k<roleBtns.length;k++){ roleBtns[k].classList.toggle('sel', k===i); }
+    var it = ro.items[i];
+    roleOut.innerHTML = '<b>'+C.esc(it.k)+'</b><div style="margin-top:6px;">'+C.esc(it.d)+'</div>';
+  }
+  for(var i=0;i<roleBtns.length;i++){
+    (function(k){ roleBtns[k].addEventListener('click', function(){ roleShow(k); }); })(i);
+  }
+  roleShow(2);
+  /* 证据排序 */
+  var list = zone.querySelector('#sortList');
+  var evOut = zone.querySelector('#evOut');
+  var dragEl = null;
+  function orderNow(){
+    var items = list.querySelectorAll('.sort-item');
+    var arr = [];
+    for(var i=0;i<items.length;i++){ arr.push(items[i].getAttribute('data-k')); }
+    var top = arr[0];
+    evOut.innerHTML = '<h5>你的排序（自上而下）</h5><div style="margin-bottom:8px;">'+arr.map(C.esc).join(' → ')+'</div>'+
+      '<b>结构分析：</b><div style="color:var(--dim);margin-top:4px;">'+C.esc(ana[top]||'')+'</div>';
+    return arr;
+  }
+  function reorder(idx, dir){
+    var items = list.querySelectorAll('.sort-item');
+    var to = idx+dir;
+    if(to<0 || to>=items.length) return;
+    list.insertBefore(items[idx], dir>0 ? items[to].nextSibling : items[to]);
+    orderNow();
+  }
+  list.addEventListener('click', function(e){
+    var t = e.target;
+    if(t.classList.contains('up')||t.classList.contains('dn')){
+      var item = t.parentNode;
+      var items = list.querySelectorAll('.sort-item');
+      var idx = Array.prototype.indexOf.call(items, item);
+      reorder(idx, t.classList.contains('up') ? -1 : 1);
+    }
+  });
+  list.addEventListener('dragstart', function(e){ var t=e.target.closest('.sort-item'); if(t){ dragEl=t; e.dataTransfer.effectAllowed='move'; } });
+  list.addEventListener('dragover', function(e){ e.preventDefault(); var t=e.target.closest('.sort-item'); if(t && t!==dragEl){ t.classList.add('dragover'); } });
+  list.addEventListener('dragleave', function(e){ var t=e.target.closest('.sort-item'); if(t) t.classList.remove('dragover'); });
+  list.addEventListener('drop', function(e){
+    e.preventDefault();
+    var t=e.target.closest('.sort-item');
+    if(t && dragEl && t!==dragEl){
+      list.insertBefore(dragEl, t.nextSibling===dragEl?t:t.nextSibling);
+      orderNow();
+    }
+    var items=list.querySelectorAll('.sort-item'); for(var i=0;i<items.length;i++){ items[i].classList.remove('dragover'); }
+  });
+  list.addEventListener('dragend', function(){ dragEl=null; var items=list.querySelectorAll('.sort-item'); for(var i=0;i<items.length;i++){ items[i].classList.remove('dragover'); } });
+  orderNow();
+};
+
+/* ===== 启动 ===== */
+render();
+initIntrospection();
+renderFooter();
+
+</script></body>
+</html>
