@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="思考与判断体系 · 完备版全景图。批判性思维、结构化思维、基线与框架、模型、工程化思维、个人判断体系——一套可不断产生、检验和修正答案的认知操作系统。">
+<title>思考与判断体系 · 完备版全景</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="index">
+
+<!-- ========= 顶栏 ========= -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">思考与判断体系</a>
+    <nav class="navlinks" aria-label="主导航"></nav>
+    <button class="theme-btn" type="button" aria-label="切换主题">☾ 暗色</button>
+  </div>
+</header>
+
+<div class="page-shell">
+<main class="page-main">
+
+  <!-- ========= 全景图（图先于文） ========= -->
+  <section class="sec sec-anchor" id="sec-overview" aria-label="体系总图">
+    <div class="diagram" id="diagram">
+      <div class="diagram-tools">
+        <button class="theme-btn" id="dgToggleMeta" type="button">展开元层</button>
+        <span class="hint" style="font-size:0.8125rem;color:var(--c-fg-3);margin-left:8px;">
+          鼠标悬停查看层描述，点击进入对应主题；元层可折叠。
+        </span>
+      </div>
+    </div>
+    <p class="note" style="font-size:0.8125rem;color:var(--c-fg-3);margin-top:8px;">
+      <b>图 1 · 完备版体系总图。</b>左侧纵向<b>靛蓝</b>色带表示<b>批判性思维贯穿全程</b>——它从第一秒就存在，不是某个环节之后的步骤；<b>砖橙</b>虚线回路表达"持续迭代"——反馈/反证/修正→沉淀→回到元层重新自检。
+    </p>
+  </section>
+
+  <!-- ========= Hero 文案 ========= -->
+  <section class="hero">
+    <h1>思考与判断体系</h1>
+    <p class="hsub">完备版 · 第零层元层 + 五层体系 + 对话应用层</p>
+    <p class="hcore">不是给自己建立一套"正确答案"，而是建立一套<b>能够不断产生、检验和修正答案的系统</b>——独立面对问题、分析问题、检验问题、形成判断，并与他人进行高质量交流的认知操作系统。</p>
+    <p class="hmeta">六个话题，一条链条：<b>批判性思维 → 结构化思维 → 基线与框架 → 模型与工程化 → 判断体系 → 对话实践</b>。</p>
+  </section>
+
+  <!-- ========= 四个根问题 ========= -->
+  <section class="sec sec-anchor" id="sec-roots">
+    <h2>四个根问题</h2>
+    <p>整套体系最终可以压缩为四个根问题——前三个来自主文档，第四个（元问题）由"双轨引擎"补充。</p>
+    <div class="rootq" data-bind="root-questions"></div>
+  </section>
+
+  <!-- ========= 主线流程 ========= -->
+  <section class="sec sec-anchor" id="sec-mainline">
+    <h2>体系主线（完备版）</h2>
+    <p>从面对现实到循环迭代的完整路径；hover 每一步查看含义，<span style="color:var(--c-primary);font-weight:600;">第 2 / 9 / 11 步</span>为"hot"步骤（关注点）。</p>
+    <div class="mainline" data-bind="mainline"></div>
+    <blockquote class="quote-blue">主线一句话：不是给自己建立一套"正确答案"，而是建立一套能够不断<b>产生、检验和修正答案</b>的系统。</blockquote>
+  </section>
+
+  <!-- ========= 六层链条表（行 hover 联动） ========= -->
+  <section class="sec sec-anchor" id="sec-chain">
+    <h2>六层链条：每一层解决什么问题</h2>
+    <p>悬停表格行可联动上方全景图——视觉锚点保持一致，是站点"探索感"的关键来源。</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%">层</th>
+            <th style="width:32%">解决的问题</th>
+            <th>核心区分</th>
+          </tr>
+        </thead>
+        <tbody data-bind="chain-table"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px;">四者组合的定位：结构化思维<b>组织问题</b>、模型<b>抽象现实</b>、框架<b>规定观察维度</b>、基线<b>控制认知质量</b>。模型 vs 工程化：<b>模型是认知结构，工程化是认知流程</b>。"对话"不作为平行章节，而是横跨五层的<b>应用层</b>，形成闭环。</p>
+  </section>
+
+  <!-- ========= 文档索引 ========= -->
+  <section class="sec sec-anchor" id="sec-index">
+    <h2>文档索引</h2>
+    <p>本站内容来自 <code>thinking_docs/</code> 下 8 份 <code>*-总结.md</code>（原文档均保留不动）；每篇子页即为对应总结的全量入页版本。</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:30%">页面</th>
+            <th style="width:30%">源文档</th>
+            <th style="width:20%">体系位置</th>
+            <th>一句话核心</th>
+          </tr>
+        </thead>
+        <tbody data-bind="docs-index"></tbody>
+      </table>
+    </div>
+    <p class="note" style="font-size:0.8125rem;color:var(--c-fg-3);margin-top:8px;">
+      阅读路径建议：沿顶部导航条按 <b>第一层 → 第二层 → 第三层 → 对话 → 第五层 → 元层 → 沉淀实例</b> 的顺序，即按体系逻辑走完整条路径。
+    </p>
+  </section>
+
+  <nav class="prevnext" aria-label="页面导航"></nav>
+</main>
+</div>
+
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/diagram.js"></script>
+<script src="assets/js/index.js"></script>
+</body>
+</html>
