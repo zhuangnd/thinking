@@ -483,10 +483,27 @@ table.tbl tr[data-layer] { cursor: pointer; }
   gap: var(--s-3);
   align-items: center;
   margin-bottom: var(--s-4);
+  flex-wrap: wrap;
 }
 .diagram-tools .hint {
   font-size: 0.8125rem;
   color: var(--c-fg-3);
+}
+.diagram-tools button {
+  appearance: none;
+  border: 1px solid var(--c-primary);
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  border-radius: var(--r-md);
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.diagram-tools button:hover {
+  background: var(--c-primary);
+  color: var(--c-bg-card);
 }
 .dg-svg { display: block; width: 100%; height: auto; }
 
@@ -514,9 +531,19 @@ table.tbl tr[data-layer] { cursor: pointer; }
 
 .dg-no { font-size: 11px; fill: var(--c-fg-3); font-family: var(--f-sans); }
 .dg-name { font-size: 16px; font-weight: 600; fill: var(--c-fg); font-family: var(--f-sans); }
-.dg-go { font-size: 11px; fill: var(--c-primary); font-family: var(--f-sans); }
+.dg-go { font-size: 11px; fill: var(--c-primary); font-family: var(--f-sans); opacity: 0; transition: opacity 0.15s ease; }
+.dg-layer-link:hover .dg-go { opacity: 1; }
 
-.dg-band-line { stroke: var(--c-primary); stroke-width: 6; opacity: 0.18; }
+.dg-strip { opacity: 0.85; }
+.dg-strip-1 { fill: var(--layer1); }
+.dg-strip-2 { fill: var(--layer2); }
+.dg-strip-3 { fill: var(--layer3); }
+.dg-strip-4 { fill: var(--layer4); }
+.dg-strip-5 { fill: var(--layer5); }
+.dg-strip-app { fill: var(--layerApp); }
+.dg-strip-0 { fill: var(--c-meta); opacity: 0.7; }
+
+.dg-band-line { stroke: var(--c-primary); stroke-width: 14; opacity: 0.10; }
 .dg-band-label { font-size: 11px; fill: var(--c-primary); font-family: var(--f-sans); font-weight: 600; letter-spacing: 0.05em; }
 
 .dg-arrow { stroke: var(--c-rule-strong); stroke-width: 1.5; fill: none; }
