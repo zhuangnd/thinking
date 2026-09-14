@@ -424,6 +424,8 @@
         if (n) window.location.href = n.page;
       });
       canvas.addEventListener('wheel', function (ev) {
+        /* 普通滚轮＝页面滚动（不拦截）；⌘/Ctrl+滚轮（含触控板捏合，系统自动带 ctrlKey）＝星图缩放 */
+        if (!ev.ctrlKey && !ev.metaKey) return;
         ev.preventDefault();
         var p = canvasPos(ev);
         zoomAt(p.x, p.y, Math.exp(-ev.deltaY * 0.0011));
@@ -445,8 +447,10 @@
         ev.preventDefault();
         if (ev.touches.length === 1 && dragging) {
           var t = ev.touches[0];
+          var dx = t.clientX - lastX, dy = t.clientY - lastY;
           if (Math.hypot(t.clientX - downX, t.clientY - downY) > 6) moved = true;
-          view.tx += t.clientX - lastX; view.ty += t.clientY - lastY;
+          /* 纵向滑动交还页面滚动（配合 CSS touch-action: pan-y），横向拖拽才平移星图 */
+          if (Math.abs(dx) > Math.abs(dy)) view.tx += dx;
           lastX = t.clientX; lastY = t.clientY;
           requestRender();
         } else if (ev.touches.length === 2 && pinchD > 0) {
@@ -493,6 +497,7 @@
         if (REDUCED) render();
       },
       fit: fit,
+      getView: function () { return { scale: view.scale, tx: view.tx, ty: view.ty }; },
       nodeById: nodeById,
       destroy: function () {
         destroyed = true;

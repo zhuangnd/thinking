@@ -79,7 +79,7 @@
       var na = el('a', 'next',
         '<span class="pn-lab">从第一颗星开始 · ' + next.layerName + ' →</span><span class="pn-t">' + next.short + '</span>');
       na.href = next.file;
-      var pa = el('a', null, '<span class="pn-lab">提示</span><span class="pn-t">拖拽星图 · 滚轮缩放 · 点击节点 · 双击进入</span>');
+      var pa = el('a', null, '<span class="pn-lab">提示</span><span class="pn-t">拖拽星图 · ⌘/Ctrl+滚轮缩放 · 点击节点 · 双击进入</span>');
       pa.href = '#constCanvas';
       foot.appendChild(pa); foot.appendChild(na);
     } else {
