@@ -45,8 +45,8 @@ nav.global a:hover{color:var(--text); border-color:var(--line2);}
 nav.global a.cur{color:#0B1020; background:var(--accent); border-color:transparent; font-weight:600;}
 
 /* ===== 通用卡片 ===== */
-.card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin-bottom:20px;}
-.card h2{font-family:var(--serif); font-size:18px; margin-bottom:4px; display:flex; align-items:center; gap:9px;}
+.card{background:linear-gradient(180deg, var(--panel2), var(--panel)); border:1px solid var(--line2); border-radius:16px; padding:16px 18px; margin-bottom:16px; box-shadow:0 12px 28px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.05);}
+.card h2{font-family:var(--serif); font-size:17px; margin-bottom:4px; display:flex; align-items:center; gap:9px;}
 .card h2 .num{color:var(--accent); font-size:13px; letter-spacing:1px; font-family:var(--sans);}
 .card .note{color:var(--dim); font-size:13px; margin-bottom:14px;}
 .sechead{font-family:var(--serif); font-size:21px; font-weight:900; margin:34px 0 6px;}
@@ -61,6 +61,7 @@ nav.global a.cur{color:#0B1020; background:var(--accent); border-color:transpare
 .chip[data-lyr="l2"].active{background:var(--l2);} .chip[data-lyr="l3"].active{background:var(--l3);}
 .chip[data-lyr="l4"].active{background:var(--l4);} .chip[data-lyr="l5"].active{background:var(--l5);}
 .chip[data-lyr="io"].active{background:var(--io);}
+.chip[data-lyr="none"].active{background:var(--io); color:#0B1020; box-shadow:0 0 0 2px rgba(248,250,252,.35);}
 .chip.done{border-color:#3A4B6E; color:var(--text);}
 .controls{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px;}
 .btn{min-height:44px; min-width:66px; border:1px solid var(--line); background:var(--panel2); color:var(--text); border-radius:10px; padding:8px 18px; font-size:14px; cursor:pointer; transition:all .15s; font-family:var(--sans);}
@@ -74,42 +75,43 @@ nav.global a.cur{color:#0B1020; background:var(--accent); border-color:transpare
 /* ===== 主页：层堆栈 + 详情 ===== */
 .main{display:grid; grid-template-columns:minmax(320px,430px) 1fr; gap:20px; margin-bottom:20px; align-items:start;}
 .stack{display:flex; flex-direction:column; gap:8px;}
-.layer{min-height:54px; display:flex; align-items:center; gap:12px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:8px 14px; cursor:pointer; user-select:none; transition:transform .15s, box-shadow .15s, border-color .15s, opacity .2s; font-family:var(--sans); color:var(--text); text-align:left; width:100%;}
+.layer{min-height:42px; display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:11px; background:var(--panel2); padding:5px 12px; cursor:pointer; user-select:none; transition:transform .15s, box-shadow .15s, border-color .15s, opacity .2s; font-family:var(--sans); color:var(--text); text-align:left; width:100%;}
 .layer:hover{transform:translateX(4px);}
 .layer.sel{border-color:currentColor; box-shadow:0 0 0 2px currentColor;}
 .layer.dim{opacity:.3;}
-.layer .dot{width:12px; height:12px; border-radius:50%; flex:none;}
-.layer .tt{font-weight:700; font-size:14px;}
-.layer .q{color:var(--dim); font-size:12.5px; margin-left:auto; text-align:right;}
+.layer .dot{width:11px; height:11px; border-radius:50%; flex:none;}
+.layer .tt{font-weight:700; font-size:13.5px;}
+.layer .q{color:var(--dim); font-size:12px; margin-left:auto; text-align:right;}
 .layer.l0{color:var(--l0);} .layer.l1{color:var(--l1);} .layer.l2{color:var(--l2);}
 .layer.l3{color:var(--l3);} .layer.l4{color:var(--l4);} .layer.l5{color:var(--l5);}
 .layer.l0 .dot{background:var(--l0);} .layer.l1 .dot{background:var(--l1);} .layer.l2 .dot{background:var(--l2);}
 .layer.l3 .dot{background:var(--l3);} .layer.l4 .dot{background:var(--l4);} .layer.l5 .dot{background:var(--l5);}
 .layer.io{color:var(--io); border-style:dashed;}
 .layer.io .dot{background:var(--io);}
-.stackfoot{margin-top:8px; color:var(--faint); font-size:12px; text-align:center;}
-#detail{min-height:430px;}
-.d-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.stackfoot{margin-top:4px; color:var(--faint); font-size:11px; text-align:center;}
+#detail{min-height:320px;}
+.d-head{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
 .d-dot{width:14px; height:14px; border-radius:50%; flex:none;}
-.d-title{font-size:20px; font-weight:900; font-family:var(--serif);}
-.d-q{color:var(--dim); font-size:14.5px; margin-bottom:14px; border-left:3px solid currentColor; padding-left:11px;}
-.d-sec{margin-bottom:14px;}
-.d-sec h4{font-size:12px; letter-spacing:1px; color:var(--dim); margin-bottom:6px; font-family:var(--sans);}
+.d-title{font-size:18px; font-weight:900; font-family:var(--serif);}
+.d-q{color:var(--dim); font-size:13.5px; margin-bottom:10px; border-left:3px solid currentColor; padding-left:11px;}
+.d-sec{margin-bottom:10px;}
+.d-sec h4{font-size:11.5px; letter-spacing:1px; color:var(--dim); margin-bottom:4px; font-family:var(--sans);}
 .d-sec ul{list-style:none; display:flex; flex-wrap:wrap; gap:7px;}
 .d-sec li{background:var(--panel3); border:1px solid var(--line); border-radius:8px; padding:5px 11px; font-size:13px;}
 .d-sec .big{font-size:14px; line-height:1.7;}
 .d-pages{display:flex; flex-wrap:wrap; gap:9px;}
-.d-page{border:1px solid var(--line); border-radius:10px; padding:8px 13px; font-size:13px; background:var(--panel2);}
-.d-page small{display:block; color:var(--faint); font-size:11px;}
+.d-page{border:1px solid var(--line); border-radius:10px; padding:8px 13px; font-size:13px; background:var(--panel2); color:var(--text); text-decoration:none; display:inline-block; transition:border-color .15s, background .15s;}
+.d-page:hover{border-color:var(--line2); background:var(--panel3);}
+.d-page small{display:block; color:var(--dim); font-size:11px;}
 
 /* ===== 根问题 ===== */
 .rq-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px;}
-.rq{min-height:100px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:13px 15px; cursor:pointer; user-select:none; transition:border-color .15s, box-shadow .15s; text-align:left; font-family:var(--sans); color:var(--text);}
+.rq{min-height:78px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:10px 14px; cursor:pointer; user-select:none; transition:border-color .15s, box-shadow .15s; text-align:left; font-family:var(--sans); color:var(--text);}
 .rq:hover{border-color:var(--line2);}
 .rq.sel{border-color:var(--accent); box-shadow:0 0 0 2px rgba(251,191,36,.25);}
-.rq .t{font-size:16px; font-weight:800; margin-bottom:2px; font-family:var(--serif);}
-.rq .d{color:var(--dim); font-size:12.5px;}
-#rq-result{min-height:60px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:11px 15px; font-size:13.5px; color:var(--dim);}
+.rq .t{font-size:15px; font-weight:800; margin-bottom:2px; font-family:var(--serif);}
+.rq .d{color:var(--dim); font-size:12px;}
+#rq-result{min-height:42px; border:1px solid var(--line); border-radius:10px; background:var(--panel2); padding:9px 13px; font-size:13px; color:var(--dim);}
 #rq-result b{color:var(--text);}
 
 /* ===== 子页入口 ===== */
@@ -122,9 +124,21 @@ nav.global a.cur{color:#0B1020; background:var(--accent); border-color:transpare
 .topic .src{color:var(--faint); font-size:11px; margin-top:7px;}
 
 /* ===== 关联图谱 ===== */
-.graphbox{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:10px; overflow:hidden;}
+.graphbox{border:1px solid var(--line); border-radius:12px; background:var(--panel2); padding:10px 10px 6px; overflow:hidden;}
 .graphbox svg{display:block; width:100%; height:auto;}
 .graphbox .g-legend{color:var(--faint); font-size:11.5px; padding:4px 8px 2px;}
+.graphbox .ge{transition:opacity .18s;}
+.graphbox .g-node{transition:opacity .18s;}
+.graphbox .g-node.dim{opacity:.12;}
+.graphbox .ge.dim{opacity:.05;}
+.graphbox .ge.hl{stroke:var(--accent) !important; stroke-width:2.4 !important; opacity:1 !important;}
+.g-hint{color:var(--dim); font-size:12.5px; padding:8px 6px 2px; min-height:22px; border-top:1px dashed var(--line); margin-top:6px;}
+.g-hint b{color:var(--text);}
+.g-hint a{color:var(--accent); text-decoration:none;}
+.g-hint a:hover{text-decoration:underline;}
+@media (min-width:760px){
+  .graphbox svg{width:auto; height:min(400px,50vh); max-width:100%; margin:0 auto;}
+}
 
 /* ===== 子页模板 ===== */
 .bc{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:12.5px; color:var(--faint); margin-bottom:14px;}
@@ -817,7 +831,7 @@ function renderHome(){
   /* ④ 子页入口 */
   html += '<section class="card"><h2><span class="num">04</span>七个子主题页入口</h2><p class="note">对应 7 份总结文档，按体系层序排列。每个入口通向独立子页：统一模板 + 每页特色交互组件。</p><div class="topic-grid" id="topicGrid"></div></section>';
   /* ⑤ 关联图谱 */
-  html += '<section class="card"><h2><span class="num">05</span>主题关联图谱</h2><p class="note">七个子主题之间的双向关系边（与各页底部反链同源）。点击节点进入对应子页，右侧列出关系明细。</p><div class="graphbox"><svg id="relGraph" viewBox="0 0 560 420" role="img" aria-label="主题关联图谱"></svg></div><div id="relList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:12px;"></div></section>';
+  html += '<section class="card"><h2><span class="num">05</span>主题关联图谱</h2><p class="note">七个子主题之间的双向关系边（与各页底部反链同源）。悬停任一节点：高亮其关联主题与关系说明；点击节点进入对应子页。</p><div class="graphbox"><svg id="relGraph" viewBox="0 0 560 420" role="img" aria-label="主题关联图谱"></svg><div class="g-hint" id="relHint">悬停节点：高亮关联主题与关系说明；点击节点进入对应子页。</div></div></section>';
   app.innerHTML = html;
   loopRunner('homeLoop', false);
   bindStack();
@@ -883,10 +897,9 @@ function renderTopicGrid(){
     return '<a class="topic" href="#/t/'+id+'"><span class="badge" style="background:'+t.badgeBg+'">'+C.esc(t.badge)+'</span><div class="nm">'+C.esc(t.nav)+'</div><div class="ess">'+C.esc(t.core.length>42?t.core.slice(0,42)+'…':t.core)+'</div><div class="src">来源：'+C.esc(t.src)+'</div></a>';
   }).join('');
 }
-/* 关联图谱：SVG 圆形布局 + 关系明细 */
+/* 关联图谱：SVG 圆形布局 + 悬停高亮（替代关系明细列表） */
 function renderRelGraph(){
   var svg = document.getElementById('relGraph'); if(!svg) return;
-  var ns = 'http://www.w3.org/2000/svg';
   var order = ['thinker-traits','critical-thinking','dialogue','baselines','structure-engineering','judgment-system','ai-boundary'];
   var n = order.length, cx=280, cy=205, R=150;
   var pos = {};
@@ -899,21 +912,62 @@ function renderRelGraph(){
   for(var i=0;i<edges.length;i++){
     var e = edges[i];
     var p1 = pos[e.from], p2 = pos[e.to];
-    var mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
-    edgeLines += '<line x1="'+p1[0]+'" y1="'+p1[1]+'" x2="'+p2[0]+'" y2="'+p2[1]+'" stroke="#33435F" stroke-width="1.2" opacity="0.75"><title>'+C.esc(SITE.topics[e.from].nav+' ↔ '+SITE.topics[e.to].nav+'：'+e.label)+'</title></line>';
+    edgeLines += '<line class="ge" data-f="'+e.from+'" data-t="'+e.to+'" x1="'+p1[0]+'" y1="'+p1[1]+'" x2="'+p2[0]+'" y2="'+p2[1]+'" stroke="#33435F" stroke-width="1.2" opacity="0.75"><title>'+C.esc(SITE.topics[e.from].nav+' ↔ '+SITE.topics[e.to].nav+'：'+e.label)+'</title></line>';
   }
   var nodes = '';
   order.forEach(function(id){
     var t = SITE.topics[id];
     var x = pos[id][0], y = pos[id][1];
-    nodes += '<a href="#/t/'+id+'" style="cursor:pointer;"><circle cx="'+x+'" cy="'+y+'" r="34" fill="'+t.badgeBg+'" opacity="0.92"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#0B1020">'+C.esc(shortName(t.nav))+'</text></a>';
+    nodes += '<a href="#/t/'+id+'" style="cursor:pointer;"><g class="g-node" data-id="'+id+'"><circle cx="'+x+'" cy="'+y+'" r="26" fill="'+t.badgeBg+'" opacity="0.92"/><text x="'+x+'" y="'+(y+4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#0B1020" pointer-events="none">'+C.esc(shortName(t.nav))+'</text></g></a>';
   });
   svg.innerHTML = edgeLines + nodes;
-  var list = document.getElementById('relList');
-  if(list){
-    list.innerHTML = edges.map(function(e){
-      return '<div class="ix-panel" style="min-height:auto;padding:9px 12px;"><a href="#/t/'+e.from+'" style="color:var(--text);text-decoration:none;">'+C.esc(SITE.topics[e.from].nav)+'</a> ↔ <a href="#/t/'+e.to+'" style="color:var(--text);text-decoration:none;">'+C.esc(SITE.topics[e.to].nav)+'</a><div style="font-size:12px;color:var(--faint);">'+C.esc(e.label)+'</div></div>';
-    }).join('');
+  var hint = document.getElementById('relHint');
+  if(!hint) return;
+  function neighbors(id){
+    var set = [id];
+    edges.forEach(function(e){
+      if(e.from===id && set.indexOf(e.to)<0) set.push(e.to);
+      if(e.to===id && set.indexOf(e.from)<0) set.push(e.from);
+    });
+    return set;
+  }
+  function focusNode(id){
+    var ns = neighbors(id);
+    var all = svg.querySelectorAll('.g-node');
+    for(var i=0;i<all.length;i++){ all[i].classList.toggle('dim', ns.indexOf(all[i].getAttribute('data-id'))<0); }
+    var es = svg.querySelectorAll('.ge');
+    for(var j=0;j<es.length;j++){
+      var inc = es[j].getAttribute('data-f')===id || es[j].getAttribute('data-t')===id;
+      es[j].classList.toggle('hl', inc);
+      es[j].classList.toggle('dim', !inc);
+    }
+    var rels = [];
+    edges.forEach(function(e){ if(e.from===id || e.to===id) rels.push(e); });
+    var t = SITE.topics[id];
+    var h = '<b>'+C.esc(t.nav)+'</b> 的关联 · <a href="#/t/'+id+'">进入子页 →</a>';
+    h += '<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:5px 18px;">'+
+      rels.map(function(e){
+        var other = e.from===id ? e.to : e.from;
+        var o = SITE.topics[other];
+        return '<span style="font-size:12.5px;"><a href="#/t/'+other+'">'+C.esc(o.nav)+'</a> <span style="color:var(--faint);">↔</span> '+C.esc(e.label)+'</span>';
+      }).join('')+'</div>';
+    hint.innerHTML = h;
+  }
+  function resetGraph(){
+    var all = svg.querySelectorAll('.g-node');
+    for(var i=0;i<all.length;i++){ all[i].classList.remove('dim'); }
+    var es = svg.querySelectorAll('.ge');
+    for(var j=0;j<es.length;j++){ es[j].classList.remove('hl','dim'); }
+    hint.innerHTML = '悬停节点：高亮关联主题与关系说明；点击节点进入对应子页。';
+  }
+  var gnodes = svg.querySelectorAll('.g-node');
+  for(var k=0;k<gnodes.length;k++){
+    (function(g){
+      g.addEventListener('mouseenter', function(){ focusNode(g.getAttribute('data-id')); });
+      g.addEventListener('mouseleave', resetGraph);
+      var a = g.parentNode;
+      if(a){ a.addEventListener('focus', function(){ focusNode(g.getAttribute('data-id')); }); a.addEventListener('blur', resetGraph); }
+    })(gnodes[k]);
   }
 }
 function shortName(nav){
