@@ -14,9 +14,14 @@
   <canvas id="constCanvas" aria-label="认知星座图：拖拽平移，按住 Command 或 Ctrl 滚轮缩放（触控板捏合），点击节点查看要点，双击进入主题页"></canvas>
 
   <div class="hh-overlay">
-    <h1 class="hh-title">思考与判断体系</h1>
-    <p class="hh-sub">COGNITIVE CONSTELLATION · 完备版</p>
-    <p class="hh-core">不是给自己建立一套"正确答案"，而是建立一套<b>能够不断产生、检验和修正答案的系统</b>——<br class="br-wide">独立面对问题、分析问题、检验问题、形成判断，并与他人进行高质量交流的认知操作系统。</p>
+    <div class="hh-head" id="hhHead" tabindex="0" role="button" aria-expanded="false" aria-label="展开体系核心介绍">
+      <h1 class="hh-title">思考与判断体系</h1>
+      <span class="hh-exp">悬停展开 <i class="chev" aria-hidden="true">▾</i></span>
+      <div class="hh-panel" id="hhPanel" aria-hidden="true">
+        <p class="hh-sub">COGNITIVE CONSTELLATION · 完备版</p>
+        <p class="hh-core">不是给自己建立一套"正确答案"，而是建立一套<b>能够不断产生、检验和修正答案的系统</b>——<br class="br-wide">独立面对问题、分析问题、检验问题、形成判断，并与他人进行高质量交流的认知操作系统。</p>
+      </div>
+    </div>
   </div>
 
   <div class="hh-enter">
@@ -50,8 +55,6 @@
       <span><i class="loop"></i>迭代回路</span>
     </div>
   </div>
-
-  <div class="scroll-cue">向 下 探 索 ↓</div>
 
   <!-- 节点内容卡 / hover 浮层 -->
   <div class="const-card" id="constCard" aria-live="polite"></div>
@@ -240,6 +243,24 @@
     activeGroup = null;
     app.setHighlight(null);
     app.fit();
+  });
+
+  /* 标题抽屉：悬停由 CSS 控制；点击钉住/收起（触屏与键盘），Escape 收起 */
+  var hhHead = document.getElementById('hhHead');
+  var hhPanel = document.getElementById('hhPanel');
+  function setOpen(open) {
+    hhHead.classList.toggle('open', open);
+    hhHead.setAttribute('aria-expanded', open ? 'true' : 'false');
+    hhPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  }
+  hhHead.addEventListener('click', function () {
+    setOpen(!hhHead.classList.contains('open'));
+  });
+  hhHead.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setOpen(!hhHead.classList.contains('open')); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && hhHead.classList.contains('open')) setOpen(false);
   });
 })();
 </script>

@@ -9,35 +9,38 @@
 
   /* ---------- 星图数据：节点（世界坐标 1400×1000） ---------- */
   var NODES = [
-    { id: 'meta',   x: 1015, y: 165, r: 24, color: '#E2E8F0', label: '双轨引擎',     sub: '第零层 · 元层 · 自反与制衡', page: 'metacognition.html',
+    /* 布局逻辑（按层级与关系）：
+       第零层 meta 置顶居中，凌驾五层之上；主链 crit→struct→base→model→eng→judge→dialog
+       自上而下逐层下降；第三层 base 与 model 同层并排；应用层 dialog 置于右侧中部（横跨五层接口）。 */
+    { id: 'meta',   x: 700,  y: 150, r: 24, color: '#E2E8F0', label: '双轨引擎',     sub: '第零层 · 元层 · 自反与制衡', page: 'metacognition.html',
       desc: '把体系拥有者自身作为分析对象——思考能力已经不是瓶颈，思考的自我约束机制才是。',
       points: ['轨道 A · 放大优势：结构拆解 → 对抗压力 → 尺度迁移', '轨道 B · 反优势制衡：不可解释槽位 · 体验还原 · 低解释密度', '总检验：承认这些不确定性之后，我是否还愿意暂时持有这个判断'],
       tags: ['元规则', '自反', '制衡'] },
-    { id: 'crit',   x: 205,  y: 540, r: 34, color: '#F0A830', label: '批判性思维',   sub: '第一层 · 认知原则（贯穿全程）', page: 'critical-thinking.html',
+    { id: 'crit',   x: 300,  y: 240, r: 34, color: '#F0A830', label: '批判性思维',   sub: '第一层 · 认知原则（贯穿全程）', page: 'critical-thinking.html',
       desc: '不是"批评"而是"审辨"——在接受、形成或改变判断之前，有意识地检查证据、逻辑、前提和不确定性。',
       points: ['审辨 ≠ 怀疑一切：相信到证据允许的程度', '三层次递进：信息批判 → 逻辑批判 → 自我批判', '六问最小模型：日常判断的可操作基线'],
       tags: ['审辨', '证据', '可修正'] },
-    { id: 'struct', x: 430,  y: 400, r: 26, color: '#38BDF8', label: '结构化思维',   sub: '第二层 · 问题处理', page: 'structured-engineering.html',
+    { id: 'struct', x: 520,  y: 380, r: 26, color: '#38BDF8', label: '结构化思维',   sub: '第二层 · 问题处理', page: 'structured-engineering.html',
       desc: '把复杂问题转换为可处理的结构：拆解、分类、抽象、建模、关联、转换、整合。',
       points: ['拆解 → 分类 → 建模 → 转换，看清问题构成', '四层抽象模型：事实 → 功能 → 逻辑 → 原理', '结构化让你深入问题，审辨防止你接受错误前提'],
       tags: ['拆解', '框架', '模型链'] },
-    { id: 'base',   x: 585,  y: 585, r: 26, color: '#4ADE80', label: '基线 + 框架',  sub: '第三层 · 讨论机制', page: 'discussion-baseline.html',
+    { id: 'base',   x: 650,  y: 500, r: 26, color: '#4ADE80', label: '基线 + 框架',  sub: '第三层 · 讨论机制', page: 'discussion-baseline.html',
       desc: '概念 → 标准 → 事实 → 逻辑四条基线，让讨论从"观点碰撞"变成"对象分析"。',
       points: ['四基线：概念定义 · 标准约束 · 事实依据 · 逻辑遵循', '精度模型：基线不变，宽容度随场景变', '认知增量：讨论目标是学习而非说服'],
       tags: ['四基线', '精度', '认知增量'] },
-    { id: 'model',  x: 815,  y: 470, r: 23, color: '#2DD4BF', label: '模型',         sub: '第三层 · 有目的的抽象', page: 'structured-engineering.html',
+    { id: 'model',  x: 840,  y: 500, r: 23, color: '#2DD4BF', label: '模型',         sub: '第三层 · 有目的的抽象', page: 'structured-engineering.html',
       desc: '模型是对现实的有目的抽象——选择变量、建立关系、忽略次要因素。',
       points: ['三类模型链：问题模型 → 信息模型 → 数学模型', '模型三要素：变量 · 关系 · 边界', '最重要的模型往往是最简单的结构模型'],
       tags: ['抽象', '变量·关系·边界'] },
-    { id: 'eng',    x: 935,  y: 680, r: 26, color: '#A78BFA', label: '工程化思维',   sub: '第四层 · 执行机制', page: 'structured-engineering.html',
+    { id: 'eng',    x: 740,  y: 600, r: 26, color: '#A78BFA', label: '工程化思维',   sub: '第四层 · 执行机制', page: 'structured-engineering.html',
       desc: '把依赖临场能力的思考变成稳定、可重复、可检验、可迭代的流程。',
       points: ['经验 → 规则 → 流程 → 模板 → 工具 → 反馈', '人机协同：人成为认知系统的组织者', '结构化笔记：第一个工程化沉淀实例'],
       tags: ['流程', '模板', '迭代'] },
-    { id: 'judge',  x: 680,  y: 850, r: 32, color: '#FB7185', label: '个人判断体系', sub: '第五层 · 最终能力', page: 'judgment-system.html',
+    { id: 'judge',  x: 670,  y: 780, r: 32, color: '#FB7185', label: '个人判断体系', sub: '第五层 · 最终能力', page: 'judgment-system.html',
       desc: '不是观点集合，而是"形成世界观的机制"——独立、持续、可修正地形成判断的认知操作系统。',
       points: ['四层构造：价值优先级 / 证据标准 / 风险态度 / 修正机制', '证据排序：逻辑 > 真实数据 > 经验 = 权威（按领域区分）', '主动可证伪：建判断时写明"出现 A/B/C 我就放弃"'],
       tags: ['机制', '证伪', '纠错回路'] },
-    { id: 'dialog', x: 1170, y: 555, r: 30, color: '#FB923C', label: '对话实践',     sub: '应用层 · 真实世界测试场', page: 'dialogue.html',
+    { id: 'dialog', x: 1140, y: 500, r: 30, color: '#FB923C', label: '对话实践',     sub: '应用层 · 真实世界测试场', page: 'dialogue.html',
       desc: '判断体系若只在内心运行，无法接受真实检验——对话是其真实世界测试场。',
       points: ['骨架：承认合理性 · 批判前提 · 补充变量 · 升维 · 共同思考', '八步闭环：理解→审题→结构化→证据→模型→反证→判断→反馈', '心态：一起探索真相，而非证明谁对'],
       tags: ['对话', '检验', '闭环'] }
@@ -81,7 +84,7 @@
     var arr = [], seed = 42;
     function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
     for (var i = 0; i < 110; i++) {
-      arr.push({ x: rnd() * 1400, y: rnd() * 1000, r: 0.6 + rnd() * 1.3, a: 0.10 + rnd() * 0.30, ph: rnd() * Math.PI * 2 });
+      arr.push({ x: rnd() * 1400, y: rnd() * 1000, r: 1.2 + rnd() * 1.3, a: 0.10 + rnd() * 0.30, ph: rnd() * Math.PI * 2 });
     }
     return arr;
   }
@@ -126,13 +129,26 @@
       });
       return { minX: minX, minY: minY, maxX: maxX, maxY: maxY };
     }
+    /* 顶部安全区：非微缩模式下，为 hh-overlay 标题区让出空间，
+       使初始视图的星图整体下移、略微缩小，不与标题/面板重叠。 */
+    function topSafe() {
+      if (mini) return 0;
+      var ov = document.querySelector('.hh-overlay');
+      if (ov) {
+        var h = ov.getBoundingClientRect().height;
+        if (h > 0) return Math.min(Math.max(h + 26, 90), H * 0.45);
+      }
+      return 110;
+    }
     function fit() {
       var b = worldBounds();
-      var s = Math.min(W / (b.maxX - b.minX), H / (b.maxY - b.minY));
+      var ts = topSafe();
+      var availH = Math.max(200, H - ts);
+      var s = Math.min(W / (b.maxX - b.minX), availH / (b.maxY - b.minY));
       if (mini) s = Math.min(s, H / (b.maxY - b.minY));
       view.scale = s;
       view.tx = W / 2 - (b.minX + b.maxX) / 2 * s;
-      view.ty = H / 2 - (b.minY + b.maxY) / 2 * s;
+      view.ty = ts + availH / 2 - (b.minY + b.maxY) / 2 * s;
       requestRender();
     }
     function toScreen(p) { return { x: p.x * view.scale + view.tx, y: p.y * view.scale + view.ty }; }
@@ -181,8 +197,8 @@
       BG_STARS.forEach(function (s) {
         var p = toScreen(s);
         if (p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20) return;
-        var tw = REDUCED ? 1 : 0.6 + 0.4 * Math.sin(t / 1600 + s.ph);
-        ctx.fillStyle = 'rgba(200,214,235,' + (s.a * tw).toFixed(3) + ')';
+        var tw = REDUCED ? 1 : 0.6 + 0.4 * Math.sin(t / 500 + s.ph);
+        ctx.fillStyle = 'rgba(20,214,235,' + (s.a * tw).toFixed(3) + ')';
         ctx.beginPath(); ctx.arc(p.x, p.y, s.r, 0, Math.PI * 2); ctx.fill();
       });
 
