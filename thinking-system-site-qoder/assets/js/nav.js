@@ -9,7 +9,8 @@
   var PAGES = [
     { id: 'index',  file: 'index.html',                 nav: '全景',   short: '认知星座全景', layerName: '完备版体系总览' },
     { id: 'crit',   file: 'critical-thinking.html',     nav: '认知原则', short: '批判性思维',   layerName: '第一层 · 认知原则' },
-    { id: 'struct', file: 'structured-engineering.html', nav: '问题处理', short: '结构化×工程化', layerName: '第二层 · 问题处理 ＋ 第四层 · 执行机制' },
+    { id: 'struct', file: 'structured-engineering.html', nav: '问题处理', short: '结构化×工程化', layerName: '第二层 · 空间解构 ＋ 第四层 · 执行机制' },
+    { id: 'system', file: 'systems-thinking.html',      nav: '系统演构', short: '系统化思维',   layerName: '第二层 · 动态演构与反馈回路' },
     { id: 'base',   file: 'discussion-baseline.html',   nav: '讨论机制', short: '讨论基线',     layerName: '第三层 · 讨论机制' },
     { id: 'dialog', file: 'dialogue.html',              nav: '对话应用', short: '批判性对话',   layerName: '应用层 · 对话' },
     { id: 'judge',  file: 'judgment-system.html',       nav: '最终能力', short: '判断体系',     layerName: '第五层 · 最终能力' },
