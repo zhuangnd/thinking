@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F1117"/>
+    </radialGradient>
+    <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FCD34D" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#F0A830" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#B45309" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#38BDF8" stroke-opacity="0.2" stroke-width="3"/>
+
+  <!-- System Ring 1 (Outer Cyan) -->
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#38BDF8" stroke-opacity="0.45" stroke-width="4" stroke-dasharray="8 6"/>
+
+  <!-- System Ring 2 (Inner Gold) -->
+  <circle cx="256" cy="256" r="86" fill="none" stroke="#F0A830" stroke-opacity="0.6" stroke-width="5"/>
+
+  <!-- Radial Spoke Lines -->
+  <line x1="256" y1="106" x2="256" y2="256" stroke="#F0A830" stroke-opacity="0.4" stroke-width="3"/>
+  <line x1="406" y1="256" x2="256" y2="256" stroke="#38BDF8" stroke-opacity="0.4" stroke-width="3"/>
+  <line x1="256" y1="406" x2="256" y2="256" stroke="#FB7185" stroke-opacity="0.4" stroke-width="3"/>
+  <line x1="106" y1="256" x2="256" y2="256" stroke="#E2E8F0" stroke-opacity="0.4" stroke-width="3"/>
+
+  <!-- 4 Root Question Nodes -->
+  <!-- Top: Know (Gold) -->
+  <circle cx="256" cy="106" r="18" fill="#F0A830" filter="url(#glow)"/>
+  <circle cx="256" cy="106" r="8" fill="#FFF"/>
+
+  <!-- Right: Think (Cyan) -->
+  <circle cx="406" cy="256" r="18" fill="#38BDF8" filter="url(#glow)"/>
+  <circle cx="406" cy="256" r="8" fill="#FFF"/>
+
+  <!-- Bottom: Judge (Rose) -->
+  <circle cx="256" cy="406" r="18" fill="#FB7185" filter="url(#glow)"/>
+  <circle cx="256" cy="406" r="8" fill="#FFF"/>
+
+  <!-- Left: Calibrate (Silver) -->
+  <circle cx="106" cy="256" r="18" fill="#E2E8F0" filter="url(#glow)"/>
+  <circle cx="106" cy="256" r="8" fill="#FFF"/>
+
+  <!-- Center Core Star (Cognitive Kernel) -->
+  <polygon points="256,206 270,242 306,256 270,270 256,306 242,270 206,256 242,242" fill="#F0A830" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="10" fill="#FFFFFF"/>
+</svg>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="思考与判断体系 · 移动优先 PWA 版——体系全景概览、互动认知实验与沉浸式文档阅读">
+<meta name="theme-color" content="#0F1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="思考体系">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<title>思考与判断体系 · 移动版 PWA</title>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body data-page="index">
+
+<div class="page-shell">
+  <main class="page-main">
+
+    <!-- ============ 1. 移动端全景 Hero 卡片 ============ -->
+    <header class="pwa-hero-card" id="hero">
+      <div class="pwa-hero-tag">✦ COGNITIVE ARCHITECTURE · PWA</div>
+      <h1 class="pwa-hero-title">思考与判断体系</h1>
+      <div class="pwa-hero-sub">A SYSTEM TO GENERATE, TEST & REVISE ANSWERS</div>
+      <div class="pwa-hero-core">
+        不是给自己建立一套“正确答案”，而是建立一套<b style="color:var(--gold);">能够不断产生、检验和修正答案的认知操作系统</b>——独立面对复杂问题、审辨事实、动态演推、果断判断并在实践中持续校准。
+      </div>
+    </header>
+
+    <!-- 体系数据概览条 -->
+    <div class="pwa-stats-bar">
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--gold);">4</div>
+        <div class="stat-label">根问题</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--cyan);">6</div>
+        <div class="stat-label">认知层级</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--c-system);">6</div>
+        <div class="stat-label">系统基模</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--c-l5);">8</div>
+        <div class="stat-label">沉浸文档</div>
+      </div>
+    </div>
+
+    <!-- ============ 2. 四个根问题交互切换 ============ -->
+    <section class="sec" id="sec-rootq">
+      <h2>四个根问题</h2>
+      <p style="font-size:14px;color:var(--ink-2);margin-bottom:12px;">
+        整套体系最终可高度凝练为四个根问题。轻触下方按键，探索不同认知维度的内核：
+      </p>
+
+      <div class="rootq-tabs" role="tablist">
+        <button type="button" class="rq-tab-btn active" data-tab="know" style="--tab-col:var(--c-l1);">
+          <span style="color:var(--c-l1);font-weight:700;">我如何知道？</span>
+          <span class="rq-cat">认识论 · 原则</span>
+        </button>
+        <button type="button" class="rq-tab-btn" data-tab="think" style="--tab-col:var(--c-l2);">
+          <span style="color:var(--c-l2);font-weight:700;">我如何思考？</span>
+          <span class="rq-cat">方法论 · 空间与动态</span>
+        </button>
+        <button type="button" class="rq-tab-btn" data-tab="judge" style="--tab-col:var(--c-l5);">
+          <span style="color:var(--c-l5);font-weight:700;">我如何判断？</span>
+          <span class="rq-cat">实践论 · 决断与对局</span>
+        </button>
+        <button type="button" class="rq-tab-btn" data-tab="calib" style="--tab-col:var(--c-l0);">
+          <span style="color:var(--c-l0);font-weight:700;">如何校准自身？</span>
+          <span class="rq-cat">元认知 · 第四问</span>
+        </button>
+      </div>
+
+      <!-- 动态展示详情卡片 -->
+      <div class="rootq-detail-card" id="rqDetailCard">
+        <div class="rq-dc-head">
+          <div class="rq-dc-title" id="rqDcTitle" style="color:var(--c-l1);">我如何知道？（认识论）</div>
+          <span class="brand-tag" id="rqDcTag">第一层 + 第三层</span>
+        </div>
+        <p class="rq-dc-desc" id="rqDcDesc">
+          以审辨态度对待信息与前提——区分事实与观点，识别隐藏假设，按领域匹配证据权重，不轻信未经检验的前提。只有信息源可信、讨论基线牢固，后续推导才有意义。
+        </p>
+        <div class="rq-dc-links" id="rqDcLinks">
+          <a href="critical-thinking.html" class="rq-dc-link">批判性思维 →</a>
+          <a href="discussion-baseline.html" class="rq-dc-link">讨论基线 →</a>
+          <a href="judgment-system.html" class="rq-dc-link">证据层级 →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. 体系六层纵深架构 ============ -->
+    <section class="sec" id="sec-hierarchy">
+      <h2>六层认知大厦</h2>
+      <p style="font-size:14px;color:var(--ink-2);margin-bottom:14px;">
+        从底层的自我制衡，到原则检验、空间解构、动态推演、规则达成，直至最终判断能力：
+      </p>
+
+      <div class="layer-cards-flow">
+        <!-- 第零层 -->
+        <a href="metacognition.html" class="layer-card">
+          <div class="layer-card-head">
+            <span class="layer-card-title">第零层 · 元层</span>
+            <span class="layer-card-tag" style="background:rgba(226,232,240,0.15);color:var(--c-l0);">L0 META</span>
+          </div>
+          <div class="layer-card-q">核心关切：体系如何防止被自身优势带偏？</div>
+          <div class="layer-card-desc">
+            建立双轨引擎与反优势机制。思考能力强大者最容易陷入过度合理化；必须设立不可解释槽位与盲区自省清单。
+          </div>
+          <div class="layer-card-tools">
+            <span>双轨制衡</span><span>反优势机制</span><span>不可解释槽位</span>
+          </div>
+        </a>
+
+        <!-- 第一层 -->
+        <a href="critical-thinking.html" class="layer-card">
+          <div class="layer-card-head">
+            <span class="layer-card-title">第一层 · 认知原则</span>
+            <span class="layer-card-tag" style="background:rgba(240,168,48,0.15);color:var(--c-l1);">L1 PRINCIPLE</span>
+          </div>
+          <div class="layer-card-q">核心关切：我能相信这个问题与前提吗？</div>
+          <div class="layer-card-desc">
+            批判性思维不是挑刺，而是审辨——“只相信到证据允许的程度”。审视隐藏假设，拒绝预置结论。
+          </div>
+          <div class="layer-card-tools">
+            <span>审题意识</span><span>假设穿透</span><span>证据强度匹配</span>
+          </div>
+        </a>
+
+        <!-- 第二层 -->
+        <div style="display:grid;gap:12px;">
+          <a href="structured-engineering.html" class="layer-card">
+            <div class="layer-card-head">
+              <span class="layer-card-title">第二层 · 空间解构</span>
+              <span class="layer-card-tag" style="background:rgba(56,189,248,0.15);color:var(--c-l2);">L2 STRUCTURE</span>
+            </div>
+            <div class="layer-card-q">核心关切：这个问题由哪些要素与边界构成？</div>
+            <div class="layer-card-desc">
+              结构化思维把无序混沌降维为有序结构。明确定义、设定边界、MECE正交分类并识别核心矛盾。
+            </div>
+            <div class="layer-card-tools">
+              <span>MECE原则</span><span>四层抽象</span><span>模型链</span>
+            </div>
+          </a>
+
+          <a href="systems-thinking.html" class="layer-card">
+            <div class="layer-card-head">
+              <span class="layer-card-title">第二层 · 动态演构</span>
+              <span class="layer-card-tag" style="background:rgba(6,182,212,0.15);color:var(--c-system);">L2 SYSTEMS</span>
+            </div>
+            <div class="layer-card-q">核心关切：各要素随时间怎样产生反馈与反直觉后果？</div>
+            <div class="layer-card-desc">
+              系统化思维跳脱线性因果。借助存量流量、延迟与正负反馈回路，化解政策阻抗并寻找高阶杠杆解。
+            </div>
+            <div class="layer-card-tools">
+              <span>反馈回路</span><span>六大基模</span><span>杠杆阶梯</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- 第三层 -->
+        <a href="discussion-baseline.html" class="layer-card">
+          <div class="layer-card-head">
+            <span class="layer-card-title">第三层 · 讨论机制</span>
+            <span class="layer-card-tag" style="background:rgba(74,222,128,0.15);color:var(--c-l3);">L3 BASELINE</span>
+          </div>
+          <div class="layer-card-q">核心关切：我们按什么规则协作并过滤认知噪声？</div>
+          <div class="layer-card-desc">
+            讨论的首要目标是获得认知增量而非说服对方。设立四项基线审查讨论资格，坚决避免三大禁手。
+          </div>
+          <div class="layer-card-tools">
+            <span>四基线</span><span>三大禁手</span><span>认知增量</span>
+          </div>
+        </a>
+
+        <!-- 第四层 -->
+        <a href="notes.html" class="layer-card">
+          <div class="layer-card-head">
+            <span class="layer-card-title">第四层 · 执行与沉淀</span>
+            <span class="layer-card-tag" style="background:rgba(167,139,250,0.15);color:var(--c-l4);">L4 EXECUTION</span>
+          </div>
+          <div class="layer-card-q">核心关切：如何把灵光乍现转化为稳定可复现的机制？</div>
+          <div class="layer-card-desc">
+            工程化思维关注闭环与容错；结构化笔记作为判断体系的显性快照，为跨会话记忆与迭代提供物理载体。
+          </div>
+          <div class="layer-card-tools">
+            <span>工程闭环</span><span>结构化笔记</span><span>快照迭代</span>
+          </div>
+        </a>
+
+        <!-- 第五层 -->
+        <a href="judgment-system.html" class="layer-card">
+          <div class="layer-card-head">
+            <span class="layer-card-title">第五层 · 最终能力</span>
+            <span class="layer-card-tag" style="background:rgba(251,113,133,0.15);color:var(--c-l5);">L5 JUDGMENT</span>
+          </div>
+          <div class="layer-card-q">核心关切：在不确定世界中如何下注与承担后果？</div>
+          <div class="layer-card-desc">
+            真正的判断体系不是一组静态观点的集合，而是“产生世界观并承担风险的机制”。明确证伪条件与止损线。
+          </div>
+          <div class="layer-card-tools">
+            <span>四层构造</span><span>证伪条件</span><span>风险承担</span>
+          </div>
+        </a>
+
+        <!-- 应用层 -->
+        <a href="dialogue.html" class="layer-card" style="border-left:3px solid var(--c-ld);">
+          <div class="layer-card-head">
+            <span class="layer-card-title">应用层 · 真实测试场</span>
+            <span class="layer-card-tag" style="background:rgba(251,146,60,0.15);color:var(--c-ld);">APPLICATION</span>
+          </div>
+          <div class="layer-card-q">核心关切：体系如何在与真实人类交流中接受撞击？</div>
+          <div class="layer-card-desc">
+            批判性对话不是论辩辩论，而是把对方推论的前提显性化，共同探讨盲区。对话产生的数据反哺第零层元认知。
+          </div>
+          <div class="layer-card-tools">
+            <span>前提显性化</span><span>对抗式协作</span><span>迭代回路</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 4. 体系主线闭环 (10 步演进) ============ -->
+    <section class="sec" id="sec-mainline">
+      <h2>主线推进闭环</h2>
+      <p style="font-size:14px;color:var(--ink-2);margin-bottom:12px;">
+        从面对现实问题到循环迭代的完整路径：
+      </p>
+
+      <div class="mainline-stepper">
+        <div class="ml-step">
+          <div class="ml-step-idx">01</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">面对现实 · 审辨审题</div>
+            <div class="ml-step-sub">不预置结论，检验题干本身的隐藏假设与合法性。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">02</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">空间解构 · 要素归因</div>
+            <div class="ml-step-sub">界定边界，运用 MECE 划分要素，锁定核心主次矛盾。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">03</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">动态演推 · 寻找回路</div>
+            <div class="ml-step-sub">识别存量流量与延迟效应，警惕治标不治本的基模陷阱。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">04</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">基线校验 · 过滤噪声</div>
+            <div class="ml-step-sub">以四项认知基线筛选有价值信息，剔除情绪宣泄与逻辑谬误。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">05</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">模型压缩 · 穿透抽象</div>
+            <div class="ml-step-sub">提炼关键少数变量，在现象、模型、机制与原则间自由穿梭。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">06</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">证据校对 · 做出判断</div>
+            <div class="ml-step-sub">结合领域证据强弱形成结论，务必附带明确的证伪条件。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">07</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">实战对话 · 汲取增量</div>
+            <div class="ml-step-sub">在真实沟通中检验逻辑坚韧度，将碰撞转化为认知增量。</div>
+          </div>
+        </div>
+        <div class="ml-step">
+          <div class="ml-step-idx">08</div>
+          <div class="ml-step-content">
+            <div class="ml-step-name">双轨制衡 · 修正迭代 ↺</div>
+            <div class="ml-step-sub">启动反优势机制纠正盲点，更新结构化笔记快照，开启下一轮认知演进。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. 核心交互实验室 ============ -->
+    <section class="sec" id="sec-lab">
+      <h2>核心交互实验室</h2>
+      <p style="font-size:14px;color:var(--ink-2);margin-bottom:14px;">
+        移动端优化的可触控互动组件，直接在操作中体会思维工具的运转逻辑：
+      </p>
+
+      <div class="interact-hub-grid">
+        <a href="structured-engineering.html#lab-chain" class="ih-card">
+          <div class="ih-icon" style="color:var(--cyan);">⛓</div>
+          <div class="ih-info">
+            <h4>模型链排序挑战</h4>
+            <p>将离散认知模型组装为严密推演链条</p>
+          </div>
+        </a>
+
+        <a href="systems-thinking.html#lab-archetypes" class="ih-card">
+          <div class="ih-icon" style="color:var(--c-system);">🔄</div>
+          <div class="ih-info">
+            <h4>系统六大基模速查</h4>
+            <p>交互切换成长上限、公地悲剧等动力学图解</p>
+          </div>
+        </a>
+
+        <a href="systems-thinking.html#lab-leverage" class="ih-card">
+          <div class="ih-icon" style="color:var(--gold);">🪜</div>
+          <div class="ih-info">
+            <h4>系统干预杠杆阶梯</h4>
+            <p>从参数修正到范式超越的 5 级干预层次</p>
+          </div>
+        </a>
+
+        <a href="judgment-system.html#lab-evidence" class="ih-card">
+          <div class="ih-icon" style="color:var(--c-l5);">📊</div>
+          <div class="ih-info">
+            <h4>跨领域证据阶梯对比</h4>
+            <p>自然科学、社科与历史的证据可靠度量表</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 6. 全篇文档沉浸阅读索引 ============ -->
+    <section class="sec" id="sec-docs">
+      <h2>全篇文档沉浸阅读</h2>
+      <p style="font-size:14px;color:var(--ink-2);margin-bottom:12px;">
+        支持离线缓存、深浅暖三色主题自选、动态大纲跳转的完整文档集：
+      </p>
+
+      <div class="doc-reader-list">
+        <a href="metacognition.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第零层 · 双轨引擎与元认知</div>
+            <div class="doc-row-core">思考能力不是瓶颈，反优势制衡机制才是</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l0);">L0 元层</div>
+        </a>
+
+        <a href="critical-thinking.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第一层 · 批判性思维</div>
+            <div class="doc-row-core">不是批评而是审辨——相信到证据允许的程度</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l1);">L1 原则</div>
+        </a>
+
+        <a href="structured-engineering.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第二/四层 · 结构化思维与工程化</div>
+            <div class="doc-row-core">结构化看清空间要素，工程化实现闭环运转</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l2);">L2 & L4</div>
+        </a>
+
+        <a href="systems-thinking.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第二层 · 系统化思维</div>
+            <div class="doc-row-core">要素/关系/反馈回路，化解政策阻抗找高阶杠杆解</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-system);">L2 动态</div>
+        </a>
+
+        <a href="discussion-baseline.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第三层 · 讨论问题的基线</div>
+            <div class="doc-row-core">四基线审查讨论资格，以认知增量为唯一目标</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l3);">L3 机制</div>
+        </a>
+
+        <a href="notes.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第四层 · 结构化笔记</div>
+            <div class="doc-row-core">判断体系显性快照与跨越时间的认知锚点</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l4);">L4 沉淀</div>
+        </a>
+
+        <a href="judgment-system.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">第五层 · 个人判断体系</div>
+            <div class="doc-row-core">从愿望结构到带证伪回路的世界观机制</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-l5);">L5 能力</div>
+        </a>
+
+        <a href="dialogue.html" class="doc-row">
+          <div class="doc-row-main">
+            <div class="doc-row-title">应用层 · 批判性思维的对话</div>
+            <div class="doc-row-core">把对话从证明胜负转向共同探索盲区</div>
+          </div>
+          <div class="doc-row-tag" style="color:var(--c-ld);">应用层</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 底部翻页（由 nav.js 初始化） -->
+    <nav class="prevnext" aria-label="翻页导航"></nav>
+
+  </main>
+</div>
+
+<!-- 站点导航与交互管理器 (PWA 专用) -->
+<script src="assets/js/nav.js"></script>
+
+<!-- 首页根问题 Tab 互动脚本 -->
+<script>
+(function () {
+  'use strict';
+
+  var ROOT_DATA = {
+    know: {
+      title: '我如何知道？（认识论）',
+      tag: '第一层 + 第三层',
+      color: 'var(--c-l1)',
+      desc: '以审辨态度对待信息与前提——区分事实与观点，识别隐藏假设，按领域匹配证据权重，不轻信未经检验的前提。只有信息源可信、讨论基线牢固，后续推导才有意义。',
+      links: [
+        { text: '批判性思维 →', href: 'critical-thinking.html' },
+        { text: '讨论基线 →', href: 'discussion-baseline.html' },
+        { text: '证据层级 →', href: 'judgment-system.html' }
+      ]
+    },
+    think: {
+      title: '我如何思考？（方法论）',
+      tag: '第二层 · 空间与动态',
+      color: 'var(--c-l2)',
+      desc: '运用结构化思维划定边界、分类归纳，运用系统化思维捕捉非线性反馈、因果回路与延迟效应。将现实抽象为模型，再用工程化闭环推进执行。',
+      links: [
+        { text: '结构化 × 工程化 →', href: 'structured-engineering.html' },
+        { text: '系统化思维 →', href: 'systems-thinking.html' },
+        { text: '结构化笔记 →', href: 'notes.html' }
+      ]
+    },
+    judge: {
+      title: '我如何判断？（实践论）',
+      tag: '第五层 + 应用层',
+      color: 'var(--c-l5)',
+      desc: '面对不确定性做出取舍并愿意承担代价。真正的判断体系带有清晰的证伪条件；在对抗性协作与批判性对话中，将他人挑战转化为自身系统的演化动力。',
+      links: [
+        { text: '个人判断体系 →', href: 'judgment-system.html' },
+        { text: '批判性对话 →', href: 'dialogue.html' }
+      ]
+    },
+    calib: {
+      title: '如何校准思考者自身？（元认知）',
+      tag: '第零层 · 元层',
+      color: 'var(--c-l0)',
+      desc: '思考的自我约束机制。聪明人最容易凭借强大解释力将偏见合理化。建立双轨引擎，强制启动反优势机制、不可解释槽位与盲区自省，让认知系统具备自我纠偏力。',
+      links: [
+        { text: '双轨引擎与反优势 →', href: 'metacognition.html' }
+      ]
+    }
+  };
+
+  var tabBtns = document.querySelectorAll('.rq-tab-btn');
+  var titleEl = document.getElementById('rqDcTitle');
+  var tagEl = document.getElementById('rqDcTag');
+  var descEl = document.getElementById('rqDcDesc');
+  var linksEl = document.getElementById('rqDcLinks');
+
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var key = btn.getAttribute('data-tab');
+      var data = ROOT_DATA[key];
+      if (!data) return;
+
+      titleEl.innerText = data.title;
+      titleEl.style.color = data.color;
+      tagEl.innerText = data.tag;
+      descEl.innerText = data.desc;
+
+      linksEl.innerHTML = '';
+      data.links.forEach(function (lk) {
+        var a = document.createElement('a');
+        a.className = 'rq-dc-link';
+        a.href = lk.href;
+        a.innerText = lk.text;
+        linksEl.appendChild(a);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
