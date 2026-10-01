@@ -19,10 +19,17 @@
     { id: 'dialog', file: 'dialogue.html',              nav: '实战测试', short: '批判性对话',   layerTag: '应用层',   layerName: '应用层 · 真实测试场' }
   ];
 
+  var APPENDIX_PAGES = [
+    { id: 'models', file: 'mental-models.html', nav: '模型格栅', short: '思维模型格栅库', layerTag: '附录工具', layerName: '附录 · 跨学科思维模型格栅库' }
+  ];
+
   /* 辅助查找 */
   function findPage(id) {
     for (var i = 0; i < PAGES.length; i++) {
       if (PAGES[i].id === id) return PAGES[i];
+    }
+    for (var j = 0; j < APPENDIX_PAGES.length; j++) {
+      if (APPENDIX_PAGES[j].id === id) return APPENDIX_PAGES[j];
     }
     return PAGES[0];
   }
@@ -299,6 +306,22 @@
   chapterSec.appendChild(chapList);
   drawerBody.appendChild(chapterSec);
 
+  /* 拓展附录列表 */
+  var appendixSec = el('div', 'drawer-appendix');
+  var appTitle = el('div', 'drawer-sec-title', '拓展认知兵器库');
+  var appList = el('ul', 'chapter-list');
+  var appLi = el('li');
+  var appA = el('a', 'chapter-item' + (curPage.id === 'models' ? ' current' : ''));
+  appA.href = 'mental-models.html';
+  appA.innerHTML =
+    '<span>思维模型格栅库 (44项)</span>' +
+    '<span class="chapter-badge" style="color:var(--c-model);">附录库</span>';
+  appLi.appendChild(appA);
+  appList.appendChild(appLi);
+  appendixSec.appendChild(appTitle);
+  appendixSec.appendChild(appList);
+  drawerBody.appendChild(appendixSec);
+
   drawerPanel.appendChild(drawerHead);
   drawerPanel.appendChild(drawerBody);
   drawerMask.appendChild(drawerPanel);
@@ -359,6 +382,29 @@
     });
     if (tabDocs) tabDocs.addEventListener('click', function () {
       openDrawer();
+    });
+  } else if (curPage.id === 'models') {
+    tabInner.innerHTML =
+      '<a href="index.html" class="tab-item" id="tabHome">' +
+        '<span class="t-icon">❖</span><span>体系全景</span>' +
+      '</a>' +
+      '<button type="button" class="tab-item" id="tabOutline">' +
+        '<span class="t-icon">📑</span><span>目录/设置</span>' +
+      '</button>' +
+      '<button type="button" class="tab-item" id="tabTop">' +
+        '<span class="t-icon">↑</span><span>回到顶部</span>' +
+      '</button>' +
+      '<a href="metacognition.html" class="tab-item" id="tabMain">' +
+        '<span class="t-icon">→</span><span>主线第零层</span>' +
+      '</a>';
+    bottomBar.appendChild(tabInner);
+    body.appendChild(bottomBar);
+
+    var tabOutlineM = tabInner.querySelector('#tabOutline');
+    var tabTopM = tabInner.querySelector('#tabTop');
+    if (tabOutlineM) tabOutlineM.addEventListener('click', openDrawer);
+    if (tabTopM) tabTopM.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   } else {
     var prevPage = PAGES[(curIdx - 1 + PAGES.length) % PAGES.length];
@@ -425,6 +471,21 @@
 
       pnContainer.appendChild(dirCard);
       pnContainer.appendChild(nextCard);
+    } else if (curPage.id === 'models') {
+      var prevCardM = el('a', '',
+        '<span class="pn-lab">← 返回全景</span>' +
+        '<span class="pn-t">体系全景总览</span>'
+      );
+      prevCardM.href = 'index.html';
+
+      var nextCardM = el('a', 'next',
+        '<span class="pn-lab">进入体系主线 · 第零层 →</span>' +
+        '<span class="pn-t">双轨引擎与元认知</span>'
+      );
+      nextCardM.href = 'metacognition.html';
+
+      pnContainer.appendChild(prevCardM);
+      pnContainer.appendChild(nextCardM);
     } else {
       var prevP = PAGES[(curIdx - 1 + PAGES.length) % PAGES.length];
       var nextP2 = PAGES[(curIdx + 1) % PAGES.length];

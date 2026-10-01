@@ -15,7 +15,8 @@
     { id: 'dialog', file: 'dialogue.html',              nav: '对话应用', short: '批判性对话',   layerName: '应用层 · 对话' },
     { id: 'judge',  file: 'judgment-system.html',       nav: '最终能力', short: '判断体系',     layerName: '第五层 · 最终能力' },
     { id: 'meta',   file: 'metacognition.html',         nav: '元层',    short: '双轨引擎',      layerName: '第零层 · 元层' },
-    { id: 'notes',  file: 'notes.html',                 nav: '沉淀实例', short: '结构化笔记',   layerName: '第四层 · 执行机制（沉淀实例）' }
+    { id: 'notes',  file: 'notes.html',                 nav: '沉淀实例', short: '结构化笔记',   layerName: '第四层 · 执行机制（沉淀实例）' },
+    { id: 'models', file: 'mental-models.html',         nav: '模型库',   short: '思维模型格栅', layerName: '附录 · 跨学科思维模型格栅库' }
   ];
 
   function el(tag, cls, html) {
