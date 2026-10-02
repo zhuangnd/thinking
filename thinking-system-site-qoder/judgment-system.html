@@ -67,8 +67,8 @@
       <div class="sb-stage">
         <div class="sb-layer"><span class="sb-no">L1</span><span class="sb-t">价值优先级</span><span class="sb-d">什么比什么重要？冲突时如何排序？有无不可妥协项？</span></div>
         <div class="sb-layer"><span class="sb-no">L2</span><span class="sb-t">证据标准</span><span class="sb-d">什么算"足够证据"？对经验、数据、权威、逻辑的权重分配</span></div>
-        <div class="sb-layer"><span class="sb-no">L3</span><span class="sb-t">风险态度</span><span class="sb-d">保守还是进取？对不确定性的容忍区间</span></div>
-        <div class="sb-layer"><span class="sb-no">L4</span><span class="sb-t">修正机制</span><span class="sb-d">什么情况下推翻原判断？延迟复盘？如何防止自洽幻觉？</span></div>
+        <div class="sb-layer"><span class="sb-no">L3</span><span class="sb-t">风险态度</span><span class="sb-d">保守还是进取？对不确定性与<span class="model-ref" data-model="38">极端肥尾风险</span>的容忍区间</span></div>
+        <div class="sb-layer"><span class="sb-no">L4</span><span class="sb-t">修正机制</span><span class="sb-d">什么情况下触发<span class="model-ref" data-model="6">贝叶斯动态修正</span>推翻原判断？延迟复盘？如何防止自洽幻觉？</span></div>
       </div>
       <div class="bb-btns">
         <button type="button" id="sbNext">构建下一层 +</button>
@@ -88,7 +88,7 @@
       <span class="fl-node"><b>真实数据</b></span><span class="fl-arr">＞</span>
       <span class="fl-node"><b>经验 ＝ 权威</b></span>
     </div>
-    <p>冲突时的处理顺序：先查数据真实性与样本偏差，再查逻辑是否普适。</p>
+    <p>冲突时的处理顺序：先查数据真实性与<span class="model-ref" data-model="37">样本偏差</span>，再查逻辑是否普适。</p>
 
     <h3><span class="h-no">02</span>批判性检视：统一排序需升级为按领域区分</h3>
     <div class="ev-rank" id="evRank">
@@ -150,12 +150,34 @@
     <canvas data-const="mini" data-highlight="judge"></canvas>
     <div class="mc-note">玫红之星为本主题；主线自上而下抵达此处，再经暖橙"对话实践"接入测试场并回流元层。</div>
   </section>
+  <!-- 本层挂载拓展模型工具箱 -->
+  <section class="mounted-models-box">
+    <div class="mm-head">
+      <div class="mm-title-wrap">
+        <span class="mm-tag">L5 挂载模型</span>
+        <span class="mm-title">终局决策与风险下注工具箱</span>
+      </div>
+      <span class="mm-count">7 项跨学科模型</span>
+    </div>
+    <div class="mm-chips">
+      <button type="button" class="mm-chip" data-model="6"><span class="mm-no">#06</span> 概率与贝叶斯</button>
+      <button type="button" class="mm-chip" data-model="16"><span class="mm-no">#16</span> 热力学与熵增</button>
+      <button type="button" class="mm-chip" data-model="20"><span class="mm-no">#20</span> 自然选择与灭绝</button>
+      <button type="button" class="mm-chip" data-model="35"><span class="mm-no">#35</span> 混沌动力学</button>
+      <button type="button" class="mm-chip" data-model="36"><span class="mm-no">#36</span> 复利效应</button>
+      <button type="button" class="mm-chip" data-model="38"><span class="mm-no">#38</span> 肥尾分布</button>
+      <button type="button" class="mm-chip" data-model="39"><span class="mm-no">#39</span> 均值回归</button>
+      <a class="mm-all-btn" href="mental-models.html?layer=L5">查看风险判断模型 ↗</a>
+    </div>
+  </section>
+
 
   <nav class="prevnext" aria-label="翻页"></nav>
 </main>
 </div>
 
 <script src="assets/js/constellation.js"></script>
+<script src="assets/js/models-data.js"></script>
 <script src="assets/js/nav.js"></script>
 <script>
 (function () {

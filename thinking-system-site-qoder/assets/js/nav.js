@@ -145,4 +145,98 @@
       li.dispatchEvent(new CustomEvent('itemlit', { bubbles: true, detail: { lit: li.classList.contains('lit') } }));
     });
   });
+
+  /* ---------- 13. 思维模型微引用与轻量半屏抽屉 (Bottom Sheet) ---------- */
+  var sheetOverlay = null;
+
+  function createBottomSheet() {
+    if (sheetOverlay) return sheetOverlay;
+    sheetOverlay = el('div', 'sheet-overlay');
+    sheetOverlay.innerHTML =
+      '<div class="sheet-card" role="dialog" aria-modal="true">' +
+        '<div class="sheet-handle"></div>' +
+        '<div class="sheet-head">' +
+          '<div>' +
+            '<div class="sheet-title" id="sheetTitle"></div>' +
+            '<div class="sheet-meta" id="sheetMeta"></div>' +
+          '</div>' +
+          '<button type="button" class="sheet-close" id="sheetClose" aria-label="关闭">&times;</button>' +
+        '</div>' +
+        '<div class="sheet-body">' +
+          '<div class="sheet-sec-item">' +
+            '<div class="sheet-sec-k">本质机制与定义</div>' +
+            '<div class="sheet-sec-v" id="sheetDesc"></div>' +
+          '</div>' +
+          '<div class="sheet-sec-item">' +
+            '<div class="sheet-sec-k">唤醒触发场景</div>' +
+            '<div class="sheet-sec-v" id="sheetTrigger"></div>' +
+          '</div>' +
+          '<div class="sheet-sec-item">' +
+            '<div class="sheet-sec-k">适用边界与反优势禁忌</div>' +
+            '<div class="sheet-sec-v" id="sheetBoundary"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sheet-actions">' +
+          '<a href="#" id="sheetDetailLink" class="sheet-btn primary">在格栅库中对比查看 ↗</a>' +
+          '<button type="button" id="sheetDismissBtn" class="sheet-btn secondary">关闭</button>' +
+        '</div>' +
+      '</div>';
+
+    body.appendChild(sheetOverlay);
+
+    function closeSheet() {
+      sheetOverlay.classList.remove('active');
+    }
+
+    sheetOverlay.querySelector('#sheetClose').addEventListener('click', closeSheet);
+    sheetOverlay.querySelector('#sheetDismissBtn').addEventListener('click', closeSheet);
+    sheetOverlay.addEventListener('click', function (e) {
+      if (e.target === sheetOverlay) closeSheet();
+    });
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sheetOverlay.classList.contains('active')) {
+        closeSheet();
+      }
+    });
+
+    return sheetOverlay;
+  }
+
+  function openModelSheet(modelId) {
+    var models = window.THINKING_MODELS || [];
+    var m = null;
+    for (var i = 0; i < models.length; i++) {
+      if (models[i].id == modelId) {
+        m = models[i];
+        break;
+      }
+    }
+    if (!m) {
+      window.location.href = 'mental-models.html?model=' + modelId;
+      return;
+    }
+
+    var sheet = createBottomSheet();
+    sheet.querySelector('#sheetTitle').innerHTML =
+      '<span style="font-family:var(--mono);color:var(--c-model);font-size:14px;margin-right:4px;">#' +
+      (m.id < 10 ? '0' + m.id : m.id) + '</span> ' + m.name;
+    sheet.querySelector('#sheetMeta').textContent =
+      m.en + ' · ' + m.discName + ' · ' + m.attrName + ' · ' + m.layerName;
+    sheet.querySelector('#sheetDesc').textContent = m.desc;
+    sheet.querySelector('#sheetTrigger').textContent = m.trigger;
+    sheet.querySelector('#sheetBoundary').textContent = m.boundary;
+    sheet.querySelector('#sheetDetailLink').href = 'mental-models.html?model=' + m.id;
+
+    sheet.classList.add('active');
+  }
+
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest('[data-model]');
+    if (target) {
+      e.preventDefault();
+      var mid = target.getAttribute('data-model');
+      openModelSheet(mid);
+    }
+  });
+
 })();

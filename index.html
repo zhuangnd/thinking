@@ -14,6 +14,7 @@
   --ink-3:#6E7A8C;
   --l1:#A48BFF;
   --l2:#5B9BC9;
+  --l3:#E8A33D;
   --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -37,7 +38,7 @@ a{color:inherit;text-decoration:none}
 
 .cards{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;max-width:680px;width:100%;padding:0 28px;
+  gap:20px;max-width:980px;width:100%;padding:0 28px;
 }
 .card{
   display:block;background:var(--bg-2);border:1px solid var(--line);
@@ -53,6 +54,7 @@ a{color:inherit;text-decoration:none}
 .card__desc{font-size:14px;color:var(--ink-2);line-height:1.7}
 .card--ai .card__tag{color:var(--l1)}
 .card--db .card__tag{color:var(--l2)}
+.card--ts .card__tag{color:var(--l3)}
 .card__links{margin-top:14px;display:flex;flex-direction:column;gap:6px}
 .card__links a{
   display:block;font-size:13.5px;color:var(--ink-2);
@@ -90,6 +92,18 @@ a{color:inherit;text-decoration:none}
       <a href="discuss_baseline/discussion_quality_framework_gpt.html">GPT 版</a>
       <a href="discuss_baseline/discussion_quality_framework_hy4.html">HY4 版</a>
       <a href="discuss_baseline/discussion_quality_framework_db.html">DB 单页版</a>
+    </div>
+  </div>
+  <div class="card card--ts">
+    <div class="card__tag">Thinking System</div>
+    <div class="card__title">思考与判断体系</div>
+    <div class="card__desc">系统化思维框架——结构化工程、元认知、判断体系与系统化思考。</div>
+    <div class="card__links">
+      <a href="thinking-system-site-qoder/index.html">Qoder 版 · 认知星座</a>
+      <a href="thinking-system-site-doubao/index.html">豆包版 · 认知操作系统</a>
+      <a href="thinking-system-site-qwen/index.html">Qwen 版 · 完备版全景</a>
+      <a href="thinking-system-site-workbuddy/index.html">WorkBuddy 版 · 完备版全景</a>
+      <a href="thinking-system-pwa/index.html">移动版 PWA</a>
     </div>
   </div>
 </nav>

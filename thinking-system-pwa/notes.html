@@ -58,7 +58,7 @@
     <div class="note-tpl">
       <div class="nt-head">STRUCTURED NOTE · 结构化笔记模板</div>
       <div class="nt-row"><span class="nt-k">① 核心主题</span><span class="nt-v">本次思考围绕什么问题展开（3–5 个关键词）</span></div>
-      <div class="nt-row"><span class="nt-k">② 思路梳理与洞察</span><span class="nt-v">对话中出现的关键推理链与新认识（不记情绪，只记结构）</span></div>
+      <div class="nt-row"><span class="nt-k">② 思路梳理与洞察</span><span class="nt-v">关键推理链与新认识；可选标注调用模型（如 <span class="model-ref" data-model="7">逆向思维</span>、<span class="model-ref" data-model="29">安全边际</span>）</span></div>
       <div class="nt-row"><span class="nt-k">③ 规则与原则提炼</span><span class="nt-v">可复用的判断规则，逐条编号（这是体系的建设材料）</span></div>
       <div class="nt-row"><span class="nt-k">④ 待消化与下一步</span><span class="nt-v">悬而未决的问题、待验证的规则、下次思考的入口</span></div>
       <div class="nt-use">用法：新会话开始时把笔记作为上下文喂给 AI —— 它不记得你，但它能<b>在 30 秒内重建对你判断体系的结构化理解</b>，并沿同一套标准继续施压。</div>
@@ -71,10 +71,30 @@
     <p>这份笔记在体系中扮演两个角色：</p>
     <ol>
       <li><b>判断体系的第一版显性化快照</b>——把对话中生成的四层结构、证据排序、六条规则首次写成可保存、可复盘的文本</li>
-      <li><b>"思考的工程化"的第一个实例</b>——面对"AI 没有长期记忆"这一约束，用结构化模板把对话产出沉淀为可复用资产，正是"把依赖临场能力的思考转换成稳定、可迭代流程"的工程化思维在自身项目上的应用；后续各次"定期思考"对话和总结文档（包括本站），都在延续这一模式</li>
+      <li><b>"思考的工程化"的第一个实例</b>——面对"AI 没有长期记忆"这一约束，用结构化模板把对话产出沉淀为可复用资产，正是"把依赖临场能力的思考转换成稳定、可迭代流程"的工程化思维（包含 <span class="model-ref" data-model="5">二阶思维</span> 预警与 <span class="model-ref" data-model="40">零容错红线</span>）在自身项目上的应用；后续各次"定期思考"对话和总结文档（包括本站），都在延续这一模式</li>
     </ol>
     <p>详细内容请直接阅读原文（全文约 120 行），或参见"<a href="judgment-system.html">AI 与个人边界变化</a>"页的展开。</p>
   </section>
+  <!-- 本层挂载拓展模型工具箱 -->
+  <section class="mounted-models-box">
+    <div class="mm-head">
+      <div class="mm-title-wrap">
+        <span class="mm-tag">L4 挂载模型</span>
+        <span class="mm-title">工程化闭环与防错工具箱</span>
+      </div>
+      <span class="mm-count">6 项跨学科模型</span>
+    </div>
+    <div class="mm-chips">
+      <button type="button" class="mm-chip" data-model="5"><span class="mm-no">#05</span> 二阶思维</button>
+      <button type="button" class="mm-chip" data-model="7"><span class="mm-no">#07</span> 逆向思维</button>
+      <button type="button" class="mm-chip" data-model="12"><span class="mm-no">#12</span> 速度 vs 速率</button>
+      <button type="button" class="mm-chip" data-model="17"><span class="mm-no">#17</span> 活化能</button>
+      <button type="button" class="mm-chip" data-model="29"><span class="mm-no">#29</span> 安全边际与冗余</button>
+      <button type="button" class="mm-chip" data-model="40"><span class="mm-no">#40</span> 乘以零法则</button>
+      <a class="mm-all-btn" href="mental-models.html?layer=L4">查看工程闭环模型 ↗</a>
+    </div>
+  </section>
+
 
 
 
@@ -82,6 +102,7 @@
 </main>
 </div>
 
+<script src="assets/js/models-data.js"></script>
 <script src="assets/js/nav.js"></script>
 </body>
 </html>

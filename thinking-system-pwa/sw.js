@@ -1,7 +1,7 @@
 /* ============================================================
    sw.js —— 思考与判断体系 PWA Service Worker (离线可读与快速加载)
    ============================================================ */
-const CACHE_NAME = 'thinking-pwa-v3';
+const CACHE_NAME = 'thinking-pwa-v4';
 
 const STATIC_ASSETS = [
   './',
@@ -18,6 +18,7 @@ const STATIC_ASSETS = [
   './manifest.webmanifest',
   './assets/css/site.css',
   './assets/js/nav.js',
+  './assets/js/models-data.js',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/apple-touch-icon.png',
