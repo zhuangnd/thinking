@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>逻辑谬误图鉴 · 小说对话拆解</title>
+<style>
+  :root {
+    --ink: #1f2937;
+    --ink-soft: #6b7280;
+    --primary: #1e3a5f;
+    --primary-soft: #eef2f7;
+    --border: #e5e7eb;
+    --bg: #fafafa;
+    --card-bg: #ffffff;
+    --quote-bg: #f8fafc;
+    --c-ds: #2563eb;
+    --c-gpt: #0d9488;
+    --c-gem: #7c3aed;
+    --flash: #fef3c7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.7;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ---------- header ---------- */
+  header { padding: 48px 0 8px; }
+  header h1 { font-size: 28px; color: var(--primary); letter-spacing: 1px; }
+  header p.sub { color: var(--ink-soft); margin-top: 8px; font-size: 15px; }
+  .stats { margin-top: 16px; font-size: 13px; color: var(--ink-soft); }
+  .stats b { color: var(--primary); font-size: 16px; }
+
+  /* ---------- section ---------- */
+  section { margin-top: 48px; }
+  section > h2 {
+    font-size: 20px; color: var(--primary);
+    display: flex; align-items: center; gap: 10px;
+  }
+  section > h2 .num {
+    font-size: 12px; color: #fff; background: var(--primary);
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: none;
+  }
+  section > p.desc { color: var(--ink-soft); font-size: 14px; margin: 6px 0 20px; }
+
+  /* ---------- dialogue ---------- */
+  .dialog { display: flex; flex-direction: column; gap: 14px; }
+  .line { display: flex; gap: 12px; }
+  .line .who {
+    flex: none; width: 64px; text-align: center;
+    font-size: 13px; padding-top: 8px; color: var(--ink-soft);
+  }
+  .line .bubble {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; flex: 1;
+    transition: border-color .25s, background .25s;
+  }
+  .line .bubble .text { font-size: 15px; }
+  .line.q .bubble { background: var(--primary-soft); border-color: transparent; }
+  .tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 12px; padding: 2px 10px; border-radius: 999px;
+    border: 1px solid var(--primary); color: var(--primary);
+    background: transparent; cursor: pointer;
+    transition: background .2s;
+  }
+  .tag:hover { background: var(--primary); color: #fff; }
+  .line.highlight .bubble { border-color: var(--primary); background: var(--flash); }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: box-shadow .25s, border-color .25s;
+  }
+  .card:hover { box-shadow: 0 2px 12px rgba(30,58,95,.08); }
+  .card.open { border-color: var(--primary); }
+  .card.flash { animation: flash 1.6s ease; }
+  @keyframes flash { 0%,40% { box-shadow: 0 0 0 3px var(--flash), 0 2px 12px rgba(30,58,95,.15);} 100% { box-shadow: none; } }
+  .card-head {
+    padding: 16px 18px 14px; cursor: pointer;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .card-head .title-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .card-head .idx {
+    font-size: 12px; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .card-head .name { font-size: 17px; font-weight: 600; color: var(--primary); }
+  .card-head .en { font-size: 12px; color: var(--ink-soft); font-style: italic; }
+  .card-head .def { font-size: 14px; color: var(--ink); }
+  .card-head .src-dots { display: flex; gap: 5px; margin-top: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; opacity: .25; }
+  .dot.on { opacity: 1; }
+  .dot.ds { background: var(--c-ds); }
+  .dot.gpt { background: var(--c-gpt); }
+  .dot.gem { background: var(--c-gem); }
+  .card-head .chev {
+    position: absolute; right: 18px; margin-top: 4px;
+    color: var(--ink-soft); font-size: 12px; transition: transform .25s;
+    align-self: flex-end;
+  }
+  .card.open .chev { transform: rotate(180deg); }
+  .card-body {
+    max-height: 0; overflow: hidden; transition: max-height .35s ease;
+  }
+  .card.open .card-body { max-height: 1200px; }
+  .card-body-inner { padding: 0 18px 18px; border-top: 1px dashed var(--border); margin-top: 2px; }
+
+  .block { margin-top: 14px; }
+  .block h4 {
+    font-size: 12px; color: var(--ink-soft); font-weight: 600;
+    letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .formula {
+    background: var(--primary-soft); border-radius: 8px;
+    padding: 8px 14px; font-size: 14px; color: var(--primary);
+    font-weight: 500; display: inline-block;
+  }
+  .formula .arr { color: var(--ink-soft); padding: 0 4px; }
+  .original-quote {
+    background: var(--quote-bg); border-left: 3px solid var(--primary);
+    padding: 8px 12px; font-size: 13.5px; color: var(--ink);
+    border-radius: 0 6px 6px 0;
+  }
+  .detail p { font-size: 14px; margin-top: 6px; }
+  .ai-quote {
+    background: var(--quote-bg); border-radius: 8px;
+    padding: 10px 14px; font-size: 13.5px; color: var(--ink);
+    margin-top: 8px; position: relative;
+  }
+  .ai-quote .who-said {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 1px 8px; border-radius: 999px; color: #fff; margin-bottom: 4px;
+  }
+  .who-said.ds { background: var(--c-ds); }
+  .who-said.gpt { background: var(--c-gpt); }
+  .who-said.gem { background: var(--c-gem); }
+
+  .toolbar { display: flex; gap: 10px; margin-top: 4px; }
+  .tool-btn {
+    font-size: 13px; padding: 4px 14px; border-radius: 999px;
+    border: 1px solid var(--border); background: var(--card-bg);
+    color: var(--ink-soft); cursor: pointer; transition: all .2s;
+  }
+  .tool-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---------- insights ---------- */
+  .insights { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .insight {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .insight h3 { font-size: 15px; color: var(--primary); margin-bottom: 6px; }
+  .insight p { font-size: 13.5px; color: var(--ink); }
+  .insight .formula { margin-top: 8px; font-size: 13px; }
+
+  footer { margin-top: 64px; color: var(--ink-soft); font-size: 12.5px; text-align: center; }
+
+  /* ---------- legend ---------- */
+  .legend { display: flex; gap: 18px; margin-top: 12px; font-size: 12.5px; color: var(--ink-soft); flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+
+  @media (max-width: 640px) {
+    .grid, .insights { grid-template-columns: 1fr; }
+    .line .who { width: 48px; font-size: 12px; }
+    header h1 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>逻辑谬误图鉴</h1>
+    <p class="sub">一段小说对话的逻辑拆解 · 三个 AI 分析综合 · 10 种谬误名词科普</p>
+    <div class="stats">共 <b>6</b> 句台词 · 识别出 <b>10</b> 种逻辑谬误</div>
+    <div class="legend">
+      <span><i class="dot ds on"></i>deepseek</span>
+      <span><i class="dot gpt on"></i>ChatGPT</span>
+      <span><i class="dot gem on"></i>gemini</span>
+      <span>（圆点 = 该 AI 识别到此谬误）</span>
+    </div>
+  </header>
+
+  <section id="dialogue">
+    <h2><span class="num">1</span>原文对话</h2>
+    <p class="desc">点击台词下方的谬误标签，可跳转到对应的名词解释卡片。</p>
+    <div class="dialog" id="dialogBox"></div>
+  </section>
+
+  <section id="fallacies">
+    <h2><span class="num">2</span>谬误图鉴</h2>
+    <p class="desc">点击卡片展开：谬误公式 · 名词解释 · 本文体现 · AI 论述摘录。</p>
+    <div class="toolbar">
+      <button class="tool-btn" id="expandAll">全部展开</button>
+      <button class="tool-btn" id="collapseAll">全部收起</button>
+    </div>
+    <div class="grid" id="cardGrid"></div>
+  </section>
+
+  <section id="insights">
+    <h2><span class="num">3</span>核心启示</h2>
+    <p class="desc">这段对话最有价值的地方：它提醒我们区分「结论正确」与「论证正确」。</p>
+    <div class="insights" id="insightBox"></div>
+  </section>
+
+  <footer>综合自 deepseek / ChatGPT / gemini 三份独立分析 · 单文件静态页面</footer>
+</div>
+
+<script>
+/* ================= 数据 ================= */
+
+const FALLACIES = [
+  {
+    id: "ad-hominem",
+    name: "诉诸人身 / 起源谬误",
+    en: "Ad Hominem / Genetic Fallacy",
+    def: "不针对观点本身的是非，而是通过攻击或质疑提出观点的人（身份、年龄、学历、动机）来否定观点。",
+    formula: ["这个人不可信", "所以他的观点错误"],
+    quote: "「一名大二的学生，从什么地方获取这些知识？」",
+    detail: "方案是否正确，取决于其前提、推导和证据，而不取决于提出者是不是大二学生。真理不问出身——质疑来源只能降低可信度，不能直接证明命题为假。",
+    src: ["ds", "gpt", "gem"],
+    ai: [
+      { s: "ds", t: "用提出者的年龄、学历、身份来推断其观点不可信。但一个方案是否正确，取决于其前提、推导和证据，而不取决于提出者是不是大二学生。" },
+      { s: "gem", t: "真理不问出身，大二学生同样可能写出优秀的方案。仅凭「对方是大二学生」就否定方案，属于典型的「因人废言」。" },
+      { s: "gpt", t: "表面上是在审查方案，实际逐渐变成了审查提出方案的人，属于人身攻击的弱形式。来源可疑只能降低可信度，不能直接证明命题为假。" }
+    ]
+  },
+  {
+    id: "ignorance",
+    name: "诉诸无知",
+    en: "Argument from Ignorance",
+    def: "因为一件事尚未被证明为真，就断定它为假；或因为尚未被证明为假，就断定为真。把「我不知道」当成了证据。",
+    formula: ["无法证明其为真", "所以它是假的"],
+    quote: "「一名大二的学生，从什么地方获取这些知识？」——我不知道他如何获得",
+    detail: "「不知道知识来源」只能说明知识来源尚未得到解释，不能推出「这个方案错误」。不知道 ≠ 不存在。",
+    src: ["ds", "gpt"],
+    ai: [
+      { s: "gpt", t: "逻辑结构是：我不知道一个大二学生如何掌握这些知识 → 所以这个方案很可疑/不可能是真的。但「不知道」不能充当反证。" },
+      { s: "ds", t: "没有实验数据只能说明该方案尚未验证、证据不足，不能直接推出它有逻辑漏洞或一定是假的。未证实 ≠ 已证伪。" }
+    ]
+  },
+  {
+    id: "unverified",
+    name: "未证实 ≠ 已证伪",
+    en: "证据等级跃迁",
+    def: "把「缺乏支持证据」悄然升级为「存在反面证据」，再升级为「已经证明错误」——三个完全不同的层级被当作一回事。",
+    formula: ["缺乏证据", "存在反面证据", "已经证明错误"],
+    quote: "整段论证链的最终走向：「没有实验数据」→「和天方夜谭没有区别」",
+    detail: "更严谨的结论最多应该是：「目前没有足够证据证明这个方案成立，因此暂时不能接受它」（暂缓接受），而不是「这个方案是天方夜谭」（否定命题）。",
+    src: ["ds", "gpt"],
+    ai: [
+      { s: "gpt", t: "这是这段对白最核心的逻辑跳跃：缺乏支持证据 ≠ 存在反面证据 ≠ 已经证明错误。「暂缓接受」和「否定命题」是两种完全不同的结论。" }
+    ]
+  },
+  {
+    id: "goalposts",
+    name: "错误的证明标准",
+    en: "Moving the Goalposts",
+    def: "为对方设定不恰当或不一致的证明标准——对方只需理论推演时，却要求实验级证据；标准随立场需要而移动。",
+    formula: ["你拿不出我要求的证据", "所以你错了"],
+    quote: "「实验数据呢？没有实验数据的方案，和天方夜谭有什么区别？！」",
+    detail: "科学方案有不同的成熟阶段：理论推演 → 数学建模 → 实验验证。用后期「实验验证」的标准去苛求前期「理论构思」阶段的成果，属于混淆概念、偷换标准。ChatGPT 补充：这里实际上是把「理论预测」偷换成「已被实验验证的事实」，再因为没有事实验证而否定理论预测。",
+    src: ["gpt", "gem"],
+    ai: [
+      { s: "gem", t: "许多突破性成果往往先通过理论推演、数学建模呈现，再进入实验室验证。用「现阶段没有实验数据」直接否定整个推演过程的价值，是用后期验证标准苛求前期理论构思。" },
+      { s: "gpt", t: "如果原方案只是「根据理论推演，这种材料可能存在，值得实验验证」，那么要求实验数据就属于移动球门——错误的证明标准。" }
+    ]
+  },
+  {
+    id: "begging",
+    name: "预设结论 / 窃取论题",
+    en: "Begging the Question",
+    def: "把待证明的结论当作已经成立的前提来使用，先假定争议点为真，再去要求别人承认它。",
+    formula: ["把「有漏洞」当作前提", "再要求你承认漏洞存在"],
+    quote: "「难道这漏洞还不明显吗？」",
+    detail: "这句话先把「方案有漏洞」当成既定事实，再去反问对方，而不是先论证漏洞在哪里、是什么。漏洞是否存在恰恰是本轮讨论需要证明的东西。",
+    src: ["ds"],
+    ai: [
+      { s: "ds", t: "这句话先把「有漏洞」当成已经成立的前提，再去要求别人承认，而不是先证明漏洞存在。" }
+    ]
+  },
+  {
+    id: "false-dilemma",
+    name: "虚假二分 / 非黑即白",
+    en: "False Dilemma",
+    def: "把本有多种可能的选项，人为压缩成「非此即彼」两个极端，制造不存在的两难，掩盖中间的所有状态。",
+    formula: ["要么 A 要么 B", "（忽略 C、D、E……）"],
+    quote: "把方案说成「要么有实验数据，要么就是天方夜谭」",
+    detail: "被忽略的中间状态包括：理论假说、待验证模型、初步推演、计算模拟等。一个没有实验数据的方案完全可能处于这些中间阶段，而非「天方夜谭」。",
+    src: ["ds"],
+    ai: [
+      { s: "ds", t: "把方案说成「要么有实验数据，要么就是天方夜谭」，忽略了中间状态：理论假说、待验证模型、初步推演等。" }
+    ]
+  },
+  {
+    id: "red-herring",
+    name: "转移论题 / 论证责任混淆",
+    en: "Red Herring / Burden Shifting",
+    def: "回答问题时偷换讨论对象；或把「证明成立」「指出漏洞」「证明错误」三个不同问题的举证责任混为一谈。",
+    formula: ["你证明不了它成立", "（并不等于回答了）它哪里错了"],
+    quote: "被问：「方案上找到什么漏洞？」回答的却是：「作者是大二学生、推演太简、没有数据」",
+    detail: "「你证明不了它成立」并不能回答「它哪里错了」。ChatGPT 的区分：证明方案已成立 → 需要支持性证据；指出方案有漏洞 → 需要找到具体漏洞；证明方案错误 → 需要反例、矛盾或可靠反证。三者不可互相替代。",
+    src: ["ds", "gpt"],
+    ai: [
+      { s: "ds", t: "对方问的是「方案上有什么漏洞」，毛锦泉却谈「作者从哪获取知识」「有没有实验数据」。这些可以是合理质疑，但没有回答「方案哪一步逻辑不成立」。" },
+      { s: "gpt", t: "这段对白把「方案是否已被证明成立」「方案是否有漏洞」「方案是否错误」「是否值得相信」四个问题混在了一起。" }
+    ]
+  },
+  {
+    id: "hasty",
+    name: "以偏概全 / 草率概括",
+    en: "Hasty Generalization",
+    def: "依据不充分、不全面的样本，匆忙得出普遍性结论——把「展示出来的部分」当成「全部」。",
+    formula: ["展示的推演只有几笔", "所以整个研究过程不可信"],
+    quote: "「就这么寥寥几笔，一个新材料就在笔头上出现了？」",
+    detail: "「展示出来的推演过程很短」与「实际研究过程很短」不是同一个命题。可能存在大量前置知识、计算、模拟与经验积累没有展示在纸面上。",
+    src: ["gpt"],
+    ai: [
+      { s: "gpt", t: "作者看到推演过程很短，就推断整个研究过程不可信。但「展示的推演很短」和「实际的 research 很短」是两个命题，可能存在大量前置积累没有展示。" }
+    ]
+  },
+  {
+    id: "intuition",
+    name: "诉诸直觉 / 情感修辞",
+    en: "Appeal to Intuition & Rhetoric",
+    def: "用「我觉得不可能」的直觉判断，或「开什么玩笑」式的情绪化表达，来代替实际论证。",
+    formula: ["我认为不该这么简单", "所以它不可能这么简单"],
+    quote: "「开什么玩笑！」「一个新材料怎么可能这么容易就被推导出来？」",
+    detail: "直觉与惊讶可以成为提出质疑的理由，但不能单独构成反驳。态度激烈的反问句只是修辞，不构成逻辑证据。",
+    src: ["ds", "gpt"],
+    ai: [
+      { s: "gpt", t: "这是一种常识直觉论证：我认为事情不应该这么简单 → 所以事情不可能这么简单。直觉可以成为提出质疑的理由，但不能单独构成反驳。" },
+      { s: "ds", t: "「开什么玩笑！」这类表达只是态度，不构成逻辑反驳。" }
+    ]
+  },
+  {
+    id: "bias",
+    name: "资历偏见 / 刻板印象",
+    en: "Credential Bias / Stereotyping",
+    def: "把知识成果与特定身份群体强行绑定，默认高水平成果只能出自特定资历的人群，无视例外与个体的可能性。",
+    formula: ["高级成果只能出自资深人群", "他资历不够 → 成果必然可疑"],
+    quote: "认为大二学生不可能做出优秀的新材料推演",
+    detail: "这是权威崇拜的镜像形式：绝对化的资历观念无视了现实中天才、自学成才、灵感突破等客观可能。评价成果应看内容本身，而非作者的出身标签。",
+    src: ["gem"],
+    ai: [
+      { s: "gem", t: "这种思维陷入了绝对化的权威崇拜或资历偏见，无视了现实中可能存在的「天才」「自学成才」或「灵光一现」的客观可能性。" }
+    ]
+  }
+];
+
+const DIALOGUE = [
+  { who: "提问者", type: "q", text: "你告诉我，你在这方案上，找到什么漏洞了吗？", tags: [] },
+  { who: "毛锦泉", type: "a", text: "（脸色微微一变，沉吟片刻）漏洞？", tags: [] },
+  { who: "毛锦泉", type: "a", text: "难道这漏洞还不明显吗？", tags: ["begging"] },
+  { who: "毛锦泉", type: "a", text: "一名大二的学生，从什么地方获取这些知识？", tags: ["ad-hominem", "ignorance", "bias"] },
+  { who: "毛锦泉", type: "a", text: "更何况，那个新材料的推演过程我也看了，就这么寥寥几笔，一个新材料就在笔头上出现了？开什么玩笑！", tags: ["hasty", "intuition"] },
+  { who: "毛锦泉", type: "a", text: "实验数据呢？没有实验数据的方案，和天方夜谭有什么区别？！", tags: ["false-dilemma", "goalposts", "unverified"] }
+];
+
+const INSIGHTS = [
+  {
+    h: "结论正确 ≠ 论证正确",
+    p: "这段对话的结论可能碰巧是对的——方案确实可能不成立。但这段话并没有有效地证明它是胡说八道。这是区分「结论正确」与「论证正确」的典型案例。",
+    f: ["结论碰巧正确", "论证依然无效"]
+  },
+  {
+    h: "降低可信度 ≠ 证明为假",
+    p: "来源可疑、身份存疑、证据不足，这些都只能降低方案的可信度，让人「暂缓接受」，但不能直接推出「方案错误」。从「证据不足」跳到「判定为假」，是最核心的逻辑跳跃。",
+    f: ["缺乏证据", "存在反证", "已经证伪"]
+  },
+  {
+    h: "先定概念，再辩对错",
+    p: "对话中「漏洞」的含义不断变化：是推导错误？前提错误？不可实现？还是缺乏证据？「成立」的标准（理论推导？模拟？实验？同行验证？）也未先确定。概念与标准不先行，争论必然失焦。",
+    f: ["概念定义", "标准约束", "逻辑遵循"]
+  },
+  {
+    h: "质疑可以有，但要问对问题",
+    p: "「缺实验数据」「推演简略」本身可以是科学上的合理质疑。正确的表述是：「这个方案目前证据不足，无法验证」——而不是「所以它有漏洞，是天方夜谭」。",
+    f: ["「证据不足，暂缓接受」", "而非「方案错误，天方夜谭」"]
+  }
+];
+
+/* ================= 渲染 ================= */
+
+const $ = (sel) => document.querySelector(sel);
+const nameOf = (id) => FALLACIES.find(f => f.id === id)?.name || id;
+
+/* 对话区 */
+const dialogBox = $("#dialogBox");
+DIALOGUE.forEach(d => {
+  const line = document.createElement("div");
+  line.className = `line ${d.type}`;
+  line.dataset.tagged = (d.tags.length > 0) ? "1" : "";
+  let tagHtml = "";
+  if (d.tags.length) {
+    tagHtml = `<div class="tags">` + d.tags.map(t =>
+      `<button class="tag" data-target="${t}">${nameOf(t)}</button>`
+    ).join("") + `</div>`;
+  }
+  line.innerHTML = `
+    <div class="who">${d.who}</div>
+    <div class="bubble">
+      <div class="text">${d.text}</div>
+      ${tagHtml}
+    </div>`;
+  dialogBox.appendChild(line);
+});
+
+/* 卡片区 */
+const cardGrid = $("#cardGrid");
+FALLACIES.forEach((f, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.id = `card-${f.id}`;
+  const dots = ["ds", "gpt", "gem"].map(s =>
+    `<i class="dot ${s} ${f.src.includes(s) ? "on" : ""}"></i>`
+  ).join("");
+  const aiHtml = f.ai.map(a =>
+    `<div class="ai-quote"><span class="who-said ${a.s}">${a.s === "ds" ? "deepseek" : a.s === "gpt" ? "ChatGPT" : "gemini"}</span><br>${a.t}</div>`
+  ).join("");
+  const formulaHtml = f.formula.map((s, j) =>
+    (j ? `<span class="arr">→</span>` : "") + `<span>${s}</span>`
+  ).join("");
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="title-row">
+        <span class="idx">${String(i + 1).padStart(2, "0")}</span>
+        <span class="name">${f.name}</span>
+        <span class="en">${f.en}</span>
+      </div>
+      <div class="def">${f.def}</div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="src-dots">${dots}</div>
+        <span class="chev">▼</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="block">
+          <h4>谬误公式</h4>
+          <div class="formula">${formulaHtml}</div>
+        </div>
+        <div class="block">
+          <h4>本文体现</h4>
+          <div class="original-quote">${f.quote}</div>
+          <div class="detail"><p>${f.detail}</p></div>
+        </div>
+        <div class="block">
+          <h4>AI 论述摘录</h4>
+          ${aiHtml}
+        </div>
+      </div>
+    </div>`;
+  card.querySelector(".card-head").addEventListener("click", () => {
+    card.classList.toggle("open");
+  });
+  cardGrid.appendChild(card);
+});
+
+/* 启示区 */
+const insightBox = $("#insightBox");
+INSIGHTS.forEach(it => {
+  const el = document.createElement("div");
+  el.className = "insight";
+  el.innerHTML = `
+    <h3>${it.h}</h3>
+    <p>${it.p}</p>
+    <div class="formula">${it.f.map((s, j) => (j ? `<span class="arr">→</span>` : "") + `<span>${s}</span>`).join("")}</div>`;
+  insightBox.appendChild(el);
+});
+
+/* ================= 交互 ================= */
+
+/* 标签 → 打开并滚动到卡片 */
+document.querySelectorAll(".tag").forEach(tag => {
+  tag.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const id = tag.dataset.target;
+    const card = document.getElementById(`card-${id}`);
+    if (!card) return;
+    card.classList.add("open");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.classList.remove("flash");
+    void card.offsetWidth;
+    card.classList.add("flash");
+    /* 高亮来源台词 */
+    document.querySelectorAll(".line").forEach(l => l.classList.remove("highlight"));
+    document.querySelectorAll(`.tag[data-target="${id}"]`).forEach(t => {
+      t.closest(".line").classList.add("highlight");
+    });
+  });
+});
+
+/* 全部展开 / 收起 */
+$("#expandAll").addEventListener("click", () => {
+  document.querySelectorAll(".card").forEach(c => c.classList.add("open"));
+});
+$("#collapseAll").addEventListener("click", () => {
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("open"));
+});
+</script>
+</body>
+</html>

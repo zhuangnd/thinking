@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对话中的逻辑谬误 · 三家 AI 分析</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f5f6f8;color:#1a1a2e;line-height:1.7;font-size:16px}
+.header{text-align:center;padding:3rem 1.5rem 2rem;background:#fff;border-bottom:1px solid #e8e9ed}
+.header h1{font-size:1.75rem;font-weight:700;margin-bottom:.5rem;letter-spacing:.02em}
+.header .subtitle{color:#666;font-size:.95rem;max-width:640px;margin:0 auto;line-height:1.8}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.section-label{font-size:.8rem;color:#999;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.75rem;font-weight:600}
+.dialogue-section{padding:2rem 0}
+.dialogue-toggle{display:flex;align-items:center;gap:.5rem;cursor:pointer;background:none;border:1px solid #ddd;padding:.55rem 1rem;border-radius:8px;font-size:.9rem;color:#555;transition:all .2s;width:100%;text-align:left;font-family:inherit}
+.dialogue-toggle:hover{border-color:#aaa;background:#fafafa}
+.dialogue-toggle .arrow{transition:transform .3s;font-size:.7rem;flex-shrink:0}
+.dialogue-toggle.open .arrow{transform:rotate(90deg)}
+.dialogue-content{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.dialogue-content.open{max-height:800px}
+.dialogue-inner{padding:1.25rem 0 .5rem}
+.dialogue-line{padding:.65rem 1rem;margin-bottom:.4rem;border-radius:10px;font-size:.92rem;line-height:1.65;max-width:85%}
+.dialogue-line.narrator{background:#f0f1f5;color:#555;font-style:italic;max-width:100%;border-radius:8px;font-size:.88rem}
+.dialogue-line.questioner{background:#e8f0fe;margin-left:auto;text-align:right;border-bottom-right-radius:3px}
+.dialogue-line.respondent{background:#fef3e0;margin-right:auto;border-bottom-left-radius:3px}
+.overview-section{padding:1rem 0 1.5rem}
+.overview-text{font-size:.93rem;color:#555;max-width:720px;line-height:1.85}
+.overview-text strong{color:#333}
+.legend{display:flex;gap:1.25rem;margin:1.25rem 0 .75rem;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:#777}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-dot.c3{background:#e07a5f}
+.legend-dot.c2{background:#457b9d}
+.legend-dot.c1{background:#81b29a}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem;margin-top:.5rem;padding-bottom:2rem}
+.card{background:#fff;border-radius:12px;padding:1.35rem 1.4rem;box-shadow:0 1px 4px rgba(0,0,0,.05);cursor:pointer;transition:all .25s ease;border-left:4px solid transparent;position:relative}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
+.card.c3{border-left-color:#e07a5f}
+.card.c2{border-left-color:#457b9d}
+.card.c1{border-left-color:#81b29a}
+.card-name{font-size:1.1rem;font-weight:700;margin-bottom:.15rem}
+.card-en{font-size:.8rem;color:#999;font-style:italic;margin-bottom:.65rem}
+.card-def{font-size:.88rem;color:#555;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-badges{display:flex;gap:.3rem;margin-top:.75rem;flex-wrap:wrap}
+.badge{font-size:.68rem;padding:.15rem .5rem;border-radius:10px;font-weight:600;letter-spacing:.02em}
+.badge.ds{background:#eef0ff;color:#4361ee}
+.badge.gpt{background:#eefbf4;color:#059669}
+.badge.gem{background:#fef7ee;color:#d97706}
+.card-hint{position:absolute;top:.75rem;right:.85rem;font-size:.68rem;color:#ccc;transition:color .2s}
+.card:hover .card-hint{color:#aaa}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;visibility:hidden;transition:all .3s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{background:#fff;border-radius:16px;max-width:680px;width:100%;max-height:85vh;overflow-y:auto;padding:2rem 2.25rem;position:relative;transform:translateY(20px) scale(.97);transition:transform .3s}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-close{position:absolute;top:.85rem;right:1rem;background:none;border:none;font-size:1.6rem;cursor:pointer;color:#bbb;padding:.25rem .5rem;border-radius:6px;transition:all .2s;line-height:1}
+.modal-close:hover{background:#f0f0f0;color:#666}
+.modal-header{margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #eee}
+.modal-name{font-size:1.4rem;font-weight:700;margin-bottom:.2rem}
+.modal-en{font-size:.9rem;color:#999;font-style:italic;margin-bottom:.75rem}
+.modal-badges{display:flex;gap:.4rem;flex-wrap:wrap}
+.modal-badges .badge{font-size:.75rem;padding:.2rem .65rem}
+.modal-def{font-size:.95rem;color:#333;line-height:1.9;margin-bottom:1.5rem;padding:1rem 1.15rem;background:#f8f9fb;border-radius:10px;border-left:3px solid #457b9d}
+.modal-quote{margin-bottom:1.5rem;padding:.85rem 1.1rem;background:#fffbf0;border-radius:8px;border:1px solid #f0e6c8;font-size:.88rem;color:#666;line-height:1.7}
+.modal-quote-label{display:block;font-size:.72rem;color:#c4a35f;font-weight:600;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.08em}
+.tabs{display:flex;gap:0;border-bottom:2px solid #eee;margin-bottom:1.25rem}
+.tab{padding:.55rem 1rem;cursor:pointer;font-size:.85rem;color:#999;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;user-select:none}
+.tab:hover{color:#555}
+.tab.active{color:#1a1a2e;border-bottom-color:#457b9d;font-weight:600}
+.analysis-content{font-size:.92rem;color:#444;line-height:1.9;display:none}
+.analysis-content.open{display:block}
+.analysis-content p{margin-bottom:.85rem}
+.persp-section{padding:2rem 0 3rem}
+.persp-tabs{display:flex;gap:.4rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.persp-tab{padding:.5rem 1.15rem;border-radius:20px;cursor:pointer;font-size:.88rem;background:#e8e9ed;color:#666;border:none;transition:all .2s;font-family:inherit}
+.persp-tab:hover{background:#ddd}
+.persp-tab.active{background:#1a1a2e;color:#fff}
+.persp-content{display:none;font-size:.92rem;color:#444;line-height:1.9;background:#fff;border-radius:12px;padding:1.75rem 2rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.persp-content.open{display:block}
+.persp-content h3{font-size:1.05rem;font-weight:700;margin:1.5rem 0 .6rem;color:#1a1a2e}
+.persp-content h3:first-child{margin-top:0}
+.persp-content p{margin-bottom:.8rem}
+.persp-content .summary{margin-top:1.5rem;padding:1rem 1.15rem;background:#f0f7ff;border-radius:10px;font-size:.9rem;color:#2d5a8e;line-height:1.85}
+.footer{text-align:center;padding:2rem 1rem;color:#bbb;font-size:.78rem;border-top:1px solid #e8e9ed;background:#fff}
+@media(max-width:768px){
+  .header{padding:2rem 1rem 1.5rem}
+  .header h1{font-size:1.35rem}
+  .container{padding:0 1rem}
+  .card-grid{grid-template-columns:1fr}
+  .modal{padding:1.5rem}
+  .persp-content{padding:1.25rem}
+  .tab{padding:.5rem .7rem;font-size:.8rem}
+}
+@media(max-width:400px){
+  .legend{gap:.75rem}
+  .persp-tabs{gap:.3rem}
+  .persp-tab{padding:.4rem .8rem;font-size:.82rem}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>对话中的逻辑谬误</h1>
+  <p class="subtitle">一段小说对话引发了三个 AI &mdash;&mdash; DeepSeek、ChatGPT、Gemini 的逻辑审视。它们从不同角度拆解了同一段看似有力的反驳，识别出其中隐藏的逻辑谬误。本页汇总并呈现这些分析，帮助你逐一理解每种谬误的本质。</p>
+</header>
+
+<main class="container">
+
+  <section class="dialogue-section">
+    <div class="section-label">原始对话</div>
+    <button class="dialogue-toggle" id="dialogueToggle">
+      <span class="arrow">&#9654;</span>
+      <span>查看对话背景</span>
+    </button>
+    <div class="dialogue-content" id="dialogueContent">
+      <div class="dialogue-inner">
+        <div class="dialogue-line questioner">你告诉我，你在这方案上，找到什么漏洞了吗？</div>
+        <div class="dialogue-line narrator">毛锦泉脸色微微一变，沉吟片刻后开口说道：</div>
+        <div class="dialogue-line respondent">漏洞？</div>
+        <div class="dialogue-line respondent">难道这漏洞还不明显吗？</div>
+        <div class="dialogue-line respondent">一名大二的学生，从什么地方获取这些知识？</div>
+        <div class="dialogue-line respondent">更何况，那个新材料的推演过程我也看了，就这么寥寥几笔，一个新材料就在笔头上出现了？开什么玩笑！</div>
+        <div class="dialogue-line respondent">实验数据呢？没有实验数据的方案，和天方夜谭有什么区别？！</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="overview-section">
+    <div class="section-label">谬误总览</div>
+    <p class="overview-text">三个 AI 从同一段对话中共识别出 <strong>12 种</strong>逻辑谬误。其中 3 种被三家一致指出，6 种被两家提及，3 种由某一家单独发现。点击卡片查看详细的谬误解释、三家分析和原文引用。</p>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot c3"></span>三家共识</div>
+      <div class="legend-item"><span class="legend-dot c2"></span>两家提及</div>
+      <div class="legend-item"><span class="legend-dot c1"></span>独家观点</div>
+    </div>
+    <div class="card-grid" id="cardGrid"></div>
+  </section>
+
+  <section class="persp-section">
+    <div class="section-label">AI 视角对比</div>
+    <p class="overview-text" style="margin-bottom:1.25rem">每个 AI 的分析框架和侧重点各不相同。切换标签查看完整分析，了解它们如何从同一段对话中读出不同的逻辑问题。</p>
+    <div class="persp-tabs">
+      <button class="persp-tab active" data-persp="deepseek">DeepSeek</button>
+      <button class="persp-tab" data-persp="chatgpt">ChatGPT</button>
+      <button class="persp-tab" data-persp="gemini">Gemini</button>
+    </div>
+    <div class="persp-content open" id="persp-deepseek">
+      <h3>核心判断</h3>
+      <p>毛锦泉没有真正针对方案本身找逻辑漏洞，而是用提出者身份、证据缺失和主观态度来否定方案。</p>
+      <h3>论证结构</h3>
+      <p>DeepSeek 逐一拆解了七处逻辑错误：起源谬误/诉诸人身、转移论题、诉诸无知、混淆论证不充分与逻辑错误、预设结论、虚假二分、情感修辞代替论证。</p>
+      <div class="summary">
+        <strong>总结：</strong>毛锦泉列举的缺实验数据、推导简略可以是科学上的合理质疑，但作为方案有逻辑漏洞的论证是不成立的。他真正能说的是：这个方案目前证据不足，无法验证。而不能直接推出：所以它有漏洞，是天方夜谭。<br><br>
+        值得注意的是：结论可能仍然正确，但论证过程并没有有效证明它。这正是区分<strong>结论正确</strong>和<strong>论证正确</strong>的典型案例。
+      </div>
+    </div>
+    <div class="persp-content" id="persp-chatgpt">
+      <h3>核心判断</h3>
+      <p>最明显的问题不是结论一定错误，而是论证没有真正证明结论，却用若干看似有力的理由把不相信包装成了方案有漏洞。</p>
+      <h3>论证结构</h3>
+      <p>ChatGPT 的分析最为深入，不仅逐一拆解了七处谬误，还引入了证据等级跃迁的概念&mdash;&mdash;缺乏支持证据 &ne; 存在反面证据 &ne; 已经证明错误。同时区分了三个不同的问题：证明方案成立、找出方案漏洞、判断方案是否值得相信。</p>
+      <h3>独到见解：三大基线检验</h3>
+      <p>ChatGPT 用概念定义 &rarr; 标准约束 &rarr; 逻辑遵循三个基线来审视这段对话：</p>
+      <p>漏洞的定义不断漂移（推导错误？前提错误？缺乏证据？身份可疑？）；评价标准没有事先确定；逻辑推导把证据不足直接推成了命题错误。</p>
+      <div class="summary">
+        <strong>总结：</strong>这段对话最大的逻辑错误，是把无法解释其来源、缺乏实验验证、提出者身份可疑等降低可信度的理由，逐步升级成了方案本身错误的结论。它的结论可能仍然是正确的&mdash;&mdash;但这段话并没有有效地证明它是胡说八道。
+      </div>
+    </div>
+    <div class="persp-content" id="persp-gemini">
+      <h3>核心判断</h3>
+      <p>毛锦泉的反驳看似情绪激烈、质问有力，但从逻辑学和批判性思维的角度来看，犯了几个非常典型的逻辑谬误。</p>
+      <h3>论证结构</h3>
+      <p>Gemini 的分析最为精炼，聚焦于三个核心谬误：根源谬误与诉诸人身、资历偏见与刻板印象、混淆理论推演与实验验证。</p>
+      <p>Gemini 特别强调了科学研究的发展阶段&mdash;&mdash;在早期阶段，许多突破性成果往往先通过理论推演呈现，然后再进入实验室验证。用后期的验证标准去苛求前期的理论构思，属于偷换标准。</p>
+      <div class="summary">
+        <strong>总结：</strong>毛锦泉的情绪反应更像是出于对自身权威受到挑战的防卫，或者对年轻后辈的轻视，而不是基于理性客观的学术审视。
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  基于 DeepSeek、ChatGPT、Gemini 三家 AI 的分析整理
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-header">
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-en" id="modalEn"></div>
+      <div class="modal-badges" id="modalBadges"></div>
+    </div>
+    <div class="modal-def" id="modalDef"></div>
+    <div class="modal-quote" id="modalQuote"></div>
+    <div class="tabs" id="modalTabs"></div>
+    <div id="modalAnalyses"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+var LQ='\u201c',RQ='\u201d';
+var fallacies=[
+{name:'\u8bc9\u8bf8\u4eba\u8eab',en:'Ad Hominem',consensus:3,
+definition:'\u4e0d\u9488\u5bf9\u89c2\u70b9\u6216\u8bba\u8bc1\u672c\u8eab\u8fdb\u884c\u53cd\u9a73\uff0c\u8f6c\u800c\u653b\u51fb\u63d0\u51fa\u8005\u7684\u8eab\u4efd\u3001\u8d44\u5386\u3001\u54c1\u683c\u6216\u5904\u5883\u3002\u5176\u6838\u5fc3\u8c2c\u8bef\u5728\u4e8e\uff1a\u4e00\u4e2a\u89c2\u70b9\u7684\u5bf9\u9519\uff0c\u4e0e\u5176\u63d0\u51fa\u8005\u662f\u8c01\u6ca1\u6709\u5fc5\u7136\u7684\u903b\u8f91\u8054\u7cfb\u3002\u771f\u7406\u4e0d\u95ee\u51fa\u8eab\u2014\u2014\u65e0\u8bba\u63d0\u51fa\u8005\u662f\u6743\u5a01\u8fd8\u662f\u65b0\u624b\uff0c\u8bba\u8bc1\u672c\u8eab\u9700\u8981\u88ab\u72ec\u7acb\u5ba1\u89c6\u3002',
+quote:'\u4e00\u540d\u5927\u4e8c\u7684\u5b66\u751f\uff0c\u4ece\u4ec0\u4e48\u5730\u65b9\u83b7\u53d6\u8fd9\u4e9b\u77e5\u8bc6\uff1f',
+analyses:{
+deepseek:'\u8fd9\u662f\u7528\u63d0\u51fa\u8005\u7684\u5e74\u9f84\u3001\u5b66\u5386\u3001\u8eab\u4efd\u6765\u63a8\u65ad\u5176\u89c2\u70b9\u4e0d\u53ef\u4fe1\u3002\u4f46\u4e00\u4e2a\u65b9\u6848\u662f\u5426\u6b63\u786e\uff0c\u53d6\u51b3\u4e8e\u5176\u524d\u63d0\u3001\u63a8\u5bfc\u548c\u8bc1\u636e\uff0c\u800c\u4e0d\u53d6\u51b3\u4e8e\u63d0\u51fa\u8005\u662f\u4e0d\u662f\u5927\u4e8c\u5b66\u751f\u3002\u6bdb\u9526\u6cc9\u6ca1\u6709\u53bb\u6307\u51fa\u65b9\u6848\u5728\u79d1\u5b66\u539f\u7406\u6216\u903b\u8f91\u95ed\u73af\u4e0a\u6709\u4f55\u5177\u4f53\u9519\u8bef\uff0c\u800c\u662f\u628a\u77db\u5934\u6307\u5411\u4e86\u63d0\u51fa\u8005\u7684\u8eab\u4efd\u3002',
+chatgpt:'\u8fd9\u91cc\u9690\u542b\u4e86\u4e00\u4e2a\u8eab\u4efd\u504f\u89c1\uff1a\u5927\u4e8c\u5b66\u751f\u2192\u77e5\u8bc6\u6c34\u5e73\u6709\u9650\u2192\u4e0d\u53ef\u80fd\u63d0\u51fa\u8fd9\u6837\u7684\u65b9\u6848\u3002\u4f46\u4e00\u4e2a\u4eba\u7684\u5e74\u7ea7\u3001\u5b66\u5386\u5e76\u4e0d\u80fd\u76f4\u63a5\u51b3\u5b9a\u5176\u5177\u4f53\u77e5\u8bc6\u6c34\u5e73\u3002\u6765\u6e90\u53ef\u7591\u53ea\u80fd\u964d\u4f4e\u53ef\u4fe1\u5ea6\uff0c\u4e0d\u80fd\u76f4\u63a5\u8bc1\u660e\u547d\u9898\u4e3a\u5047\u3002\u8fd9\u662f\u975e\u5e38\u91cd\u8981\u7684\u533a\u522b\u3002',
+gemini:'\u6bdb\u9526\u6cc9\u6ca1\u6709\u53bb\u6307\u51fa\u65b9\u6848\u5728\u79d1\u5b66\u539f\u7406\u3001\u516c\u5f0f\u63a8\u5bfc\u6216\u903b\u8f91\u95ed\u73af\u4e0a\u6709\u4f55\u5177\u4f53\u9519\u8bef\uff0c\u800c\u662f\u628a\u653b\u51fb\u7684\u77db\u5934\u6307\u5411\u4e86\u63d0\u51fa\u8005\u7684\u8eab\u4efd\u3002\u4e00\u4e2a\u89c2\u70b9\u3001\u65b9\u6848\u6216\u7406\u8bba\u7684\u5bf9\u9519\uff0c\u4e0e\u5176\u63d0\u51fa\u8005\u7684\u5e74\u9f84\u3001\u5b66\u5386\u6216\u8d44\u5386\u6ca1\u6709\u4efb\u4f55\u5fc5\u7136\u7684\u903b\u8f91\u8054\u7cfb\u3002\u771f\u7406\u4e0d\u95ee\u51fa\u8eab\uff0c\u5927\u4e8c\u5b66\u751f\u540c\u6837\u53ef\u80fd\u5199\u51fa\u4f18\u79c0\u7684\u65b9\u6848\u3002\u4ec5\u51ed\u5bf9\u65b9\u662f\u5927\u4e8c\u5b66\u751f\u5c31\u5426\u5b9a\u65b9\u6848\uff0c\u5c5e\u4e8e\u5178\u578b\u7684\u56e0\u4eba\u5e9f\u8a00\u3002'}},
+
+{name:'\u8bc9\u8bf8\u65e0\u77e5',en:'Argument from Ignorance',consensus:3,
+definition:'\u56e0\u4e3a\u67d0\u4ef6\u4e8b\u672a\u88ab\u8bc1\u660e\u4e3a\u771f\uff0c\u5c31\u65ad\u5b9a\u5b83\u4e3a\u5047\uff1b\u6216\u56e0\u4e3a\u672a\u88ab\u8bc1\u4f2a\uff0c\u5c31\u65ad\u5b9a\u5b83\u4e3a\u771f\u3002\u5176\u903b\u8f91\u9519\u8bef\u5728\u4e8e\u6df7\u6dc6\u4e86\u5c1a\u672a\u8bc1\u5b9e\u4e0e\u5df2\u7ecf\u8bc1\u4f2a\u2014\u2014\u7f3a\u4e4f\u8bc1\u636e\u4e0d\u7b49\u4e8e\u53cd\u9762\u7684\u8bc1\u636e\u3002\u672a\u8bc1\u5b9e\u2260\u5df2\u8bc1\u4f2a\uff0c\u8fd9\u662f\u79d1\u5b66\u601d\u7ef4\u4e2d\u6700\u57fa\u672c\u7684\u533a\u5206\u4e4b\u4e00\u3002',
+quote:'\u5b9e\u9a8c\u6570\u636e\u5462\uff1f\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u7684\u65b9\u6848\uff0c\u548c\u5929\u65b9\u591c\u8c2d\u6709\u4ec0\u4e48\u533a\u522b\uff1f\uff01',
+analyses:{
+deepseek:'\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u53ea\u80fd\u8bf4\u660e\u8be5\u65b9\u6848\u5c1a\u672a\u9a8c\u8bc1\u3001\u8bc1\u636e\u4e0d\u8db3\uff0c\u4e0d\u80fd\u76f4\u63a5\u63a8\u51fa\u5b83\u6709\u903b\u8f91\u6f0f\u6d1e\u6216\u4e00\u5b9a\u662f\u5047\u7684\u3002\u672a\u8bc1\u5b9e\u2260\u5df2\u8bc1\u4f2a\u3002\u6bdb\u9526\u6cc9\u628a\u7f3a\u4e4f\u652f\u6301\u8bc1\u636e\u76f4\u63a5\u7b49\u540c\u4e8e\u5b58\u5728\u53cd\u9762\u8bc1\u636e\uff0c\u5b8c\u6210\u4e86\u8bc1\u636e\u7b49\u7ea7\u7684\u4e0d\u5f53\u8dc3\u8fc1\u3002',
+chatgpt:'\u903b\u8f91\u7ed3\u6784\u662f\uff1a\u6211\u4e0d\u77e5\u9053\u4e00\u4e2a\u5927\u4e8c\u5b66\u751f\u5982\u4f55\u638c\u63e1\u8fd9\u4e9b\u77e5\u8bc6\u2192\u6240\u4ee5\u8fd9\u4e2a\u65b9\u6848\u5f88\u53ef\u7591\u3002\u4f46\u4e0d\u77e5\u9053\u77e5\u8bc6\u6765\u6e90\u53ea\u80fd\u8bf4\u660e\u77e5\u8bc6\u6765\u6e90\u5c1a\u672a\u5f97\u5230\u89e3\u91ca\uff0c\u4e0d\u80fd\u63a8\u51fa\u8fd9\u4e2a\u65b9\u6848\u9519\u8bef\u3002\u8fd9\u662f\u6574\u6bb5\u5bf9\u767d\u6700\u5927\u7684\u903b\u8f91\u95ee\u9898\uff1a\u7f3a\u4e4f\u652f\u6301\u8bc1\u636e\u2260\u5b58\u5728\u53cd\u9762\u8bc1\u636e\u2260\u5df2\u7ecf\u8bc1\u660e\u9519\u8bef\u3002',
+gemini:'\u6bdb\u9526\u6cc9\u7528\u73b0\u9636\u6bb5\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u76f4\u63a5\u5426\u5b9a\u6574\u4e2a\u63a8\u6f14\u8fc7\u7a0b\u7684\u4ef7\u503c\u3002\u79d1\u5b66\u7814\u7a76\u901a\u5e38\u5206\u4e3a\u4e0d\u540c\u9636\u6bb5\uff0c\u8bb8\u591a\u7a81\u7834\u6027\u6210\u679c\u5f80\u5f80\u5148\u901a\u8fc7\u7406\u8bba\u63a8\u6f14\u5448\u73b0\uff0c\u7136\u540e\u518d\u8fdb\u5165\u5b9e\u9a8c\u5ba4\u9a8c\u8bc1\u3002\u7528\u540e\u671f\u7684\u9a8c\u8bc1\u6807\u51c6\u53bb\u82db\u6c42\u524d\u671f\u7684\u7406\u8bba\u6784\u601d\uff0c\u5c5e\u4e8e\u6df7\u6dc6\u4e86\u7406\u8bba\u63a8\u6f14\u4e0e\u5b9e\u9a8c\u6210\u679c\u7684\u6982\u5ff5\u3002'}},
+
+{name:'\u865a\u5047\u4e8c\u5206',en:'False Dilemma',consensus:3,
+definition:'\u5c06\u590d\u6742\u7684\u60c5\u51b5\u7b80\u5316\u4e3a\u975e\u6b64\u5373\u5f7c\u7684\u4e24\u4e2a\u6781\u7aef\u9009\u9879\uff0c\u5ffd\u7565\u4e86\u4e2d\u95f4\u72b6\u6001\u548c\u5176\u4ed6\u53ef\u80fd\u6027\u3002\u73b0\u5b9e\u4e2d\u5927\u591a\u6570\u95ee\u9898\u5b58\u5728\u5149\u8c31\u5f0f\u7684\u591a\u79cd\u53ef\u80fd\uff0c\u800c\u975e\u53ea\u6709\u5b8c\u5168\u6b63\u786e\u548c\u5f7b\u5e95\u8352\u8c2c\u4e24\u4e2a\u6781\u7aef\u3002',
+quote:'\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u7684\u65b9\u6848\uff0c\u548c\u5929\u65b9\u591c\u8c2d\u6709\u4ec0\u4e48\u533a\u522b\uff1f\uff01',
+analyses:{
+deepseek:'\u628a\u65b9\u6848\u8bf4\u6210\u8981\u4e48\u6709\u5b9e\u9a8c\u6570\u636e\uff0c\u8981\u4e48\u5c31\u662f\u5929\u65b9\u591c\u8c2d\uff0c\u5ffd\u7565\u4e86\u4e2d\u95f4\u72b6\u6001\uff1a\u7406\u8bba\u5047\u8bf4\u3001\u5f85\u9a8c\u8bc1\u6a21\u578b\u3001\u521d\u6b65\u63a8\u6f14\u7b49\u3002\u4e00\u4e2a\u65b9\u6848\u5728\u83b7\u5f97\u5b9e\u9a8c\u6570\u636e\u4e4b\u524d\uff0c\u53ef\u4ee5\u5904\u4e8e\u591a\u79cd\u5408\u7406\u7684\u4e2d\u95f4\u72b6\u6001\u2014\u2014\u5b83\u53ef\u80fd\u662f\u4e00\u4e2a\u503c\u5f97\u9a8c\u8bc1\u7684\u5047\u8bf4\uff0c\u4e00\u4e2a\u6709\u542f\u53d1\u6027\u7684\u6a21\u578b\uff0c\u6216\u4e00\u4e2a\u9700\u8981\u8fdb\u4e00\u6b65\u5b8c\u5584\u7684\u7406\u8bba\u6846\u67b6\u3002',
+chatgpt:'\u8fd9\u5c5e\u4e8e\u9519\u8bef\u7684\u8bc1\u660e\u6807\u51c6\uff08moving the goalposts\uff09\u3002\u5982\u679c\u539f\u65b9\u6848\u53ea\u662f\u4e00\u4e2a\u7406\u8bba\u65b9\u6848\uff0c\u7528\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u6765\u5426\u5b9a\u5b83\u5c31\u5077\u6362\u4e86\u8bc4\u4ef7\u6807\u51c6\u3002\u7406\u8bba\u5047\u8bbe\u548c\u7406\u8bba\u9884\u6d4b\u5728\u79d1\u5b66\u4e2d\u6709\u5176\u72ec\u7acb\u7684\u4ef7\u503c\u548c\u5730\u4f4d\uff0c\u4e0d\u9700\u8981\u5728\u63d0\u51fa\u65f6\u5c31\u5177\u5907\u5b9e\u9a8c\u9a8c\u8bc1\u3002',
+gemini:'\u6bdb\u9526\u6cc9\u628a\u7406\u8bba\u63a8\u6f14\u548c\u5b9e\u9a8c\u9a8c\u8bc1\u5bf9\u7acb\u8d77\u6765\uff0c\u8ba4\u4e3a\u6ca1\u6709\u540e\u8005\u524d\u8005\u5c31\u6beb\u65e0\u4ef7\u503c\u3002\u4f46\u5728\u79d1\u5b66\u53d1\u5c55\u7684\u65e9\u671f\u9636\u6bb5\uff0c\u8bb8\u591a\u7a81\u7834\u6027\u6210\u679c\u5f80\u5f80\u5148\u901a\u8fc7\u7406\u8bba\u63a8\u6f14\u3001\u6570\u5b66\u5efa\u6a21\u6216\u6784\u60f3\u5448\u73b0\uff0c\u7136\u540e\u518d\u8fdb\u5165\u5b9e\u9a8c\u5ba4\u8fdb\u884c\u9a8c\u8bc1\u3002\u8fd9\u79cd\u975e\u9ed1\u5373\u767d\u7684\u5224\u65ad\u5ffd\u7565\u4e86\u79d1\u5b66\u7814\u7a76\u7684\u9636\u6bb5\u6027\u7279\u5f81\u3002'}},
+
+{name:'\u4ee5\u504f\u6982\u5168',en:'Hasty Generalization',consensus:2,
+definition:'\u6839\u636e\u4e0d\u5145\u5206\u6216\u8868\u9762\u7684\u6837\u672c\u5c31\u5f97\u51fa\u5173\u4e8e\u6574\u4f53\u7684\u7ed3\u8bba\u3002\u7528\u5c40\u90e8\u7279\u5f81\u66ff\u4ee3\u5168\u5c40\u5224\u65ad\uff0c\u5c06\u4e2a\u522b\u73b0\u8c61\u63a8\u5e7f\u4e3a\u666e\u904d\u89c4\u5f8b\u3002\u5176\u6838\u5fc3\u95ee\u9898\u5728\u4e8e\uff1a\u6837\u672c\u4e0e\u603b\u4f53\u4e4b\u95f4\u5b58\u5728\u4fe1\u606f\u4e0d\u5bf9\u79f0\uff0c\u5c55\u793a\u51fa\u6765\u7684\u90e8\u5206\u4e0d\u80fd\u4ee3\u8868\u5b8c\u6574\u7684\u5168\u8c8c\u3002',
+quote:'\u5c31\u8fd9\u4e48\u5be5\u5be5\u51e0\u7b14\uff0c\u4e00\u4e2a\u65b0\u6750\u6599\u5c31\u5728\u7b14\u5934\u4e0a\u51fa\u73b0\u4e86\uff1f',
+analyses:{
+chatgpt:'\u4f5c\u8005\u770b\u5230\u63a8\u6f14\u8fc7\u7a0b\u5f88\u77ed\uff0c\u5c31\u63a8\u65ad\u6574\u4e2a\u7814\u7a76\u8fc7\u7a0b\u4e0d\u53ef\u4fe1\u3002\u4f46\u5c55\u793a\u51fa\u6765\u7684\u63a8\u6f14\u8fc7\u7a0b\u5f88\u77ed\u4e0e\u5b9e\u9645\u7814\u7a76\u8fc7\u7a0b\u5f88\u77ed\u4e0d\u662f\u540c\u4e00\u4e2a\u547d\u9898\u3002\u53ef\u80fd\u5b58\u5728\u5927\u91cf\u524d\u7f6e\u77e5\u8bc6\u3001\u8ba1\u7b97\u3001\u6a21\u62df\u3001\u7ecf\u9a8c\u79ef\u7d2f\u6ca1\u6709\u5c55\u793a\u3002\u6bdb\u9526\u6cc9\u7528\u8868\u9762\u7684\u7bc7\u5e45\u7279\u5f81\u5426\u5b9a\u4e86\u6574\u4e2a\u65b9\u6848\u7684\u53ef\u4fe1\u5ea6\uff0c\u8fd9\u662f\u5178\u578b\u7684\u4ee5\u504f\u6982\u5168\u3002',
+gemini:'\u6bdb\u9526\u6cc9\u6839\u636e\u63a8\u6f14\u8fc7\u7a0b\u5be5\u5be5\u51e0\u7b14\u5c31\u65ad\u5b9a\u6574\u4e2a\u7814\u7a76\u4e0d\u53ef\u4fe1\uff0c\u8fd9\u662f\u4ece\u8868\u9762\u7684\u3001\u4e0d\u5b8c\u6574\u7684\u8bc1\u636e\u4e2d\u5f97\u51fa\u4e86\u5168\u9762\u7684\u5426\u5b9a\u7ed3\u8bba\u3002\u4ed6\u770b\u5230\u7684\u53ea\u662f\u6700\u7ec8\u5448\u73b0\u7684\u6587\u672c\uff0c\u800c\u975e\u80cc\u540e\u7684\u5b8c\u6574\u7814\u7a76\u8fc7\u7a0b\u3002'}},
+
+{name:'\u8bc9\u8bf8\u76f4\u89c9',en:'Appeal to Intuition',consensus:2,
+definition:'\u7528\u4e2a\u4eba\u76f4\u89c9\u6216\u5e38\u8bc6\u611f\u53d7\u4ee3\u66ff\u903b\u8f91\u8bba\u8bc1\u3002\u6211\u89c9\u5f97\u4e0d\u53ef\u80fd\u88ab\u5f53\u4f5c\u4e8b\u5b9e\u4e0a\u4e0d\u53ef\u80fd\u7684\u8bc1\u636e\u3002\u76f4\u89c9\u53ef\u4ee5\u4f5c\u4e3a\u63d0\u51fa\u8d28\u7591\u7684\u8d77\u70b9\uff0c\u4f46\u4e0d\u80fd\u5355\u72ec\u6784\u6210\u6709\u6548\u7684\u53cd\u9a73\u2014\u2014\u56e0\u4e3a\u76f4\u89c9\u5e38\u5e38\u53d7\u5230\u8ba4\u77e5\u504f\u89c1\u548c\u7ecf\u9a8c\u5c40\u9650\u7684\u5f71\u54cd\u3002',
+quote:'\u4e00\u4e2a\u65b0\u6750\u6599\u5c31\u5728\u7b14\u5934\u4e0a\u51fa\u73b0\u4e86\uff1f\u5f00\u4ec0\u4e48\u73a9\u7b11\uff01',
+analyses:{
+chatgpt:'\u8fd9\u662f\u4e00\u79cd\u5e38\u8bc6\u76f4\u89c9\u8bba\u8bc1\uff1a\u6211\u8ba4\u4e3a\u4e8b\u60c5\u4e0d\u5e94\u8be5\u8fd9\u4e48\u7b80\u5355\u2192\u6240\u4ee5\u4e8b\u60c5\u4e0d\u53ef\u80fd\u8fd9\u4e48\u7b80\u5355\u3002\u76f4\u89c9\u53ef\u4ee5\u6210\u4e3a\u63d0\u51fa\u8d28\u7591\u7684\u7406\u7531\uff0c\u4f46\u4e0d\u80fd\u5355\u72ec\u6784\u6210\u53cd\u9a73\u3002\u8fd9\u600e\u4e48\u53ef\u80fd\u4e0d\u662f\u903b\u8f91\u8bba\u8bc1\uff0c\u5b83\u53ea\u53cd\u6620\u4e86\u8bf4\u8bdd\u8005\u7684\u8ba4\u77e5\u9884\u671f\uff0c\u4e0d\u80fd\u66ff\u4ee3\u5bf9\u65b9\u6848\u672c\u8eab\u7684\u903b\u8f91\u68c0\u9a8c\u3002',
+gemini:'\u6bdb\u9526\u6cc9\u7684\u5f00\u4ec0\u4e48\u73a9\u7b11\u53cd\u6620\u4e86\u4e00\u79cd\u76f4\u89c9\u4e0a\u7684\u4e0d\u53ef\u7f6e\u4fe1\uff1a\u4ed6\u8ba4\u4e3a\u65b0\u6750\u6599\u7684\u63a8\u5bfc\u4e0d\u5e94\u8be5\u5982\u6b64\u7b80\u5355\u3002\u4f46\u8fd9\u79cd\u76f4\u89c9\u53cd\u5e94\u4e0d\u80fd\u66ff\u4ee3\u5bf9\u65b9\u6848\u903b\u8f91\u7684\u5177\u4f53\u5206\u6790\u3002\u76f4\u89c9\u53ef\u4ee5\u5f15\u5bfc\u6211\u4eec\u53bb\u5ba1\u89c6\uff0c\u4f46\u4e0d\u80fd\u4ee3\u66ff\u5ba1\u89c6\u672c\u8eab\u3002'}},
+
+{name:'\u6df7\u6dc6\u8bba\u8bc1\u4e0d\u5145\u5206\u4e0e\u903b\u8f91\u9519\u8bef',en:'Confusing Insufficiency with Invalidity',consensus:2,
+definition:'\u5c06\u8bba\u8bc1\u5199\u5f97\u4e0d\u591f\u8be6\u7ec6\u3001\u8bc1\u636e\u4e0d\u591f\u5145\u5206\u7b49\u540c\u4e8e\u7ed3\u8bba\u5b58\u5728\u903b\u8f91\u9519\u8bef\u3002\u8bba\u8bc1\u4e0d\u5145\u5206\u610f\u5473\u7740\u9700\u8981\u66f4\u591a\u652f\u6491\uff0c\u4f46\u4e0d\u610f\u5473\u7740\u7ed3\u8bba\u672c\u8eab\u662f\u9519\u7684\u3002\u8fd9\u5c31\u50cf\u628a\u8bc1\u636e\u4e0d\u8db3\u7b49\u540c\u4e8e\u5df2\u7ecf\u8bc1\u4f2a\u2014\u2014\u4e24\u8005\u5728\u903b\u8f91\u4e0a\u5b8c\u5168\u4e0d\u540c\u3002',
+quote:'\u5c31\u8fd9\u4e48\u5be5\u5be5\u51e0\u7b14\uff0c\u4e00\u4e2a\u65b0\u6750\u6599\u5c31\u5728\u7b14\u5934\u4e0a\u51fa\u73b0\u4e86\uff1f',
+analyses:{
+deepseek:'\u5982\u679c\u63a8\u5bfc\u786e\u5b9e\u592a\u7b80\u7565\uff0c\u90a3\u662f\u6307\u51fa\u8bba\u8bc1\u4e0d\u5145\u5206\uff0c\u4f46\u9700\u8981\u5177\u4f53\u8bf4\u660e\u54ea\u4e00\u6b65\u7f3a\u524d\u63d0\u3001\u54ea\u4e00\u6b65\u8df3\u8dc3\u3002\u4ec5\u51ed\u7bc7\u5e45\u77ed\u3001\u5199\u5f97\u5c11\uff0c\u4e0d\u80fd\u8bc1\u660e\u7ed3\u8bba\u9519\u8bef\u3002\u6b63\u786e\u7684\u505a\u6cd5\u662f\u6307\u51fa\u5177\u4f53\u7f3a\u5931\u7684\u73af\u8282\uff0c\u800c\u4e0d\u662f\u7b3c\u7edf\u5730\u4ee5\u5199\u5f97\u592a\u5c11\u6765\u5426\u5b9a\u6574\u4e2a\u7ed3\u8bba\u3002',
+chatgpt:'\u8bba\u8bc1\u7684\u7bc7\u5e45\u548c\u8be6\u7ec6\u7a0b\u5ea6\u4e0e\u8bba\u8bc1\u7684\u903b\u8f91\u6709\u6548\u6027\u662f\u4e24\u4e2a\u4e0d\u540c\u7684\u7ef4\u5ea6\u3002\u4e00\u4e2a\u8bba\u8bc1\u53ef\u4ee5\u5199\u5f97\u5f88\u7b80\u7565\u4f46\u903b\u8f91\u4e0a\u5b8c\u5168\u6210\u7acb\uff0c\u4e5f\u53ef\u4ee5\u5199\u5f97\u5f88\u5197\u957f\u4f46\u5145\u6ee1\u903b\u8f91\u6f0f\u6d1e\u3002\u6bdb\u9526\u6cc9\u628a\u4e24\u8005\u6df7\u4e3a\u4e00\u8c08\u4e86\u3002'}},
+
+{name:'\u8f6c\u79fb\u8bba\u9898',en:'Red Herring',consensus:2,
+definition:'\u4e0d\u76f4\u63a5\u56de\u5e94\u539f\u59cb\u95ee\u9898\uff0c\u8f6c\u800c\u8ba8\u8bba\u5176\u4ed6\u770b\u4f3c\u76f8\u5173\u4f46\u5b9e\u8d28\u4e0d\u540c\u7684\u8bdd\u9898\uff0c\u4ece\u800c\u504f\u79bb\u4e86\u8bba\u8bc1\u7684\u6838\u5fc3\u3002\u5176\u6548\u679c\u662f\u5c06\u8ba8\u8bba\u7126\u70b9\u4ece\u539f\u59cb\u8bae\u9898\u6084\u6084\u8f6c\u79fb\u5230\u66f4\u5bb9\u6613\u653b\u51fb\u7684\u76ee\u6807\u4e0a\uff0c\u5236\u9020\u51fa\u5df2\u7ecf\u56de\u7b54\u4e86\u95ee\u9898\u7684\u5047\u8c61\u3002',
+quote:'\u4e00\u540d\u5927\u4e8c\u7684\u5b66\u751f\uff0c\u4ece\u4ec0\u4e48\u5730\u65b9\u83b7\u53d6\u8fd9\u4e9b\u77e5\u8bc6\uff1f\n\u5b9e\u9a8c\u6570\u636e\u5462\uff1f',
+analyses:{
+deepseek:'\u5bf9\u65b9\u95ee\u7684\u662f\u65b9\u6848\u4e0a\u6709\u4ec0\u4e48\u6f0f\u6d1e\uff0c\u6bdb\u9526\u6cc9\u5374\u8c08\u4f5c\u8005\u4ece\u54ea\u83b7\u53d6\u77e5\u8bc6\u3001\u6709\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u3002\u8fd9\u4e9b\u53ef\u80fd\u662f\u5408\u7406\u8d28\u7591\uff0c\u4f46\u6ca1\u6709\u56de\u7b54\u65b9\u6848\u54ea\u4e00\u6b65\u903b\u8f91\u4e0d\u6210\u7acb\u3002\u4ed6\u7528\u4e00\u7cfb\u5217\u76f8\u5173\u4f46\u4e0d\u540c\u7684\u95ee\u9898\u66ff\u4ee3\u4e86\u539f\u59cb\u95ee\u9898\uff0c\u5236\u9020\u4e86\u56de\u5e94\u7684\u5047\u8c61\u3002',
+chatgpt:'\u8868\u9762\u4e0a\u662f\u5728\u5ba1\u67e5\u65b9\u6848\uff0c\u5b9e\u9645\u4e0a\u9010\u6e10\u53d8\u6210\u4e86\u5ba1\u67e5\u63d0\u51fa\u65b9\u6848\u7684\u4eba\u3002\u8bba\u8bc1\u8def\u5f84\u53d8\u6210\uff1a\u4ed6\u53ea\u662f\u5927\u4e8c\u5b66\u751f\u2192\u4ed6\u4e0d\u5e94\u8be5\u61c2\u8fd9\u4e48\u591a\u2192\u6240\u4ee5\u65b9\u6848\u53ef\u7591\u2192\u6240\u4ee5\u63a8\u6f14\u8fc7\u7a0b\u4e0d\u53ef\u4fe1\u2192\u6240\u4ee5\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u2192\u6240\u4ee5\u65b9\u6848\u50cf\u5929\u65b9\u591c\u8c2d\u3002\u8bba\u8bc1\u7684\u5bf9\u8c61\u4ece\u65b9\u6848\u6084\u6084\u8f6c\u79fb\u5230\u4e86\u4eba\u3002'}},
+
+{name:'\u9884\u8bbe\u7ed3\u8bba',en:'Begging the Question',consensus:2,
+definition:'\u5728\u8bba\u8bc1\u5f00\u59cb\u4e4b\u524d\u5c31\u5df2\u7ecf\u628a\u7ed3\u8bba\u5f53\u4f5c\u524d\u63d0\u6765\u4f7f\u7528\u3002\u8bba\u8bc1\u7684\u8fc7\u7a0b\u4e0d\u662f\u5728\u8bc1\u660e\u7ed3\u8bba\uff0c\u800c\u662f\u5728\u91cd\u590d\u7ed3\u8bba\u3002\u8fd9\u662f\u4e00\u79cd\u5faa\u73af\u8bba\u8bc1\u7684\u53d8\u4f53\u2014\u2014\u7ed3\u8bba\u88ab\u9884\u8bbe\u5728\u4e86\u95ee\u9898\u4e4b\u4e2d\uff0c\u4f7f\u5f97\u6574\u4e2a\u8bba\u8bc1\u53d8\u6210\u4e86\u4e00\u4e2a\u81ea\u6211\u9a8c\u8bc1\u7684\u95ed\u73af\u3002',
+quote:'\u96be\u9053\u8fd9\u6f0f\u6d1e\u8fd8\u4e0d\u660e\u663e\u5417\uff1f',
+analyses:{
+deepseek:'\u8fd9\u53e5\u8bdd\u5148\u628a\u6709\u6f0f\u6d1e\u5f53\u6210\u5df2\u7ecf\u6210\u7acb\u7684\u524d\u63d0\uff0c\u518d\u53bb\u8981\u6c42\u522b\u4eba\u627f\u8ba4\uff0c\u800c\u4e0d\u662f\u5148\u8bc1\u660e\u6f0f\u6d1e\u5b58\u5728\u3002\u96be\u9053\u8fd9\u4e0d\u660e\u663e\u5417\u7684\u53e5\u5f0f\u9884\u8bbe\u4e86\u8fd9\u786e\u5b9e\u5b58\u5728\uff0c\u7136\u540e\u7528\u53cd\u95ee\u7684\u8bed\u6c14\u8981\u6c42\u5bf9\u65b9\u63a5\u53d7\uff0c\u8df3\u8fc7\u4e86\u8bba\u8bc1\u7684\u6b65\u9aa4\u3002',
+chatgpt:'\u6bdb\u9526\u6cc9\u7684\u6574\u4e2a\u8bba\u8bc1\u7ed3\u6784\u662f\uff1a\u5148\u5047\u5b9a\u65b9\u6848\u6709\u95ee\u9898\uff0c\u7136\u540e\u53bb\u5bfb\u627e\u652f\u6301\u8fd9\u4e2a\u5047\u5b9a\u7684\u7406\u7531\uff08\u8eab\u4efd\u53ef\u7591\u3001\u63a8\u5bfc\u7b80\u7565\u3001\u7f3a\u6570\u636e\uff09\u3002\u8fd9\u662f\u5148\u6709\u7ed3\u8bba\u518d\u627e\u8bc1\u636e\u7684\u601d\u7ef4\u6a21\u5f0f\uff0c\u4e0e\u5148\u6709\u8bc1\u636e\u518d\u5f97\u51fa\u7ed3\u8bba\u7684\u79d1\u5b66\u65b9\u6cd5\u6070\u597d\u76f8\u53cd\u3002'}},
+
+{name:'\u8bba\u8bc1\u8d23\u4efb\u5012\u7f6e',en:'Reversal of Burden of Proof',consensus:1,
+definition:'\u5c06\u4e3e\u8bc1\u8d23\u4efb\u9519\u8bef\u5730\u8f6c\u79fb\u7ed9\u5bf9\u65b9\u3002\u4f60\u8bc1\u660e\u4e0d\u4e86\u5b83\u6210\u7acb\u548c\u5b83\u54ea\u91cc\u9519\u4e86\u662f\u4e24\u4e2a\u5b8c\u5168\u4e0d\u540c\u7684\u95ee\u9898\uff1a\u524d\u8005\u8981\u6c42\u652f\u6301\u6027\u8bc1\u636e\uff0c\u540e\u8005\u8981\u6c42\u627e\u5230\u5177\u4f53\u6f0f\u6d1e\u3002\u4e0d\u80fd\u56e0\u4e3a\u5bf9\u65b9\u65e0\u6cd5\u8bc1\u660e\u65b9\u6848\u6210\u7acb\uff0c\u5c31\u81ea\u52a8\u5f97\u51fa\u65b9\u6848\u5b58\u5728\u6f0f\u6d1e\u7684\u7ed3\u8bba\u3002',
+quote:'\u4f60\u544a\u8bc9\u6211\uff0c\u4f60\u5728\u8fd9\u65b9\u6848\u4e0a\uff0c\u627e\u5230\u4ec0\u4e48\u6f0f\u6d1e\u4e86\u5417\uff1f\n\u2014\u2014\u6f0f\u6d1e\uff1f\u2026\u2026\u5b9e\u9a8c\u6570\u636e\u5462\uff1f',
+analyses:{
+chatgpt:'\u5982\u679c\u6bdb\u9526\u6cc9\u53ea\u662f\u8981\u5224\u65ad\u65b9\u6848\u662f\u5426\u5b58\u5728\u6f0f\u6d1e\uff0c\u90a3\u4e48\u4f60\u8bc1\u660e\u4e0d\u4e86\u5b83\u6210\u7acb\u5e76\u4e0d\u80fd\u56de\u7b54\u5b83\u54ea\u91cc\u9519\u4e86\u3002\u8fd9\u662f\u4e24\u4e2a\u4e0d\u540c\u7684\u95ee\u9898\uff1a\u8bc1\u660e\u65b9\u6848\u662f\u5426\u6210\u7acb\u9700\u8981\u652f\u6301\u6027\u8bc1\u636e\uff0c\u627e\u51fa\u65b9\u6848\u6f0f\u6d1e\u9700\u8981\u627e\u5230\u5177\u4f53\u903b\u8f91\u7f3a\u9677\uff0c\u5224\u65ad\u65b9\u6848\u662f\u5426\u503c\u5f97\u76f8\u4fe1\u9700\u8981\u7efc\u5408\u8bc4\u4f30\u3002\u8fd9\u6bb5\u5bf9\u767d\u628a\u540e\u4e09\u8005\u6df7\u5728\u4e86\u4e00\u8d77\u3002'}},
+
+{name:'\u5077\u6362\u6807\u51c6',en:'Moving the Goalposts',consensus:1,
+definition:'\u5728\u8bba\u8bc1\u8fc7\u7a0b\u4e2d\u6084\u7136\u6539\u53d8\u8bc4\u5224\u6807\u51c6\uff0c\u4f7f\u5f97\u5bf9\u65b9\u65e0\u8bba\u5982\u4f55\u90fd\u65e0\u6cd5\u6ee1\u8db3\u8981\u6c42\u3002\u5f53\u6807\u51c6\u6ca1\u6709\u88ab\u4e8b\u5148\u660e\u786e\u5b9a\u4e49\u65f6\uff0c\u8d28\u7591\u8005\u53ef\u4ee5\u968f\u65f6\u63d0\u9ad8\u6216\u6539\u53d8\u95e8\u69db\uff0c\u4f7f\u8bba\u8bc1\u53d8\u6210\u4e00\u573a\u4e0d\u53ef\u80fd\u8d62\u7684\u6e38\u620f\u3002',
+quote:'\u5b9e\u9a8c\u6570\u636e\u5462\uff1f\u6ca1\u6709\u5b9e\u9a8c\u6570\u636e\u7684\u65b9\u6848\uff0c\u548c\u5929\u65b9\u591c\u8c2d\u6709\u4ec0\u4e48\u533a\u522b\uff1f\uff01',
+analyses:{
+chatgpt:'\u4ec0\u4e48\u6761\u4ef6\u4e0b\u624d\u80fd\u8ba4\u4e3a\u65b9\u6848\u6210\u7acb\uff1f\u9700\u8981\u7406\u8bba\u63a8\u5bfc\uff1f\u6a21\u62df\uff1f\u5b9e\u9a8c\uff1f\u540c\u884c\u9a8c\u8bc1\uff1f\u5982\u679c\u6807\u51c6\u6ca1\u6709\u5148\u786e\u5b9a\uff0c\u5c31\u5f88\u5bb9\u6613\u51fa\u73b0\u6ca1\u6709\u6211\u8981\u6c42\u7684\u8bc1\u636e\u6240\u4ee5\u4f60\u9519\u4e86\u7684\u8bba\u8bc1\u9677\u9631\u3002\u6bdb\u9526\u6cc9\u5728\u5bf9\u8bdd\u4e2d\u4e0d\u65ad\u5207\u6362\u548c\u62ac\u9ad8\u8bc4\u4ef7\u6807\u51c6\u2014\u2014\u4ece\u903b\u8f91\u63a8\u5bfc\u5230\u77e5\u8bc6\u6765\u6e90\u5230\u5b9e\u9a8c\u6570\u636e\u2014\u2014\u4f7f\u5f97\u65b9\u6848\u6c38\u8fdc\u65e0\u6cd5\u8fbe\u5230\u4ed6\u7684\u8981\u6c42\u3002'}},
+
+{name:'\u8d44\u5386\u504f\u89c1',en:'Appeal to Credentials (Inverse)',consensus:1,
+definition:'\u8ba4\u4e3a\u53ea\u6709\u5177\u5907\u7279\u5b9a\u8d44\u5386\u7684\u4eba\u624d\u53ef\u80fd\u63d0\u51fa\u6709\u4ef7\u503c\u7684\u89c2\u70b9\uff0c\u5c06\u5b66\u5386\u3001\u5e74\u9f84\u3001\u804c\u4f4d\u7b49\u5916\u5728\u6807\u7b7e\u7b49\u540c\u4e8e\u5b9e\u9645\u7684\u77e5\u8bc6\u6c34\u5e73\u548c\u7814\u7a76\u80fd\u529b\u3002\u8fd9\u662f\u4e00\u79cd\u523b\u677f\u5370\u8c61\u7684\u53d8\u4f53\u2014\u2014\u7528\u7fa4\u4f53\u7684\u7edf\u8ba1\u7279\u5f81\u6765\u5224\u65ad\u4e2a\u4f53\u7684\u5177\u4f53\u80fd\u529b\u3002',
+quote:'\u4e00\u540d\u5927\u4e8c\u7684\u5b66\u751f\uff0c\u4ece\u4ec0\u4e48\u5730\u65b9\u83b7\u53d6\u8fd9\u4e9b\u77e5\u8bc6\uff1f',
+analyses:{
+gemini:'\u8ba4\u4e3a\u5927\u4e8c\u5b66\u751f\u4e0d\u53ef\u80fd\u505a\u51fa\u4f18\u79c0\u7684\u65b0\u6750\u6599\u63a8\u6f14\uff0c\u9ad8\u7ea7\u77e5\u8bc6\u548c\u6210\u679c\u53ea\u80fd\u7531\u7279\u5b9a\u9ad8\u6c34\u5e73\u7fa4\u4f53\u4ea7\u751f\u3002\u8fd9\u79cd\u601d\u7ef4\u9677\u5165\u4e86\u7edd\u5bf9\u5316\u7684\u6743\u5a01\u5d07\u62dc\u6216\u8d44\u5386\u504f\u89c1\uff0c\u65e0\u89c6\u4e86\u73b0\u5b9e\u4e2d\u53ef\u80fd\u5b58\u5728\u7684\u5929\u624d\u3001\u81ea\u5b66\u6210\u624d\u6216\u7075\u5149\u4e00\u73b0\u7684\u5ba2\u89c2\u53ef\u80fd\u6027\u3002\u77e5\u8bc6\u7684\u4ea7\u751f\u4e0d\u9075\u5faa\u8d44\u5386\u7684\u7b49\u7ea7\u79e9\u5e8f\u3002'}},
+
+{name:'\u60c5\u611f\u4fee\u8f9e\u4ee3\u66ff\u8bba\u8bc1',en:'Emotional Rhetoric',consensus:1,
+definition:'\u7528\u60c5\u7eea\u5316\u7684\u8868\u8fbe\u3001\u611f\u53f9\u3001\u53cd\u95ee\u7b49\u4fee\u8f9e\u624b\u6cd5\u66ff\u4ee3\u5b9e\u8d28\u6027\u7684\u903b\u8f91\u8bba\u8bc1\u3002\u5f53\u8bba\u8bc1\u7f3a\u4e4f\u903b\u8f91\u652f\u6491\u65f6\uff0c\u5f3a\u70c8\u7684\u60c5\u611f\u8868\u8fbe\u5f80\u5f80\u88ab\u7528\u6765\u586b\u8865\u7a7a\u767d\uff0c\u5236\u9020\u51fa\u53cd\u9a73\u5f88\u6709\u529b\u7684\u9519\u89c9\u3002\u4f46\u60c5\u7eea\u4e0d\u662f\u8bba\u636e\uff0c\u8bed\u6c14\u4e0d\u662f\u63a8\u7406\u3002',
+quote:'\u5f00\u4ec0\u4e48\u73a9\u7b11\uff01',
+analyses:{
+deepseek:'\u5f00\u4ec0\u4e48\u73a9\u7b11\u8fd9\u7c7b\u8868\u8fbe\u53ea\u662f\u6001\u5ea6\uff0c\u4e0d\u6784\u6210\u903b\u8f91\u53cd\u9a73\u3002\u65e0\u8bba\u8bed\u6c14\u591a\u4e48\u5f3a\u70c8\u3001\u60c5\u7eea\u591a\u4e48\u6fc0\u6602\uff0c\u90fd\u4e0d\u80fd\u66ff\u4ee3\u5bf9\u65b9\u6848\u5177\u4f53\u903b\u8f91\u7f3a\u9677\u7684\u6307\u51fa\u3002\u5f53\u8bba\u8bc1\u65e0\u6cd5\u5728\u903b\u8f91\u5c42\u9762\u7ad9\u4f4f\u811a\u65f6\uff0c\u60c5\u611f\u4fee\u8f9e\u5c31\u6210\u4e86\u8865\u507f\u5de5\u5177\u2014\u2014\u4f46\u5b83\u8865\u507f\u7684\u662f\u8bf4\u670d\u529b\uff0c\u4e0d\u662f\u6b63\u786e\u6027\u3002'}}
+];
+
+var grid=document.getElementById('cardGrid');
+var sourceNames={deepseek:'DeepSeek',chatgpt:'ChatGPT',gemini:'Gemini'};
+
+fallacies.forEach(function(f,i){
+  var cls=f.consensus===3?'c3':f.consensus===2?'c2':'c1';
+  var badges='';
+  if(f.analyses.deepseek)badges+='<span class="badge ds">DeepSeek</span>';
+  if(f.analyses.chatgpt)badges+='<span class="badge gpt">ChatGPT</span>';
+  if(f.analyses.gemini)badges+='<span class="badge gem">Gemini</span>';
+  var card=document.createElement('div');
+  card.className='card '+cls;
+  card.innerHTML='<span class="card-hint">\u70b9\u51fb\u5c55\u5f00</span><div class="card-name">'+f.name+'</div><div class="card-en">'+f.en+'</div><div class="card-def">'+f.definition+'</div><div class="card-badges">'+badges+'</div>';
+  card.addEventListener('click',function(){openModal(i);});
+  grid.appendChild(card);
+});
+
+var overlay=document.getElementById('modalOverlay');
+
+function openModal(idx){
+  var f=fallacies[idx];
+  document.getElementById('modalName').textContent=f.name;
+  document.getElementById('modalEn').textContent=f.en;
+  var badgesEl=document.getElementById('modalBadges');
+  badgesEl.innerHTML='';
+  if(f.analyses.deepseek)badgesEl.innerHTML+='<span class="badge ds">DeepSeek</span>';
+  if(f.analyses.chatgpt)badgesEl.innerHTML+='<span class="badge gpt">ChatGPT</span>';
+  if(f.analyses.gemini)badgesEl.innerHTML+='<span class="badge gem">Gemini</span>';
+  document.getElementById('modalDef').textContent=f.definition;
+  var quoteEl=document.getElementById('modalQuote');
+  quoteEl.innerHTML='<span class="modal-quote-label">\u539f\u6587\u5f15\u7528</span><span>'+f.quote.replace(/\n/g,'<br>')+'</span>';
+  var tabsEl=document.getElementById('modalTabs');
+  var analysesEl=document.getElementById('modalAnalyses');
+  tabsEl.innerHTML='';
+  analysesEl.innerHTML='';
+  var sources=Object.keys(f.analyses);
+  sources.forEach(function(src,si){
+    var tab=document.createElement('div');
+    tab.className='tab'+(si===0?' active':'');
+    tab.textContent=sourceNames[src];
+    tab.dataset.source=src;
+    tab.addEventListener('click',function(){
+      tabsEl.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+      tab.classList.add('active');
+      analysesEl.querySelectorAll('.analysis-content').forEach(function(c){c.classList.remove('open');});
+      analysesEl.querySelector('[data-src="'+src+'"]').classList.add('open');
+    });
+    tabsEl.appendChild(tab);
+    var content=document.createElement('div');
+    content.className='analysis-content'+(si===0?' open':'');
+    content.dataset.src=src;
+    var paragraphs=f.analyses[src].split('\n').filter(function(p){return p.trim();});
+    content.innerHTML=paragraphs.map(function(p){return '<p>'+p+'</p>';}).join('');
+    analysesEl.appendChild(content);
+  });
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.getElementById('modalClose').addEventListener('click',closeModal);
+overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+
+document.getElementById('dialogueToggle').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('dialogueContent').classList.toggle('open');
+});
+
+document.querySelectorAll('.persp-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.persp-tab').forEach(function(t){t.classList.remove('active');});
+    this.classList.add('active');
+    document.querySelectorAll('.persp-content').forEach(function(c){c.classList.remove('open');});
+    document.getElementById('persp-'+this.dataset.persp).classList.add('open');
+  });
+});
+})();
+</script>
+
+</body>
+</html>
