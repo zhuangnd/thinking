@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>一句质疑，几次跳步｜对话逻辑拆解</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f4f0;
+      --surface: #fffefa;
+      --ink: #202321;
+      --muted: #6d746f;
+      --line: #dedfd8;
+      --green: #315c4d;
+      --green-soft: #e8f0e9;
+      --amber: #9a5a21;
+      --amber-soft: #f7eee2;
+      --blue: #4e6477;
+      --blue-soft: #edf1f4;
+      --shadow: 0 8px 24px rgba(32, 35, 33, .045);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.65; }
+    button { font: inherit; }
+    .page { width: min(1080px, calc(100% - 40px)); margin: 0 auto; padding: 46px 0 72px; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--green); font-size: 12px; font-weight: 750; letter-spacing: .11em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 20px; height: 1px; background: currentColor; }
+    h1 { max-width: 780px; margin: 15px 0 12px; font-size: clamp(34px, 6vw, 58px); letter-spacing: -.055em; line-height: 1.12; font-weight: 740; }
+    .intro { max-width: 690px; color: var(--muted); font-size: 17px; margin: 0; }
+    .hero { padding: 4px 0 34px; }
+    .thesis { margin-top: 28px; display: grid; grid-template-columns: 42px 1fr; gap: 16px; padding: 20px 22px; background: var(--green-soft); border: 1px solid #d6e3d9; border-radius: 14px; }
+    .thesis-mark { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--green); color: white; font-weight: 800; }
+    .thesis p { margin: 0; font-size: 15px; }
+    .thesis strong { color: #244c3d; }
+    .flow { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 16px; color: #466454; font-size: 13px; font-weight: 650; }
+    .flow span { padding: 4px 10px; border: 1px solid #c8d9cc; border-radius: 99px; background: rgba(255,255,255,.55); }
+    .flow b { color: #81968a; font-size: 15px; }
+    .section { margin-top: 44px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 17px; }
+    .section-kicker { color: var(--muted); font-size: 12px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+    h2 { margin: 3px 0 0; font-size: clamp(22px, 3vw, 28px); letter-spacing: -.035em; line-height: 1.25; }
+    .section-note { color: var(--muted); font-size: 13px; margin: 5px 0 0; }
+    .quote-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .quote-card, .fallacy-card, .term-card { background: var(--surface); border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow); }
+    .quote-card { overflow: hidden; }
+    .quote-toggle { display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; padding: 16px 18px; border: 0; background: transparent; text-align: left; cursor: pointer; color: inherit; }
+    .quote-toggle:hover { background: #faf9f5; }
+    .quote { font-size: 15px; font-weight: 650; line-height: 1.5; }
+    .quote .speaker { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+    .chevron { color: #79817c; transition: transform .2s ease; flex: 0 0 auto; }
+    .quote-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+    .quote-detail { padding: 0 18px 17px; color: var(--muted); font-size: 13px; }
+    .quote-detail p { margin: 0; }
+    .quote-detail strong { color: var(--ink); }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0 14px; flex-wrap: wrap; }
+    .filters { display: flex; gap: 7px; flex-wrap: wrap; }
+    .filter { padding: 7px 12px; border: 1px solid var(--line); border-radius: 99px; color: #555d58; background: transparent; font-size: 12px; font-weight: 650; cursor: pointer; }
+    .filter:hover { border-color: #9ca9a0; }
+    .filter[aria-pressed="true"] { color: white; border-color: var(--green); background: var(--green); }
+    .expand-all { padding: 6px 0; border: 0; background: transparent; color: var(--green); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .fallacy-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .fallacy-card { overflow: hidden; }
+    .fallacy-card[hidden] { display: none; }
+    .fallacy-top { padding: 17px 18px 12px; }
+    .tag { display: inline-flex; padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 750; letter-spacing: .02em; }
+    .tag.consensus { background: var(--green-soft); color: var(--green); }
+    .tag.conditional { background: var(--amber-soft); color: var(--amber); }
+    .tag.related { background: var(--blue-soft); color: var(--blue); }
+    .fallacy-card h3 { margin: 9px 0 4px; font-size: 18px; letter-spacing: -.02em; line-height: 1.35; }
+    .source-line { margin: 0; color: var(--muted); font-size: 12px; }
+    .fallacy-body { padding: 0 18px 17px; font-size: 13px; }
+    .fallacy-body p { margin: 0 0 9px; }
+    .fallacy-body p:last-child { margin-bottom: 0; }
+    .label { color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .better { padding: 10px 12px; border-radius: 9px; background: #f2f5f1; color: #3e5145; }
+    .nuance { padding: 10px 12px; border-radius: 9px; background: #fbf4e9; color: #76512e; }
+    .terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .term-card { padding: 15px 16px; box-shadow: none; }
+    .term-card h3 { margin: 0 0 5px; font-size: 14px; }
+    .term-card p { margin: 0; color: var(--muted); font-size: 12px; }
+    .term-card .example { display: block; margin-top: 8px; color: #3d5548; font-size: 11px; }
+    .closing { margin-top: 40px; padding: 21px 23px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .closing p { max-width: 740px; margin: 0; font-size: 18px; font-weight: 620; letter-spacing: -.01em; }
+    .closing small { display: block; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    footer { padding-top: 20px; color: #8a908b; font-size: 11px; }
+    :focus-visible { outline: 3px solid #7ca18b; outline-offset: 3px; }
+    @media (max-width: 700px) {
+      .page { width: min(100% - 28px, 560px); padding-top: 29px; }
+      .intro { font-size: 15px; }
+      .thesis { grid-template-columns: 34px 1fr; gap: 11px; padding: 15px; }
+      .thesis-mark { width: 32px; height: 32px; }
+      .quote-grid, .fallacy-grid { grid-template-columns: 1fr; }
+      .terms { grid-template-columns: 1fr 1fr; }
+      .section { margin-top: 34px; }
+      .section-head { display: block; }
+    }
+    @media (max-width: 420px) {
+      .terms { grid-template-columns: 1fr; }
+      .flow { gap: 6px; font-size: 11px; }
+      .flow span { padding: 4px 8px; }
+      .controls { align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">对话逻辑拆解 · 小说片段</div>
+      <h1>一句质疑，<br>几次论证跳步</h1>
+      <p class="intro">毛锦泉质疑一份新材料方案：提出者只是大二学生，推演过程很短，也没有实验数据。问题在于，这些理由究竟指出了方案哪里错，还是只说明它暂时缺少支持？</p>
+      <div class="thesis">
+        <div class="thesis-mark" aria-hidden="true">↗</div>
+        <div>
+          <p><strong>三份分析的共同判断：</strong>身份、推演篇幅和证据缺失可以成为追问的起点，但它们本身没有指出方案的具体逻辑错误。整段最关键的跳跃，是把“尚未验证”推成“已经荒谬或错误”。</p>
+          <div class="flow" aria-label="核心推理跳跃">
+            <span>缺少解释或验证</span><b aria-hidden="true">→</b><span>可信度降低</span><b aria-hidden="true">→</b><span>断言方案错误</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="dialogue-title">
+      <div class="section-head">
+        <div><div class="section-kicker">01 · 对话现场</div><h2 id="dialogue-title">质疑是怎样一步步展开的</h2><p class="section-note">点击发言卡片，查看它在论证中承担的作用。</p></div>
+      </div>
+      <div class="quote-grid">
+        <article class="quote-card">
+          <button class="quote-toggle" aria-expanded="false" aria-controls="q1-detail"><span class="quote"><span class="speaker">追问者</span>“你告诉我，你在这方案上，找到什么漏洞了吗？”</span><span class="chevron" aria-hidden="true">⌄</span></button>
+          <div class="quote-detail" id="q1-detail" hidden><p><strong>讨论焦点：</strong>问题要求对方指出方案中的具体漏洞。后续回应是否真的回答了这个问题，是判断“转移论题”是否成立的关键。</p></div>
+        </article>
+        <article class="quote-card">
+          <button class="quote-toggle" aria-expanded="false" aria-controls="q2-detail"><span class="quote"><span class="speaker">毛锦泉</span>“漏洞？难道这漏洞还不明显吗？”</span><span class="chevron" aria-hidden="true">⌄</span></button>
+          <div class="quote-detail" id="q2-detail" hidden><p><strong>论证动作：</strong>反问先把“漏洞明显”当作双方已接受的前提，却没有随即说明漏洞是什么。</p></div>
+        </article>
+        <article class="quote-card">
+          <button class="quote-toggle" aria-expanded="false" aria-controls="q3-detail"><span class="quote"><span class="speaker">毛锦泉</span>“一名大二的学生，从什么地方获取这些知识？”</span><span class="chevron" aria-hidden="true">⌄</span></button>
+          <div class="quote-detail" id="q3-detail" hidden><p><strong>论证动作：</strong>把注意力转向提出者的年级和知识来源。来源值得核实，但身份本身不能证明方案错了。</p></div>
+        </article>
+        <article class="quote-card">
+          <button class="quote-toggle" aria-expanded="false" aria-controls="q4-detail"><span class="quote"><span class="speaker">毛锦泉</span>“推演过程寥寥几笔……开什么玩笑！”</span><span class="chevron" aria-hidden="true">⌄</span></button>
+          <div class="quote-detail" id="q4-detail" hidden><p><strong>论证动作：</strong>指出呈现出来的过程很简略，但没有具体指出哪一步推导不成立。“开什么玩笑”表达态度，不补上缺失的反驳。</p></div>
+        </article>
+        <article class="quote-card">
+          <button class="quote-toggle" aria-expanded="false" aria-controls="q5-detail"><span class="quote"><span class="speaker">毛锦泉</span>“实验数据呢？没有实验数据的方案，和天方夜谭有什么区别？！”</span><span class="chevron" aria-hidden="true">⌄</span></button>
+          <div class="quote-detail" id="q5-detail" hidden><p><strong>论证动作：</strong>要求实验数据可能合理；把“没有数据”直接等同“荒诞”则跨过了验证状态与真假判断之间的区别。</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="fallacies-title">
+      <div class="section-head">
+        <div><div class="section-kicker">02 · 推理检查</div><h2 id="fallacies-title">哪些地方发生了跳步</h2><p class="section-note">按三份分析的共识、语境依赖和相关论证问题整理；标签表示判断把握，不代表严重程度。</p></div>
+      </div>
+      <div class="controls">
+        <div class="filters" role="group" aria-label="筛选谬误卡片">
+          <button class="filter" data-filter="all" aria-pressed="true">全部</button>
+          <button class="filter" data-filter="consensus" aria-pressed="false">核心共识</button>
+          <button class="filter" data-filter="conditional" aria-pressed="false">看语境</button>
+          <button class="filter" data-filter="related" aria-pressed="false">相关问题</button>
+        </div>
+        <button class="expand-all" id="toggle-all" aria-pressed="true">收起全部解释</button>
+      </div>
+      <div class="fallacy-grid" id="fallacy-grid">
+        <article class="fallacy-card" data-kind="consensus">
+          <div class="fallacy-top"><span class="tag consensus">核心共识</span><h3>诉诸人身／身份论证</h3><p class="source-line">“一名大二的学生，从什么地方获取这些知识？”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>提出者年级较低、知识来源不明，因此方案不可信或错误。</p><p><span class="label">为什么不充分</span><br>身份与来源可以影响我们核查信息的方式，却不能代替对前提、推导和证据的检查。质疑可信度不等于证伪方案。</p><p class="better"><strong>更严谨地问：</strong>“这些知识依据哪些资料或推导？能否逐步说明？”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="consensus">
+          <div class="fallacy-top"><span class="tag consensus">核心共识</span><h3>诉诸无知：未证实不等于已证伪</h3><p class="source-line">“没有实验数据的方案，和天方夜谭有什么区别？！”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>目前没有实验验证，因此方案就是荒谬的或错误的。</p><p><span class="label">为什么不充分</span><br>缺少支持证据说明结论尚未得到验证；它本身不是反面证据。最稳妥的结论是暂缓接受，而不是宣布已被推翻。</p><p class="better"><strong>更严谨地说：</strong>“目前缺少实验数据，所以还不能确认方案成立。”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="consensus">
+          <div class="fallacy-top"><span class="tag consensus">核心共识</span><h3>论证责任与问题对象混淆</h3><p class="source-line">被问“哪里有漏洞”，回应“没有实验数据”。</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>方案尚未证明成立，就当作已经指出它哪里错了。</p><p><span class="label">为什么不充分</span><br>“证明方案成立”“找出方案错误”和“判断是否值得相信”是不同任务。对方可以要求证据，但若要声称有逻辑漏洞，还应指出具体前提或推导问题。</p><p class="better"><strong>拆开问题：</strong>“我暂时不接受这个结论；另外，这一步推导缺少了什么条件。”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="conditional">
+          <div class="fallacy-top"><span class="tag conditional">看语境</span><h3>混淆理论预测与实验成果</h3><p class="source-line">“实验数据呢？”</p></div>
+          <div class="fallacy-body"><p><span class="label">关键条件</span><br>要看方案声称的是什么：提出“可能存在、值得验证”，还是声称“已经制备成功、性能已被证明”。</p><p class="nuance"><strong>如果是理论设想：</strong>没有实验数据意味着尚未验证，不足以直接否定。<br><strong>如果声称实验成果：</strong>要求数据是恰当的证据要求。</p><p class="better"><strong>更严谨地问：</strong>“这是理论预测还是已验证成果？现阶段有哪些证据？”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="conditional">
+          <div class="fallacy-top"><span class="tag conditional">看语境</span><h3>证据标准不匹配</h3><p class="source-line">拿实验验证要求，直接否定理论推演。</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>因为还没有后续实验，就把早期理论方案视作没有价值。</p><p><span class="label">为什么要看语境</span><br>科学主张需要与其阶段相称的证据。理论假说可以待验证；若把它包装成已证实事实，证据不足就构成实质问题。</p><p class="better"><strong>先约定标准：</strong>现在讨论的是推演是否自洽，还是成果是否已被实验确认？</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="related">
+          <div class="fallacy-top"><span class="tag related">相关问题</span><h3>预设结论</h3><p class="source-line">“难道这漏洞还不明显吗？”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>把“漏洞明显”放进反问里，当作已经证明的事实。</p><p><span class="label">为什么不充分</span><br>语气和预设不能替代证据。仍需要明确说出哪条前提或推导出了问题。</p><p class="better"><strong>更严谨地问：</strong>“我认为这里可能有问题，具体是这一步……”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="related">
+          <div class="fallacy-top"><span class="tag related">相关问题</span><h3>从呈现简略推断方案不可能</h3><p class="source-line">“就这么寥寥几笔，一个新材料就在笔头上出现了？”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>文中展示的推演很短，所以实际研究过程也很简单，甚至结果不可能成立。</p><p><span class="label">为什么不充分</span><br>展示篇幅短不等于实际工作少。它能支持“说明不充分”的质疑，但要证明推导错误，还需指出缺失的步骤或错误的前提。</p><p class="better"><strong>更严谨地问：</strong>“请补充这几步推导，以及关键参数的依据。”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="related">
+          <div class="fallacy-top"><span class="tag related">相关问题</span><h3>虚假二分</h3><p class="source-line">“没有实验数据的方案，和天方夜谭有什么区别？”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>仿佛方案只有“有实验数据、可信”或“没数据、纯属幻想”两种状态。</p><p><span class="label">为什么不充分</span><br>还存在理论假说、模拟结果、待验证模型和初步推演等中间状态。证据强弱可以分级。</p><p class="better"><strong>更严谨地说：</strong>“它目前处于理论推演阶段，证据还不足以确认。”</p></div>
+        </article>
+        <article class="fallacy-card" data-kind="related">
+          <div class="fallacy-top"><span class="tag related">相关问题</span><h3>情绪修辞代替论证</h3><p class="source-line">“开什么玩笑！”</p></div>
+          <div class="fallacy-body"><p><span class="label">推理跳跃</span><br>用强烈的惊讶或嘲讽传达否定态度，让结论听起来更确定。</p><p><span class="label">为什么不充分</span><br>情绪表达本身不一定构成独立谬误，但也没有提供事实、反例或推导来支持结论。</p><p class="better"><strong>补上论证：</strong>指出哪条科学原理、数据或推导与方案冲突。</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="terms-title">
+      <div class="section-head">
+        <div><div class="section-kicker">03 · 术语小卡</div><h2 id="terms-title">几个容易混淆的概念</h2><p class="section-note">用本段对话中的例子解释，不要求先掌握逻辑学术语。</p></div>
+      </div>
+      <div class="terms">
+        <article class="term-card"><h3>诉诸人身（Ad hominem）</h3><p>不回应观点本身，转而用提出者的身份、性格或处境来否定观点。</p><span class="example">本段例子：因为是大二学生，就怀疑方案。</span></article>
+        <article class="term-card"><h3>起源谬误（Genetic fallacy）</h3><p>仅凭一个观点的来源判断它真假，而不检查观点内容和证据。</p><span class="example">来源值得核查，但来源可疑不是结论错误的证明。</span></article>
+        <article class="term-card"><h3>诉诸无知（Argument from ignorance）</h3><p>因为某事尚未被证明为真（或假），就断定它为假（或真）。</p><span class="example">没实验数据 → 必定是天方夜谭。</span></article>
+        <article class="term-card"><h3>虚假二分（False dilemma）</h3><p>把多个可能状态压缩成两个选项，让中间情况消失。</p><span class="example">“有实验数据才可信；没有就是幻想。”</span></article>
+        <article class="term-card"><h3>预设结论（Begging the question）</h3><p>把尚待证明的结论藏在问题或前提里，再把它当作已成立。</p><span class="example">“漏洞不是很明显吗？”但没有指出漏洞。</span></article>
+        <article class="term-card"><h3>论证不充分 ≠ 逻辑错误</h3><p>材料或解释太少，可能让人无法判断；它不自动证明结论错误。</p><span class="example">推演写得简略，需要补充步骤，不能只凭篇幅判错。</span></article>
+      </div>
+    </section>
+
+    <section class="closing" aria-label="结论">
+      <p>这段对白的关键问题，不是质疑实验数据，而是把“目前无法确认”一步步说成“方案已经荒谬”。</p>
+      <small>最准确的暂定结论：方案可能证据不足，仍需验证；要证明它有漏洞，还需要指出具体的错误环节。</small>
+    </section>
+    <footer>内容综合自 DeepSeek、ChatGPT 与 Gemini 对同一段对话的分析，并对依赖上下文的判断作了条件区分。</footer>
+  </main>
+  <script>
+    const quoteButtons = [...document.querySelectorAll('.quote-toggle')];
+    quoteButtons.forEach(button => button.addEventListener('click', () => {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!expanded));
+      document.getElementById(button.getAttribute('aria-controls')).hidden = expanded;
+    }));
+
+    const filterButtons = [...document.querySelectorAll('.filter')];
+    const fallacyCards = [...document.querySelectorAll('.fallacy-card')];
+    filterButtons.forEach(button => button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      fallacyCards.forEach(card => { card.hidden = filter !== 'all' && card.dataset.kind !== filter; });
+    }));
+
+    const allButton = document.getElementById('toggle-all');
+    allButton.addEventListener('click', () => {
+      const expand = allButton.getAttribute('aria-pressed') !== 'true';
+      allButton.setAttribute('aria-pressed', String(expand));
+      allButton.textContent = expand ? '收起全部解释' : '展开全部解释';
+      fallacyCards.filter(card => !card.hidden).forEach(card => {
+        card.querySelector('.fallacy-body').hidden = !expand;
+      });
+    });
+  </script>
+</body>
+</html>
